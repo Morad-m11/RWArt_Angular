@@ -1,0 +1,71 @@
+h1 {
+  font-family: var(--mat-sys-display-large-font);
+  font-size: var(--mat-sys-display-large-size);
+  line-height: var(--mat-sys-display-large-line-height);
+  font-weight: var(--mat-sys-display-large-weight);
+  letter-spacing: var(--mat-sys-display-large-tracking);
+}
+
+h2 {
+  font-family: var(--mat-sys-display-medium-font);
+  font-size: var(--mat-sys-display-medium-size);
+  line-height: var(--mat-sys-display-medium-line-height);
+  font-weight: var(--mat-sys-display-medium-weight);
+  letter-spacing: var(--mat-sys-display-medium-tracking);
+}
+
+h3 {
+  font-family: var(--mat-sys-display-small-font);
+  font-size: var(--mat-sys-display-small-size);
+  line-height: var(--mat-sys-display-small-line-height);
+  font-weight: var(--mat-sys-display-small-weight);
+  letter-spacing: var(--mat-sys-display-small-tracking);
+}
+
+h4 {
+  font-family: var(--mat-sys-headline-large-font);
+  font-size: var(--mat-sys-headline-large-size);
+  line-height: var(--mat-sys-headline-large-line-height);
+  font-weight: var(--mat-sys-headline-large-weight);
+  letter-spacing: var(--mat-sys-headline-large-tracking);
+}
+
+h5 {
+  font-family: var(--mat-sys-headline-medium-font);
+  font-size: var(--mat-sys-headline-medium-size);
+  line-height: var(--mat-sys-headline-medium-line-height);
+  font-weight: var(--mat-sys-headline-medium-weight);
+  letter-spacing: var(--mat-sys-headline-medium-tracking);
+}
+
+h6 {
+  font-family: var(--mat-sys-headline-small-font);
+  font-size: var(--mat-sys-headline-small-size);
+  line-height: var(--mat-sys-headline-small-line-height);
+  font-weight: var(--mat-sys-headline-small-weight);
+  letter-spacing: var(--mat-sys-headline-small-tracking);
+}
+
+p {
+  font-family: var(--mat-sys-body-medium-font);
+  font-size: var(--mat-sys-body-medium-size);
+  line-height: var(--mat-sys-body-medium-line-height);
+  font-weight: var(--mat-sys-body-medium-weight);
+  letter-spacing: var(--mat-sys-body-medium-tracking);
+}
+
+small {
+  font-family: var(--mat-sys-body-small-font);
+  font-size: var(--mat-sys-body-small-size);
+  line-height: var(--mat-sys-body-small-line-height);
+  font-weight: var(--mat-sys-body-small-weight);
+  letter-spacing: var(--mat-sys-body-small-tracking);
+}
+
+label {
+  font-family: var(--mat-sys-label-medium-font);
+  font-size: var(--mat-sys-label-medium-size);
+  line-height: var(--mat-sys-label-medium-line-height);
+  font-weight: var(--mat-sys-label-medium-weight);
+  letter-spacing: var(--mat-sys-label-medium-tracking);
+}
