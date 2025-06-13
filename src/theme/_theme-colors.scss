@@ -161,27 +161,15 @@ $tertiary-palette: map.merge(map.get($_palettes, tertiary), $_rest);
       primary-fixed: _high-contrast-value(#1c4986, #d6e3ff, $theme-type),
       primary-fixed-dim: _high-contrast-value(#003269, #aac7ff, $theme-type),
       on-primary-fixed: _high-contrast-value(#ffffff, #000000, $theme-type),
-      on-primary-fixed-variant: _high-contrast-value(
-          #ffffff,
-          #00112b,
-          $theme-type
-        ),
+      on-primary-fixed-variant: _high-contrast-value(#ffffff, #00112b, $theme-type),
       secondary: _high-contrast-value(#1f2c44, #ebf0ff, $theme-type),
       on-secondary: _high-contrast-value(#ffffff, #000000, $theme-type),
       secondary-container: _high-contrast-value(#3c4963, #b5c3e1, $theme-type),
-      on-secondary-container: _high-contrast-value(
-          #ffffff,
-          #000b20,
-          $theme-type
-        ),
+      on-secondary-container: _high-contrast-value(#ffffff, #000b20, $theme-type),
       secondary-fixed: _high-contrast-value(#3c4963, #d6e3ff, $theme-type),
       secondary-fixed-dim: _high-contrast-value(#25334b, #b9c7e5, $theme-type),
       on-secondary-fixed: _high-contrast-value(#ffffff, #000000, $theme-type),
-      on-secondary-fixed-variant: _high-contrast-value(
-          #ffffff,
-          #031127,
-          $theme-type
-        ),
+      on-secondary-fixed-variant: _high-contrast-value(#ffffff, #031127, $theme-type),
       tertiary: _high-contrast-value(#481550, #ffeafb, $theme-type),
       on-tertiary: _high-contrast-value(#ffffff, #000000, $theme-type),
       tertiary-container: _high-contrast-value(#693470, #eeacf1, $theme-type),
@@ -189,33 +177,17 @@ $tertiary-palette: map.merge(map.get($_palettes, tertiary), $_rest);
       tertiary-fixed: _high-contrast-value(#693470, #ffd6fe, $theme-type),
       tertiary-fixed-dim: _high-contrast-value(#501d57, #f2b0f5, $theme-type),
       on-tertiary-fixed: _high-contrast-value(#ffffff, #000000, $theme-type),
-      on-tertiary-fixed-variant: _high-contrast-value(
-          #ffffff,
-          #25002c,
-          $theme-type
-        ),
+      on-tertiary-fixed-variant: _high-contrast-value(#ffffff, #25002c, $theme-type),
       background: _high-contrast-value(#f9f9ff, #121317, $theme-type),
       on-background: _high-contrast-value(#1a1c20, #e2e2e8, $theme-type),
       surface: _high-contrast-value(#f9f9ff, #121317, $theme-type),
       surface-dim: _high-contrast-value(#b8b8be, #121317, $theme-type),
       surface-bright: _high-contrast-value(#f9f9ff, #4f5055, $theme-type),
       surface-container-low: _high-contrast-value(#f1f0f6, #1e2024, $theme-type),
-      surface-container-lowest: _high-contrast-value(
-          #ffffff,
-          #000000,
-          $theme-type
-        ),
+      surface-container-lowest: _high-contrast-value(#ffffff, #000000, $theme-type),
       surface-container: _high-contrast-value(#e2e2e8, #2f3035, $theme-type),
-      surface-container-high: _high-contrast-value(
-          #d4d4da,
-          #3a3b40,
-          $theme-type
-        ),
-      surface-container-highest: _high-contrast-value(
-          #c6c6cc,
-          #45474b,
-          $theme-type
-        ),
+      surface-container-high: _high-contrast-value(#d4d4da, #3a3b40, $theme-type),
+      surface-container-highest: _high-contrast-value(#c6c6cc, #45474b, $theme-type),
       on-surface: _high-contrast-value(#000000, #ffffff, $theme-type),
       shadow: _high-contrast-value(#000000, #000000, $theme-type),
       scrim: _high-contrast-value(#000000, #000000, $theme-type),

@@ -1,8 +1,4 @@
-import {
-  ErrorHandler,
-  NgModule,
-  provideZonelessChangeDetection,
-} from '@angular/core';
+import { ErrorHandler, NgModule, provideZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import {
   BrowserTestingModule,
@@ -27,7 +23,4 @@ export class TestModule {}
 /*
  * Common setup / initialization for all unit tests in Angular Material and CDK.
  */
-TestBed.initTestEnvironment(
-  [BrowserTestingModule, TestModule],
-  platformBrowserTesting()
-);
+TestBed.initTestEnvironment([BrowserTestingModule, TestModule], platformBrowserTesting());

@@ -1,9 +1,10 @@
 @use '@angular/material' as mat;
 @use './theme-colors' as theme;
 @use './typography';
+@use '../app/layout/layout-theme' as layout;
 
 html {
-  color-scheme: dark;
+  color-scheme: light dark;
 
   @include mat.theme(
     (
@@ -15,4 +16,6 @@ html {
       density: 0,
     )
   );
+
+  @include layout.theme;
 }
