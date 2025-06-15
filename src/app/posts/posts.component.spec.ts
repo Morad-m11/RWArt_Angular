@@ -4,21 +4,21 @@ import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { provideHttpClient } from '@angular/common/http';
 
 describe('PostsComponent', () => {
-  let component: PostsComponent;
-  let fixture: ComponentFixture<PostsComponent>;
+   let component: PostsComponent;
+   let fixture: ComponentFixture<PostsComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [PostsComponent],
-      providers: [provideHttpClient(), provideHttpClientTesting()],
-    }).compileComponents();
+   beforeEach(async () => {
+      await TestBed.configureTestingModule({
+         imports: [PostsComponent],
+         providers: [provideHttpClient(), provideHttpClientTesting()],
+      }).compileComponents();
 
-    fixture = TestBed.createComponent(PostsComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+      fixture = TestBed.createComponent(PostsComponent);
+      component = fixture.componentInstance;
+      fixture.detectChanges();
+   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+   it('should create', () => {
+      expect(component).toBeTruthy();
+   });
 });
