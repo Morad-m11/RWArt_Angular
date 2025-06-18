@@ -4,18 +4,22 @@
 @use '../app/layout/layout-theme' as layout;
 
 html {
-  color-scheme: light dark;
+   color-scheme: light dark;
 
-  @include mat.theme(
-    (
-      color: (
-        primary: theme.$primary-palette,
-        tertiary: theme.$tertiary-palette,
-      ),
-      typography: Roboto,
-      density: 0,
-    )
-  );
+   @include mat.theme(
+      (
+         color: (
+            primary: theme.$primary-palette,
+            tertiary: theme.$tertiary-palette,
+         ),
+         typography: Roboto,
+         density: 0,
+      )
+   );
 
-  @include layout.theme;
+   @include layout.theme;
+}
+
+mat-card-header {
+   margin-bottom: 20px;
 }

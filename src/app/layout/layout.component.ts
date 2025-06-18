@@ -6,28 +6,29 @@ import { MaterialModule } from '../material.module';
 import { RouterLink } from '@angular/router';
 
 interface Link {
-  name: string;
-  url: string;
+   label: string;
+   path: string;
 }
 
 @Component({
-  selector: 'app-layout',
-  templateUrl: './layout.component.html',
-  styleUrl: './layout.component.scss',
-  imports: [MaterialModule, RouterLink],
+   selector: 'app-layout',
+   templateUrl: './layout.component.html',
+   styleUrl: './layout.component.scss',
+   imports: [MaterialModule, RouterLink],
 })
 export class LayoutComponent {
-  private _breakpointObserver = inject(BreakpointObserver);
+   private _breakpointObserver = inject(BreakpointObserver);
 
-  links: Link[] = [
-    { name: 'Posts', url: 'posts' },
-    { name: 'Give feedback', url: 'feedback' },
-  ];
+   links: Link[] = [
+      { label: 'Posts', path: 'posts' },
+      { label: 'Give feedback', path: 'feedback' },
+      { label: 'User', path: 'user' },
+   ];
 
-  isHandset = toSignal(
-    this._breakpointObserver
-      .observe(Breakpoints.Handset)
-      .pipe(map((result) => result.matches)),
-    {}
-  );
+   isHandset = toSignal(
+      this._breakpointObserver
+         .observe(Breakpoints.Handset)
+         .pipe(map((result) => result.matches)),
+      {}
+   );
 }
