@@ -1,4 +1,3 @@
-import { JsonPipe } from '@angular/common';
 import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { Component, inject, signal } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
@@ -18,9 +17,9 @@ type UserForm = {
 @Component({
    selector: 'app-user',
    standalone: true,
-   imports: [MaterialModule, JsonPipe],
+   imports: [MaterialModule],
    templateUrl: './login.component.html',
-   styleUrl: './login.component.scss',
+   styleUrl: './login.component.scss'
 })
 export class LoginComponent {
    private readonly _authService = inject(AuthService);
@@ -28,17 +27,16 @@ export class LoginComponent {
 
    loading = signal(false);
    invalidCredentials = signal(false);
-   profile = signal<unknown | null>(null);
 
    form = new FormGroup<UserForm>({
       username: new FormControl('', {
          nonNullable: true,
-         validators: Validators.required,
+         validators: Validators.required
       }),
       password: new FormControl('', {
          nonNullable: true,
-         validators: Validators.required,
-      }),
+         validators: Validators.required
+      })
    });
 
    async login() {
@@ -51,15 +49,6 @@ export class LoginComponent {
          .then(() => this._snackbar.success(`Welcome ${user.username}`))
          .catch((error: HttpErrorResponse) => this._handleError(error))
          .finally(() => this.loading.set(false));
-   }
-
-   async getProfile() {
-      this.profile.set(null);
-
-      await this._authService
-         .fetchProfile()
-         .then((profile) => this.profile.set(profile))
-         .catch(() => this._snackbar.error('Failed to load profile'));
    }
 
    private _handleError(error: HttpErrorResponse): void {

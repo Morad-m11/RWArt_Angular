@@ -10,36 +10,32 @@ html {
       (
          color: (
             primary: theme.$primary-palette,
-            tertiary: theme.$tertiary-palette,
+            tertiary: theme.$tertiary-palette
          ),
          typography: Roboto,
-         density: 0,
+         density: 0
       )
    );
-
-   .snackbar-success {
-      @include mat.snack-bar-overrides(
-         (
-            supporting-text-color: var(--mat-sys-on-primary-container),
-            button-color: var(--mat-sys-primary),
-            container-color: var(--mat-sys-secondary-container),
-         )
-      );
-   }
-
-   .snackbar-error {
-      @include mat.snack-bar-overrides(
-         (
-            supporting-text-color: var(--mat-sys-on-error-container),
-            button-color: var(--mat-sys-error),
-            container-color: var(--mat-sys-error-container),
-         )
-      );
-   }
 
    @include layout.theme;
 }
 
-mat-card-header {
-   margin-bottom: 20px;
+.snackbar-success {
+   @include mat.snack-bar-overrides(
+      (
+         supporting-text-color: var(--mat-sys-on-primary-container),
+         button-color: var(--mat-sys-primary),
+         container-color: var(--mat-sys-secondary-container)
+      )
+   );
+}
+
+.snackbar-error {
+   @include mat.snack-bar-overrides(
+      (
+         supporting-text-color: var(--mat-sys-on-error-container),
+         button-color: var(--mat-sys-error),
+         container-color: var(--mat-sys-error-container)
+      )
+   );
 }

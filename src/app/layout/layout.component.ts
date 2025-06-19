@@ -14,7 +14,7 @@ interface Link {
    selector: 'app-layout',
    templateUrl: './layout.component.html',
    styleUrl: './layout.component.scss',
-   imports: [MaterialModule, RouterLink],
+   imports: [MaterialModule, RouterLink]
 })
 export class LayoutComponent {
    private _breakpointObserver = inject(BreakpointObserver);
@@ -23,6 +23,7 @@ export class LayoutComponent {
       { label: 'Posts', path: 'posts' },
       { label: 'Give feedback', path: 'feedback' },
       { label: 'Login', path: 'login' },
+      { label: 'Profile', path: 'profile' }
    ];
 
    isHandset = toSignal(

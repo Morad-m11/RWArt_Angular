@@ -1,0 +1,18 @@
+@if (profile.error()) {
+   {{ profile.error()?.message }}
+} @else {
+   <mat-card appearance="outlined">
+      <mat-card-header>
+         <mat-card-title>
+            {{ profile.value()?.username | titlecase }}
+         </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+         <mat-list>
+            <mat-list-item>exp: {{ profile.value()?.exp }}</mat-list-item>
+            <mat-list-item>iat: {{ profile.value()?.iat }}</mat-list-item>
+            <mat-list-item>sub: {{ profile.value()?.sub }}</mat-list-item>
+         </mat-list>
+      </mat-card-content>
+   </mat-card>
+}
