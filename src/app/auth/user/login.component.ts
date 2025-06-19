@@ -1,10 +1,10 @@
+import { JsonPipe } from '@angular/common';
 import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { Component, inject, signal } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { SnackbarService } from 'src/app/core/snackbar/snackbar.service';
 import { MaterialModule } from '../../material.module';
 import { AuthService } from '../auth.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { JsonPipe } from '@angular/common';
 
 export interface User {
    username: string;
@@ -24,7 +24,7 @@ type UserForm = {
 })
 export class LoginComponent {
    private readonly _authService = inject(AuthService);
-   private readonly _snackbar = inject(MatSnackBar);
+   private readonly _snackbar = inject(SnackbarService);
 
    loading = signal(false);
    invalidCredentials = signal(false);
@@ -48,7 +48,7 @@ export class LoginComponent {
       const user = this.form.value as User;
       await this._authService
          .login(user)
-         .then(() => this._displaySuccessNotification(`Welcome ${user.username}`))
+         .then(() => this._snackbar.success(`Welcome ${user.username}`))
          .catch((error: HttpErrorResponse) => this._handleError(error))
          .finally(() => this.loading.set(false));
    }
@@ -59,21 +59,7 @@ export class LoginComponent {
       await this._authService
          .fetchProfile()
          .then((profile) => this.profile.set(profile))
-         .catch(() => this._displayErrorNotification('Failed to load profile'));
-   }
-
-   private _displaySuccessNotification(message: string) {
-      return this._snackbar.open(message, undefined, {
-         duration: 2000,
-         verticalPosition: 'top',
-      });
-   }
-
-   private _displayErrorNotification(message: string) {
-      this._snackbar.open(message, 'Close', {
-         duration: 2500,
-         verticalPosition: 'top',
-      });
+         .catch(() => this._snackbar.error('Failed to load profile'));
    }
 
    private _handleError(error: HttpErrorResponse): void {
@@ -83,6 +69,6 @@ export class LoginComponent {
          return;
       }
 
-      this._displayErrorNotification(`Login failed (${error.status})`);
+      this._snackbar.error(`Login failed (${error.status})`);
    }
 }
