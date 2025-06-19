@@ -19,10 +19,10 @@ type UserForm = {
    selector: 'app-user',
    standalone: true,
    imports: [MaterialModule, JsonPipe],
-   templateUrl: './user.component.html',
-   styleUrl: './user.component.scss',
+   templateUrl: './login.component.html',
+   styleUrl: './login.component.scss',
 })
-export class UserComponent {
+export class LoginComponent {
    private readonly _authService = inject(AuthService);
    private readonly _snackbar = inject(MatSnackBar);
 
@@ -45,8 +45,10 @@ export class UserComponent {
       this.loading.set(true);
       this.invalidCredentials.set(false);
 
+      const user = this.form.value as User;
       await this._authService
-         .login(this.form.value as User)
+         .login(user)
+         .then(() => this._displaySuccessNotification(`Welcome ${user.username}`))
          .catch((error: HttpErrorResponse) => this._handleError(error))
          .finally(() => this.loading.set(false));
    }
@@ -54,9 +56,24 @@ export class UserComponent {
    async getProfile() {
       this.profile.set(null);
 
-      const profile = await this._authService.fetchProfile();
+      await this._authService
+         .fetchProfile()
+         .then((profile) => this.profile.set(profile))
+         .catch(() => this._displayErrorNotification('Failed to load profile'));
+   }
 
-      this.profile.set(profile);
+   private _displaySuccessNotification(message: string) {
+      return this._snackbar.open(message, undefined, {
+         duration: 2000,
+         verticalPosition: 'top',
+      });
+   }
+
+   private _displayErrorNotification(message: string) {
+      this._snackbar.open(message, 'Close', {
+         duration: 2500,
+         verticalPosition: 'top',
+      });
    }
 
    private _handleError(error: HttpErrorResponse): void {
@@ -66,6 +83,6 @@ export class UserComponent {
          return;
       }
 
-      this._snackbar.open(`Login failed (${error.status})`, 'Close', { duration: 2500 });
+      this._displayErrorNotification(`Login failed (${error.status})`);
    }
 }

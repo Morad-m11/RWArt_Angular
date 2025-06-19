@@ -18,7 +18,7 @@ export class ImageService {
 
    async get(index: number): Promise<PostResponse> {
       return await firstValueFrom(
-         this._http.get<PostResponse>(`http://localhost:3000/images/${index}`)
+         this._http.get<PostResponse>(`http://localhost:3000/image/${index}`)
       );
    }
 }

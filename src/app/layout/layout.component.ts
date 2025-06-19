@@ -22,7 +22,7 @@ export class LayoutComponent {
    links: Link[] = [
       { label: 'Posts', path: 'posts' },
       { label: 'Give feedback', path: 'feedback' },
-      { label: 'User', path: 'user' },
+      { label: 'Login', path: 'login' },
    ];
 
    isHandset = toSignal(

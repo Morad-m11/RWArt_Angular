@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { User } from './user/user.component';
+import { User } from './user/login.component';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 

@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { UserComponent } from './auth/user/user.component';
+import { LoginComponent } from './auth/user/login.component';
 
 export const routes: Routes = [
    { path: '', pathMatch: 'full', redirectTo: 'posts' },
@@ -11,5 +11,5 @@ export const routes: Routes = [
       path: 'feedback',
       loadComponent: () => import('./feedback/feedback.component'),
    },
-   { path: 'user', component: UserComponent },
+   { path: 'login', component: LoginComponent },
 ];
