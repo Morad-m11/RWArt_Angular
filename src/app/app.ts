@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
-import { MaterialModule } from './material.module';
-import { LayoutComponent } from './layout/layout.component';
+import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { LayoutComponent } from './layout/layout.component';
+import { MaterialModule } from './material.module';
 
 @Component({
    selector: 'app-root',

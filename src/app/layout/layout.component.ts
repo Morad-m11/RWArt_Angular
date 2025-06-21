@@ -4,6 +4,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs/operators';
 import { MaterialModule } from '../material.module';
 import { RouterLink } from '@angular/router';
+import { ProfileComponent } from '../profile/profile.component';
 
 interface Link {
    label: string;
@@ -14,7 +15,7 @@ interface Link {
    selector: 'app-layout',
    templateUrl: './layout.component.html',
    styleUrl: './layout.component.scss',
-   imports: [MaterialModule, RouterLink]
+   imports: [MaterialModule, RouterLink, ProfileComponent]
 })
 export class LayoutComponent {
    private _breakpointObserver = inject(BreakpointObserver);

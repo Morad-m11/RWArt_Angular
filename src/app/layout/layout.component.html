@@ -16,7 +16,7 @@
    </mat-sidenav>
 
    <mat-sidenav-content>
-      <mat-toolbar class="mat-primary">
+      <mat-toolbar>
          @if (isHandset()) {
             <button
                type="button"
@@ -26,7 +26,14 @@
                <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
             </button>
          }
+
          <span>Rain World Exhibition</span>
+
+         <span class="spacer"></span>
+
+         @defer {
+            <app-profile />
+         }
       </mat-toolbar>
 
       <div class="sidenav-scroll-wrapper">

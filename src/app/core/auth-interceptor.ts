@@ -4,7 +4,7 @@ import {
    HttpStatusCode
 } from '@angular/common/http';
 import { inject } from '@angular/core';
-import { catchError, throwError } from 'rxjs';
+import { catchError, EMPTY, throwError } from 'rxjs';
 import { AuthService } from '../auth/auth.service';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
@@ -12,12 +12,23 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
    const reqWithAuth = req.clone({ withCredentials: true });
 
    return next(reqWithAuth).pipe(
-      catchError((err: HttpErrorResponse) => {
-         if (err.status === HttpStatusCode.Unauthorized) {
+      catchError((error: HttpErrorResponse) => {
+         if (error.status === HttpStatusCode.Unauthorized) {
+            const isUserCheck = req.url.includes('auth/me');
+            const isLoginAttempt = req.url.includes('auth/login');
+
+            if (isLoginAttempt) {
+               throw error;
+            }
+
+            if (isUserCheck) {
+               return EMPTY;
+            }
+
             authService.logout({ expired: true });
          }
 
-         return throwError(() => err);
+         throw error;
       })
    );
 };

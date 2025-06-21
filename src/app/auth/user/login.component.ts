@@ -5,13 +5,13 @@ import { SnackbarService } from 'src/app/core/snackbar/snackbar.service';
 import { MaterialModule } from '../../material.module';
 import { AuthService } from '../auth.service';
 
-export interface User {
+export interface Credentials {
    username: string;
    password: string;
 }
 
 type UserForm = {
-   [K in keyof User]: FormControl<User[K]>;
+   [K in keyof Credentials]: FormControl<Credentials[K]>;
 };
 
 @Component({
@@ -43,7 +43,7 @@ export class LoginComponent {
       this.loading.set(true);
       this.invalidCredentials.set(false);
 
-      const user = this.form.value as User;
+      const user = this.form.value as Credentials;
       await this._authService
          .login(user)
          .then(() => this._snackbar.success(`Welcome ${user.username}`))
