@@ -10,7 +10,7 @@ describe('PostsComponent', () => {
    beforeEach(async () => {
       await TestBed.configureTestingModule({
          imports: [PostsComponent],
-         providers: [provideHttpClient(), provideHttpClientTesting()],
+         providers: [provideHttpClient(), provideHttpClientTesting()]
       }).compileComponents();
 
       fixture = TestBed.createComponent(PostsComponent);

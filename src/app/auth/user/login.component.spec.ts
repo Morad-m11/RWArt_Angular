@@ -10,7 +10,7 @@ describe('LoginComponent', () => {
    beforeEach(async () => {
       await TestBed.configureTestingModule({
          imports: [LoginComponent],
-         providers: [provideValue(AuthService)],
+         providers: [provideValue(AuthService)]
       }).compileComponents();
 
       fixture = TestBed.createComponent(LoginComponent);

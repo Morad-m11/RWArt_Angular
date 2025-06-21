@@ -9,7 +9,7 @@ describe('SnackbarService', () => {
 
    beforeEach(() => {
       TestBed.configureTestingModule({
-         providers: [provideValue(MatSnackBar)],
+         providers: [provideValue(MatSnackBar)]
       });
       service = TestBed.inject(SnackbarService);
    });

@@ -11,7 +11,7 @@ interface PostResponse {
 }
 
 @Injectable({
-   providedIn: 'root',
+   providedIn: 'root'
 })
 export class ImageService {
    private readonly _http = inject(HttpClient);

@@ -1,47 +1,47 @@
 html,
 body {
-  height: 100%;
+   height: 100%;
 }
 
 body {
-  margin: 0;
-  font-family: Roboto, 'Helvetica Neue', sans-serif;
+   margin: 0;
+   font-family: Roboto, 'Helvetica Neue', sans-serif;
 }
 
 .fx-row {
-  display: flex;
-  flex-direction: row;
+   display: flex;
+   flex-direction: row;
 }
 
 .fx-col {
-  display: flex;
-  flex-direction: column;
+   display: flex;
+   flex-direction: column;
 }
 
 .fx-center {
-  display: flex;
-  justify-content: center;
+   display: flex;
+   justify-content: center;
 }
 
 .fx-align {
-  display: flex;
-  align-items: center;
+   display: flex;
+   align-items: center;
 }
 
 .fx-gap-1 {
-  display: flex;
-  gap: 1rem;
+   display: flex;
+   gap: 1rem;
 }
 
 .fx-gap-2 {
-  display: flex;
-  gap: 2rem;
+   display: flex;
+   gap: 2rem;
 }
 
 .mg-1 {
-  margin: 1rem;
+   margin: 1rem;
 }
 
 .pad-1 {
-  padding: 1rem;
+   padding: 1rem;
 }

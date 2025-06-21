@@ -1,7 +1,7 @@
 import { httpResource } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { MaterialModule } from '../material.module';
-import { TitleCasePipe } from '@angular/common';
+import { DatePipe, TitleCasePipe } from '@angular/common';
 
 interface Profile {
    sub: 1;
@@ -13,7 +13,7 @@ interface Profile {
 @Component({
    selector: 'app-profile',
    standalone: true,
-   imports: [MaterialModule, TitleCasePipe],
+   imports: [MaterialModule, TitleCasePipe, DatePipe],
    templateUrl: './profile.component.html',
    styleUrl: './profile.component.scss'
 })

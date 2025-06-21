@@ -1,2 +1,5 @@
-npx jest --bail
+npx tsc --noEmit
+echo "Typecheck successful"
+
 npx lint-staged
+npm run test

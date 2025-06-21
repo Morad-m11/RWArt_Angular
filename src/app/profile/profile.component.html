@@ -1,18 +1,36 @@
-@if (profile.error()) {
-   {{ profile.error()?.message }}
-} @else {
-   <mat-card appearance="outlined">
+<mat-card appearance="outlined">
+   @if (profile.isLoading()) {
+      <mat-spinner diameter="24" />
+   }
+
+   @if (profile.error()) {
+      <p>{{ profile.error()?.message }}</p>
+   }
+
+   @if (profile.hasValue()) {
       <mat-card-header>
          <mat-card-title>
-            {{ profile.value()?.username | titlecase }}
+            {{ profile.value().username | titlecase }}
          </mat-card-title>
       </mat-card-header>
+
       <mat-card-content>
          <mat-list>
-            <mat-list-item>exp: {{ profile.value()?.exp }}</mat-list-item>
-            <mat-list-item>iat: {{ profile.value()?.iat }}</mat-list-item>
-            <mat-list-item>sub: {{ profile.value()?.sub }}</mat-list-item>
+            <mat-list-item>
+               <span matListItemTitle>ID</span>
+               <span matListItemLine>{{ profile.value().sub }}</span>
+            </mat-list-item>
+
+            <mat-list-item>
+               <span matListItemTitle>Issued</span>
+               <span matListItemLine>{{ profile.value().iat * 1000 | date: 'short' }}</span>
+            </mat-list-item>
+
+            <mat-list-item>
+               <span matListItemTitle>Expires</span>
+               <span matListItemLine>{{ profile.value().exp * 1000 | date: 'short' }}</span>
+            </mat-list-item>
          </mat-list>
       </mat-card-content>
-   </mat-card>
-}
+   }
+</mat-card>
