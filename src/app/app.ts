@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { LayoutComponent } from './layout/layout.component';
 import { MaterialModule } from './material.module';

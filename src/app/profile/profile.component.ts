@@ -35,7 +35,7 @@ export class ProfileComponent {
 
    private async _fetchUser(): Promise<UserInfo> {
       const response = await firstValueFrom(
-         this._http.get<JWTResponse>('http://localhost:3000/auth/me')
+         this._http.get<JWTResponse>('http://localhost:3000/auth/profile')
       );
 
       const parsed = this._parseUserResponse(response);
