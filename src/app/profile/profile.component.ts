@@ -1,9 +1,18 @@
 import { DatePipe, TitleCasePipe } from '@angular/common';
-import { httpResource, HttpResourceRequest } from '@angular/common/http';
-import { Component, computed, effect, inject } from '@angular/core';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Component, inject, resource } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { AuthService, JWTResponse, UserInfo } from '../auth/auth.service';
+import { firstValueFrom } from 'rxjs';
+import { AuthService, UserInfo } from '../auth/auth.service';
+import { SnackbarService } from '../core/snackbar/snackbar.service';
 import { MaterialModule } from '../material.module';
+
+interface JWTResponse {
+   username: string;
+   sub: number;
+   iat: number;
+   exp: number;
+}
 
 @Component({
    selector: 'app-profile',
@@ -14,41 +23,39 @@ import { MaterialModule } from '../material.module';
 })
 export class ProfileComponent {
    private readonly _authService = inject(AuthService);
+   private readonly _http = inject(HttpClient);
+   private readonly _snackbar = inject(SnackbarService);
 
    loggedIn = this._authService.loggedIn;
 
-   profile = httpResource<UserInfo>(
-      () =>
-         ({
-            url: 'http://localhost:3000/auth/me',
-            parse: (userJWT: JWTResponse) => this._parseUserResponse
-         }) as HttpResourceRequest
-   );
+   profile = resource({
+      params: this.loggedIn,
+      loader: () => this._fetchUser()
+   });
 
-   constructor() {
-      effect(() => {
-         const loggedIn = this.loggedIn();
+   private async _fetchUser(): Promise<UserInfo> {
+      const response = await firstValueFrom(
+         this._http.get<JWTResponse>('http://localhost:3000/auth/me')
+      );
 
-         if (loggedIn) {
-            this.profile.reload();
-         }
-      });
+      const parsed = this._parseUserResponse(response);
+      return parsed;
    }
 
    logout() {
-      this._authService.logout();
+      this._authService.logout().catch((err: HttpErrorResponse) => {
+         this._snackbar.error(`Logout failed ${err.status}`);
+      });
    }
 
    private _parseUserResponse(userJWT: JWTResponse): UserInfo {
       const issuedInMS = userJWT.iat * 1000;
       const expiresInMS = userJWT.exp * 1000;
 
-      const userInfo: UserInfo = {
+      return {
          username: userJWT.username,
          issued: issuedInMS,
          expires: expiresInMS
       };
-
-      return userInfo;
    }
 }
