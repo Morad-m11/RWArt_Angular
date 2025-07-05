@@ -1,59 +1,34 @@
 import {
    HttpErrorResponse,
-   HttpEvent,
-   HttpHandlerFn,
    HttpInterceptorFn,
-   HttpRequest,
    HttpStatusCode
 } from '@angular/common/http';
 import { inject } from '@angular/core';
-import { catchError, from, Observable, switchMap, tap } from 'rxjs';
+import { catchError, EMPTY, throwError } from 'rxjs';
 import { AuthService } from '../auth/auth.service';
-import { ACCESS_TOKEN_STORAGE_KEY } from './constants';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
    const authService = inject(AuthService);
+   const reqWithAuth = req.clone({ withCredentials: true });
 
-   const accessToken = localStorage.getItem(ACCESS_TOKEN_STORAGE_KEY);
-   const authReq = req.clone({
-      withCredentials: true,
-      setHeaders: { Authorization: `Bearer ${accessToken}` }
-   });
+   return next(reqWithAuth).pipe(
+      catchError((error: HttpErrorResponse) => {
+         if (error.status === HttpStatusCode.Unauthorized) {
+            const isUserCheck = req.url.includes('auth/me');
+            const isLoginAttempt = req.url.includes('auth/login');
 
-   return next(authReq).pipe(
-      catchError((error) => {
-         if (!(error instanceof HttpErrorResponse)) {
-            throw error;
+            if (isLoginAttempt) {
+               throw error;
+            }
+
+            if (isUserCheck) {
+               return EMPTY;
+            }
+
+            authService.logout({ expired: true });
          }
 
-         if (error.status !== HttpStatusCode.Unauthorized) {
-            throw error;
-         }
-
-         if (req.url.includes('auth/login')) {
-            throw error;
-         }
-
-         return refreshAndRetry(authReq, next, authService);
+         throw error;
       })
    );
 };
-
-function refreshAndRetry(
-   req: HttpRequest<unknown>,
-   next: HttpHandlerFn,
-   authService: AuthService
-): Observable<HttpEvent<unknown>> {
-   return from(authService.refreshToken()).pipe(
-      switchMap(() => {
-         const accessToken = localStorage.getItem(ACCESS_TOKEN_STORAGE_KEY);
-         const tokenReq = req.clone({
-            setHeaders: { Authorization: `Bearer ${accessToken}` }
-         });
-         return next(tokenReq);
-      }),
-      tap({
-         error: () => authService.logout({ expired: true })
-      })
-   );
-}

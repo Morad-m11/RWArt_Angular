@@ -3,7 +3,7 @@
    "version": 1,
    "newProjectRoot": "projects",
    "projects": {
-      "RwArt": {
+      "untitled": {
          "projectType": "application",
          "schematics": {
             "@schematics/angular:component": {
@@ -56,10 +56,10 @@
                "builder": "@angular/build:dev-server",
                "configurations": {
                   "production": {
-                     "buildTarget": "RwArt:build:production"
+                     "buildTarget": "untitled:build:production"
                   },
                   "development": {
-                     "buildTarget": "RwArt:build:development"
+                     "buildTarget": "untitled:build:development"
                   }
                },
                "defaultConfiguration": "development"

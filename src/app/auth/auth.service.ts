@@ -2,7 +2,6 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
-import { ACCESS_TOKEN_STORAGE_KEY } from '../core/constants';
 import { SnackbarService } from '../core/snackbar/snackbar.service';
 import { Credentials } from './user/login.component';
 
@@ -23,14 +22,9 @@ export class AuthService {
    loggedIn = signal(false);
 
    async login(credentials: Credentials): Promise<void> {
-      const { accessToken } = await firstValueFrom(
-         this._http.post<{ accessToken: string }>(
-            'http://localhost:3000/auth/login',
-            credentials
-         )
+      await firstValueFrom(
+         this._http.post<void>('http://localhost:3000/auth/login', credentials)
       );
-
-      localStorage.setItem(ACCESS_TOKEN_STORAGE_KEY, accessToken);
       this.loggedIn.set(true);
    }
 
@@ -41,19 +35,7 @@ export class AuthService {
          await firstValueFrom(this._http.post('http://localhost:3000/auth/logout', null));
       }
 
-      localStorage.removeItem(ACCESS_TOKEN_STORAGE_KEY);
       this.loggedIn.set(false);
       this._router.navigateByUrl('login');
-   }
-
-   async refreshToken(): Promise<void> {
-      const { accessToken } = await firstValueFrom(
-         this._http.post<{ accessToken: string }>(
-            'http://localhost:3000/auth/refresh',
-            null
-         )
-      );
-
-      localStorage.setItem(ACCESS_TOKEN_STORAGE_KEY, accessToken);
    }
 }
