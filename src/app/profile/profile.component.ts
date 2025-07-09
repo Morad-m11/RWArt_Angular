@@ -1,23 +1,24 @@
-import { DatePipe, TitleCasePipe } from '@angular/common';
+import { TitleCasePipe } from '@angular/common';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Component, inject, resource } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
-import { AuthService, UserInfo } from '../auth/auth.service';
+import { AuthService } from '../auth/auth.service';
 import { SnackbarService } from '../core/snackbar/snackbar.service';
 import { MaterialModule } from '../material.module';
 
-interface JWTResponse {
+interface UserInfoResponse {
+   id: number;
+   email: string;
    username: string;
-   sub: number;
-   iat: number;
-   exp: number;
 }
+
+type UserInfo = UserInfoResponse;
 
 @Component({
    selector: 'app-profile',
    standalone: true,
-   imports: [MaterialModule, RouterLink, TitleCasePipe, DatePipe],
+   imports: [MaterialModule, RouterLink, TitleCasePipe],
    templateUrl: './profile.component.html',
    styleUrl: './profile.component.scss'
 })
@@ -33,29 +34,22 @@ export class ProfileComponent {
       loader: () => this._fetchUser()
    });
 
-   private async _fetchUser(): Promise<UserInfo> {
-      const response = await firstValueFrom(
-         this._http.get<JWTResponse>('http://localhost:3000/auth/profile')
-      );
-
-      const parsed = this._parseUserResponse(response);
-      return parsed;
-   }
-
    logout() {
       this._authService.logout().catch((err: HttpErrorResponse) => {
          this._snackbar.error(`Logout failed ${err.status}`);
       });
    }
 
-   private _parseUserResponse(userJWT: JWTResponse): UserInfo {
-      const issuedInMS = userJWT.iat * 1000;
-      const expiresInMS = userJWT.exp * 1000;
+   private async _fetchUser(): Promise<UserInfo> {
+      const response = await firstValueFrom(
+         this._http.get<UserInfoResponse>('http://localhost:3000/user/profile')
+      );
 
-      return {
-         username: userJWT.username,
-         issued: issuedInMS,
-         expires: expiresInMS
-      };
+      const parsed = this._parseUserResponse(response);
+      return parsed;
+   }
+
+   private _parseUserResponse(user: UserInfoResponse): UserInfo {
+      return { ...user };
    }
 }

@@ -6,12 +6,6 @@ import { ACCESS_TOKEN_STORAGE_KEY } from '../core/constants';
 import { SnackbarService } from '../core/snackbar/snackbar.service';
 import { Credentials } from './user/login.component';
 
-export interface UserInfo {
-   username: string;
-   issued: number;
-   expires: number;
-}
-
 @Injectable({
    providedIn: 'root'
 })
