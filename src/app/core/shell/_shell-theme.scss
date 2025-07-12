@@ -1,31 +1,31 @@
 @use '@angular/material' as mat;
 
 @mixin theme {
-   .sidenav-scroll-wrapper {
-      background-color: var(--mat-sys-surface-container-low);
-   }
+    .sidenav-scroll-wrapper {
+        background-color: var(--mat-sys-surface-container-low);
+    }
 
-   .sidenav-content {
-      @media (pointer: fine) {
-         &::-webkit-scrollbar-thumb {
-            background-color: var(--mat-sys-primary-container);
-         }
-      }
-   }
+    .sidenav-content {
+        @media (pointer: fine) {
+            &::-webkit-scrollbar-thumb {
+                background-color: var(--mat-sys-primary-container);
+            }
+        }
+    }
 
-   @include mat.toolbar-overrides(
-      (
-         container-background-color: var(--mat-sys-surface-container),
-         container-text-color: var(--mat-sys-on-surface-container)
-      )
-   );
+    @include mat.toolbar-overrides(
+        (
+            container-background-color: var(--mat-sys-surface-container),
+            container-text-color: var(--mat-sys-on-surface-container)
+        )
+    );
 
-   @include mat.sidenav-overrides(
-      (
-         container-background-color: var(--mat-sys-surface-container),
-         container-text-color: var(--mat-sys-on-surface-container),
-         content-background-color: var(--mat-sys-surface-container),
-         content-text-color: var(--mat-sys-on-surface-container)
-      )
-   );
+    @include mat.sidenav-overrides(
+        (
+            container-background-color: var(--mat-sys-surface-container),
+            container-text-color: var(--mat-sys-on-surface-container),
+            content-background-color: var(--mat-sys-surface-container),
+            content-text-color: var(--mat-sys-on-surface-container)
+        )
+    );
 }

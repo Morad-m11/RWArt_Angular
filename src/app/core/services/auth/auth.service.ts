@@ -7,47 +7,49 @@ import { ACCESS_TOKEN_STORAGE_KEY } from '../../constants';
 import { SnackbarService } from '../snackbar/snackbar.service';
 
 @Injectable({
-   providedIn: 'root'
+    providedIn: 'root'
 })
 export class AuthService {
-   private readonly _http = inject(HttpClient);
-   private readonly _router = inject(Router);
-   private readonly _snackbar = inject(SnackbarService);
+    private readonly _http = inject(HttpClient);
+    private readonly _router = inject(Router);
+    private readonly _snackbar = inject(SnackbarService);
 
-   loggedIn = signal(false);
+    loggedIn = signal(false);
 
-   async login(credentials: Credentials): Promise<void> {
-      const { accessToken } = await firstValueFrom(
-         this._http.post<{ accessToken: string }>(
-            'http://localhost:3000/auth/login',
-            credentials
-         )
-      );
+    async login(credentials: Credentials): Promise<void> {
+        const { accessToken } = await firstValueFrom(
+            this._http.post<{ accessToken: string }>(
+                'http://localhost:3000/auth/login',
+                credentials
+            )
+        );
 
-      localStorage.setItem(ACCESS_TOKEN_STORAGE_KEY, accessToken);
-      this.loggedIn.set(true);
-   }
+        localStorage.setItem(ACCESS_TOKEN_STORAGE_KEY, accessToken);
+        this.loggedIn.set(true);
+    }
 
-   async logout(opts?: { expired: boolean }): Promise<void> {
-      if (opts?.expired) {
-         this._snackbar.error('Session expired');
-      } else {
-         await firstValueFrom(this._http.post('http://localhost:3000/auth/logout', null));
-      }
+    async logout(opts?: { expired: boolean }): Promise<void> {
+        if (opts?.expired) {
+            this._snackbar.error('Session expired');
+        } else {
+            await firstValueFrom(
+                this._http.post('http://localhost:3000/auth/logout', null)
+            );
+        }
 
-      localStorage.removeItem(ACCESS_TOKEN_STORAGE_KEY);
-      this.loggedIn.set(false);
-      this._router.navigateByUrl('login');
-   }
+        localStorage.removeItem(ACCESS_TOKEN_STORAGE_KEY);
+        this.loggedIn.set(false);
+        this._router.navigateByUrl('login');
+    }
 
-   async refreshToken(): Promise<void> {
-      const { accessToken } = await firstValueFrom(
-         this._http.post<{ accessToken: string }>(
-            'http://localhost:3000/auth/refresh',
-            null
-         )
-      );
+    async refreshToken(): Promise<void> {
+        const { accessToken } = await firstValueFrom(
+            this._http.post<{ accessToken: string }>(
+                'http://localhost:3000/auth/refresh',
+                null
+            )
+        );
 
-      localStorage.setItem(ACCESS_TOKEN_STORAGE_KEY, accessToken);
-   }
+        localStorage.setItem(ACCESS_TOKEN_STORAGE_KEY, accessToken);
+    }
 }

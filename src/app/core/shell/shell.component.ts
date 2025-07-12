@@ -7,29 +7,29 @@ import { ProfileButtonComponent } from 'src/app/shared/components/profile-button
 import { MaterialModule } from 'src/app/shared/material.module';
 
 interface Link {
-   label: string;
-   path: string;
+    label: string;
+    path: string;
 }
 
 @Component({
-   selector: 'app-shell',
-   templateUrl: './shell.component.html',
-   styleUrl: './shell.component.scss',
-   imports: [MaterialModule, RouterLink, ProfileButtonComponent, ProfileButtonComponent]
+    selector: 'app-shell',
+    templateUrl: './shell.component.html',
+    styleUrl: './shell.component.scss',
+    imports: [MaterialModule, RouterLink, ProfileButtonComponent, ProfileButtonComponent]
 })
 export class ShellComponent {
-   private _breakpointObserver = inject(BreakpointObserver);
+    private _breakpointObserver = inject(BreakpointObserver);
 
-   links: Link[] = [
-      { label: 'Featured Posts', path: 'featured' },
-      { label: 'Give feedback', path: 'feedback' },
-      { label: 'Login', path: 'login' },
-      { label: 'Profile', path: 'profile' }
-   ];
+    links: Link[] = [
+        { label: 'Featured Posts', path: 'featured' },
+        { label: 'Give feedback', path: 'feedback' },
+        { label: 'Login', path: 'login' },
+        { label: 'Profile', path: 'profile' }
+    ];
 
-   isHandset = toSignal(
-      this._breakpointObserver
-         .observe(Breakpoints.Handset)
-         .pipe(map((result) => result.matches))
-   );
+    isHandset = toSignal(
+        this._breakpointObserver
+            .observe(Breakpoints.Handset)
+            .pipe(map((result) => result.matches))
+    );
 }

@@ -3,22 +3,22 @@ import { inject, Injectable } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 
 interface PostResponse {
-   albumId: number;
-   id: number;
-   title: string;
-   url: string;
-   thumbnailUrl: string;
+    albumId: number;
+    id: number;
+    title: string;
+    url: string;
+    thumbnailUrl: string;
 }
 
 @Injectable({
-   providedIn: 'root'
+    providedIn: 'root'
 })
 export class ImageService {
-   private readonly _http = inject(HttpClient);
+    private readonly _http = inject(HttpClient);
 
-   async get(index: number): Promise<PostResponse> {
-      return await firstValueFrom(
-         this._http.get<PostResponse>(`http://localhost:3000/image/${index}`)
-      );
-   }
+    async get(index: number): Promise<PostResponse> {
+        return await firstValueFrom(
+            this._http.get<PostResponse>(`http://localhost:3000/image/${index}`)
+        );
+    }
 }

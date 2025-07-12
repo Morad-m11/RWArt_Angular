@@ -4,38 +4,45 @@
 @use '../app/core/shell/shell-theme' as layout;
 
 html {
-   color-scheme: light dark;
+    color-scheme: light dark;
 
-   @include mat.theme(
-      (
-         color: (
-            primary: theme.$primary-palette,
-            tertiary: theme.$tertiary-palette
-         ),
-         typography: Roboto,
-         density: 0
-      )
-   );
+    @include mat.theme(
+        (
+            color: (
+                primary: theme.$primary-palette,
+                tertiary: theme.$tertiary-palette
+            ),
+            typography: Roboto,
+            density: 0
+        )
+    );
 
-   @include layout.theme;
+    @include layout.theme;
 }
 
 .snackbar-success {
-   @include mat.snack-bar-overrides(
-      (
-         supporting-text-color: var(--mat-sys-on-primary-container),
-         button-color: var(--mat-sys-primary),
-         container-color: var(--mat-sys-secondary-container)
-      )
-   );
+    @include mat.snack-bar-overrides(
+        (
+            supporting-text-color: var(--mat-sys-on-primary-container),
+            button-color: var(--mat-sys-primary),
+            container-color: var(--mat-sys-secondary-container)
+        )
+    );
 }
 
 .snackbar-error {
-   @include mat.snack-bar-overrides(
-      (
-         supporting-text-color: var(--mat-sys-on-error-container),
-         button-color: var(--mat-sys-error),
-         container-color: var(--mat-sys-error-container)
-      )
-   );
+    @include mat.snack-bar-overrides(
+        (
+            supporting-text-color: var(--mat-sys-on-error-container),
+            button-color: var(--mat-sys-error),
+            container-color: var(--mat-sys-error-container)
+        )
+    );
+}
+
+$colors: primary, secondary, tertiary, error;
+@each $color in $colors {
+    .text-#{$color} {
+        color: var(--mat-sys-#{$color});
+    }
 }

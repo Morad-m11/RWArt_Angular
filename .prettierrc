@@ -1,18 +1,18 @@
 {
-   "tabWidth": 4,
-   "singleQuote": true,
-   "semi": true,
-   "bracketSpacing": true,
-   "trailingComma": "none",
-   "bracketSameLine": true,
-   "printWidth": 90,
-   "overrides": [
-      {
-         "files": "*.html",
-         "options": {
-            "printWidth": 100,
-            "parser": "angular"
-         }
-      }
-   ]
+    "tabWidth": 4,
+    "singleQuote": true,
+    "semi": true,
+    "bracketSpacing": true,
+    "trailingComma": "none",
+    "bracketSameLine": true,
+    "printWidth": 90,
+    "overrides": [
+        {
+            "files": "*.html",
+            "options": {
+                "printWidth": 100,
+                "parser": "angular"
+            }
+        }
+    ]
 }

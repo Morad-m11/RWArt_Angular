@@ -1,22 +1,22 @@
 import { ErrorHandler, NgModule, provideZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import {
-   BrowserTestingModule,
-   platformBrowserTesting
+    BrowserTestingModule,
+    platformBrowserTesting
 } from '@angular/platform-browser/testing';
 
 @NgModule({
-   providers: [
-      provideZonelessChangeDetection(),
-      {
-         provide: ErrorHandler,
-         useValue: {
-            handleError: (e: Error) => {
-               throw e;
+    providers: [
+        provideZonelessChangeDetection(),
+        {
+            provide: ErrorHandler,
+            useValue: {
+                handleError: (e: Error) => {
+                    throw e;
+                }
             }
-         }
-      }
-   ]
+        }
+    ]
 })
 export class TestModule {}
 
