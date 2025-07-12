@@ -1,9 +1,9 @@
 import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { Component, inject, signal } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { SnackbarService } from 'src/app/core/snackbar/snackbar.service';
-import { MaterialModule } from '../../material.module';
-import { AuthService } from '../auth.service';
+import { AuthService } from 'src/app/core/services/auth/auth.service';
+import { SnackbarService } from 'src/app/core/services/snackbar/snackbar.service';
+import { MaterialModule } from 'src/app/shared/material.module';
 
 export interface Credentials {
    username: string;

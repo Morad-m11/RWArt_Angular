@@ -1,8 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 
-import { SnackbarService } from './snackbar.service';
-import { provideValue } from '../provide';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { provideValue } from 'src/app/shared/provide';
+import { SnackbarService } from './snackbar.service';
 
 describe('SnackbarService', () => {
    let service: SnackbarService;

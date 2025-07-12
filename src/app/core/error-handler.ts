@@ -1,6 +1,6 @@
-import { ErrorHandler, inject } from '@angular/core';
-import { SnackbarService } from '../snackbar/snackbar.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { ErrorHandler, inject } from '@angular/core';
+import { SnackbarService } from './services/snackbar/snackbar.service';
 
 export class GlobalErrorHandler implements ErrorHandler {
    private readonly _snackbar = inject(SnackbarService);

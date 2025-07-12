@@ -2,9 +2,9 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
-import { ACCESS_TOKEN_STORAGE_KEY } from '../core/constants';
-import { SnackbarService } from '../core/snackbar/snackbar.service';
-import { Credentials } from './user/login.component';
+import { Credentials } from 'src/app/features/login/login.component';
+import { ACCESS_TOKEN_STORAGE_KEY } from '../../constants';
+import { SnackbarService } from '../snackbar/snackbar.service';
 
 @Injectable({
    providedIn: 'root'

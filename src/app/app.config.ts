@@ -12,8 +12,8 @@ import {
    MatFormFieldDefaultOptions
 } from '@angular/material/form-field';
 import { routes } from './app.routes';
-import { authInterceptor } from './core/auth-interceptor';
-import { GlobalErrorHandler } from './core/error-handler/error-handler';
+import { GlobalErrorHandler } from './core/error-handler';
+import { authInterceptor } from './core/interceptors/auth/auth-interceptor';
 
 export const appConfig: ApplicationConfig = {
    providers: [

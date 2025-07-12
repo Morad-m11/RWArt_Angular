@@ -1,7 +1,7 @@
 @use '@angular/material' as mat;
-@use './theme-colors' as theme;
+@use './colors' as theme;
 @use './typography';
-@use '../app/layout/layout-theme' as layout;
+@use '../app/core/shell/shell-theme' as layout;
 
 html {
    color-scheme: light dark;

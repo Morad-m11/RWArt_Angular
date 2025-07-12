@@ -1,6 +1,6 @@
 import { Component, inject, resource, signal } from '@angular/core';
-import { MaterialModule } from '../material.module';
-import { ImageService } from '../services/image/image.service';
+import { MaterialModule } from 'src/app/shared/material.module';
+import { ImageService } from '../image-service/image.service';
 
 @Component({
    selector: 'app-posts',

@@ -3,9 +3,9 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Component, inject, resource } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
-import { AuthService } from '../auth/auth.service';
-import { SnackbarService } from '../core/snackbar/snackbar.service';
-import { MaterialModule } from '../material.module';
+import { AuthService } from '../../../core/services/auth/auth.service';
+import { SnackbarService } from '../../../core/services/snackbar/snackbar.service';
+import { MaterialModule } from '../../material.module';
 
 interface UserInfoResponse {
    id: number;
@@ -16,13 +16,13 @@ interface UserInfoResponse {
 type UserInfo = UserInfoResponse;
 
 @Component({
-   selector: 'app-profile',
+   selector: 'app-profile-button',
    standalone: true,
    imports: [MaterialModule, RouterLink, TitleCasePipe],
-   templateUrl: './profile.component.html',
-   styleUrl: './profile.component.scss'
+   templateUrl: './profile-button.component.html',
+   styleUrl: './profile-button.component.scss'
 })
-export class ProfileComponent {
+export class ProfileButtonComponent {
    private readonly _authService = inject(AuthService);
    private readonly _http = inject(HttpClient);
    private readonly _snackbar = inject(SnackbarService);

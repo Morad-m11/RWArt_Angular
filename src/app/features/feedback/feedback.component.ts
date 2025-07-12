@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { MaterialModule } from '../material.module';
+import { MaterialModule } from 'src/app/shared/material.module';
 
 @Component({
    selector: 'app-feedback',

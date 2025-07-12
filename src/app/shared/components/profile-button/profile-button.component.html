@@ -1,4 +1,6 @@
-@if (profile.error()) {
+@if (profile.isLoading()) {
+   <mat-spinner diameter="24" />
+} @else if (profile.error()) {
    <a mat-flat-button routerLink="login">Login</a>
 } @else if (profile.hasValue()) {
    <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="profile-button">

@@ -1,10 +1,10 @@
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Component, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { map } from 'rxjs/operators';
-import { MaterialModule } from '../material.module';
 import { RouterLink } from '@angular/router';
-import { ProfileComponent } from '../profile/profile.component';
+import { map } from 'rxjs/operators';
+import { ProfileButtonComponent } from 'src/app/shared/components/profile-button/profile-button.component';
+import { MaterialModule } from 'src/app/shared/material.module';
 
 interface Link {
    label: string;
@@ -12,16 +12,16 @@ interface Link {
 }
 
 @Component({
-   selector: 'app-layout',
-   templateUrl: './layout.component.html',
-   styleUrl: './layout.component.scss',
-   imports: [MaterialModule, RouterLink, ProfileComponent]
+   selector: 'app-shell',
+   templateUrl: './shell.component.html',
+   styleUrl: './shell.component.scss',
+   imports: [MaterialModule, RouterLink, ProfileButtonComponent, ProfileButtonComponent]
 })
-export class LayoutComponent {
+export class ShellComponent {
    private _breakpointObserver = inject(BreakpointObserver);
 
    links: Link[] = [
-      { label: 'Posts', path: 'posts' },
+      { label: 'Featured Posts', path: 'featured' },
       { label: 'Give feedback', path: 'feedback' },
       { label: 'Login', path: 'login' },
       { label: 'Profile', path: 'profile' }
@@ -30,7 +30,6 @@ export class LayoutComponent {
    isHandset = toSignal(
       this._breakpointObserver
          .observe(Breakpoints.Handset)
-         .pipe(map((result) => result.matches)),
-      {}
+         .pipe(map((result) => result.matches))
    );
 }

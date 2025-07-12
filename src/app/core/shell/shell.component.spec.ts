@@ -1,11 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { LayoutComponent } from './layout.component';
-import { MaterialModule } from '../material.module';
 import { provideRouter } from '@angular/router';
+import { MaterialModule } from 'src/app/shared/material.module';
+import { ShellComponent } from './shell.component';
 
-describe('LayoutComponent', () => {
-   let component: LayoutComponent;
-   let fixture: ComponentFixture<LayoutComponent>;
+describe('ShellComponent', () => {
+   let component: ShellComponent;
+   let fixture: ComponentFixture<ShellComponent>;
 
    beforeEach(async () => {
       await TestBed.configureTestingModule({
@@ -13,7 +13,7 @@ describe('LayoutComponent', () => {
          providers: [provideRouter([])]
       }).compileComponents();
 
-      fixture = TestBed.createComponent(LayoutComponent);
+      fixture = TestBed.createComponent(ShellComponent);
       component = fixture.componentInstance;
       fixture.detectChanges();
    });
