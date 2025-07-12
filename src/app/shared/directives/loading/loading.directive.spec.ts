@@ -1,4 +1,4 @@
-import { Component, DebugElement, signal, viewChild } from '@angular/core';
+import { Component, signal, viewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { LoadingDirective } from './loading.directive';
@@ -7,8 +7,7 @@ describe('LoadingDirective', () => {
     let fixture: ComponentFixture<TestComponent>;
     let component: TestComponent;
 
-    let buttonDe: DebugElement;
-    let buttonEl: HTMLButtonElement;
+    let button: HTMLButtonElement;
 
     beforeEach(() => {
         TestBed.configureTestingModule({
@@ -18,8 +17,7 @@ describe('LoadingDirective', () => {
         fixture = TestBed.createComponent(TestComponent);
         component = fixture.componentInstance;
 
-        buttonDe = fixture.debugElement.query(By.css('button'));
-        buttonEl = buttonDe.nativeElement as HTMLButtonElement;
+        button = fixture.debugElement.query(By.css('button')).nativeElement;
     });
 
     it('should create', () => {
@@ -28,18 +26,18 @@ describe('LoadingDirective', () => {
     });
 
     it('should render original children initially', () => {
-        expect(buttonEl.querySelector('.child1')).toBeTruthy();
-        expect(buttonEl.querySelector('.child2')).toBeTruthy();
-        expect(buttonEl.querySelector('mat-progress-spinner')).toBeFalsy();
+        expect(button.querySelector('.child1')).toBeTruthy();
+        expect(button.querySelector('.child2')).toBeTruthy();
+        expect(button.querySelector('mat-progress-spinner')).toBeFalsy();
     });
 
     it('should replace children with spinner when loading is true', () => {
         component.loading.set(true);
         fixture.detectChanges();
 
-        expect(buttonEl.querySelector('.child1')).toBeFalsy();
-        expect(buttonEl.querySelector('.child2')).toBeFalsy();
-        expect(buttonEl.querySelector('mat-progress-spinner')).toBeTruthy();
+        expect(button.querySelector('.child1')).toBeFalsy();
+        expect(button.querySelector('.child2')).toBeFalsy();
+        expect(button.querySelector('mat-progress-spinner')).toBeTruthy();
     });
 
     it('should restore original children when loading is false', () => {
@@ -49,9 +47,9 @@ describe('LoadingDirective', () => {
         component.loading.set(false);
         fixture.detectChanges();
 
-        expect(buttonEl.querySelector('.child1')).toBeTruthy();
-        expect(buttonEl.querySelector('.child2')).toBeTruthy();
-        expect(buttonEl.querySelector('mat-progress-spinner')).toBeFalsy();
+        expect(button.querySelector('.child1')).toBeTruthy();
+        expect(button.querySelector('.child2')).toBeTruthy();
+        expect(button.querySelector('mat-progress-spinner')).toBeFalsy();
     });
 });
 
