@@ -1,3 +1,8 @@
 mat-card-header {
     margin-bottom: 20px;
 }
+
+.login-button {
+    width: clamp(100px, 100%, 250px);
+    margin: 0 auto;
+}

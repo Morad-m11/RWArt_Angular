@@ -46,3 +46,7 @@ $colors: primary, secondary, tertiary, error;
         color: var(--mat-sys-#{$color});
     }
 }
+
+mat-divider[inset] {
+    margin: 0 auto !important;
+}
