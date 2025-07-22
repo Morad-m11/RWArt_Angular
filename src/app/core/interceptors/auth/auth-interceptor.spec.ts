@@ -52,11 +52,25 @@ describe('authInterceptor', () => {
     });
 
     describe('Auth Flow', () => {
+        it('should not attach Authorization header if access token is not present in storage', async () => {
+            localStorage.clear();
+
+            const promise = firstValueFrom(
+                httpClient.get('test', { headers: { custom: 'foo' } })
+            );
+            const req = httpTesting.expectOne('test');
+
+            expect(req.request.headers.has('Authorization')).toBe(false);
+            expect(req.request.withCredentials).toBe(false);
+
+            req.flush(null);
+            await expect(promise).resolves.toBeNull();
+        });
+
         it('should attach Authorization header with access token from storage', async () => {
             const promise = firstValueFrom(
                 httpClient.get('test', { headers: { custom: 'foo' } })
             );
-
             const req = httpTesting.expectOne('test');
 
             expect(req.request.headers.get('custom')).toBe('foo');

@@ -34,10 +34,13 @@ export class ProfileButtonComponent {
         loader: () => this._fetchUser()
     });
 
-    logout() {
-        this._authService.logout().catch((err: HttpErrorResponse) => {
-            this._snackbar.error(`Logout failed ${err.status}`);
-        });
+    async logout() {
+        await this._authService
+            .logout()
+            .then(() => this._snackbar.success('Logged out'))
+            .catch((err: HttpErrorResponse) => {
+                this._snackbar.error(`Logout failed ${err.status}`);
+            });
     }
 
     private async _fetchUser(): Promise<UserInfo> {
