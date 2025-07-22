@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
+import { Endpoints } from 'src/app/core/api-endpoints';
 
 interface PostResponse {
     albumId: number;
@@ -18,7 +19,7 @@ export class ImageService {
 
     async get(index: number): Promise<PostResponse> {
         return await firstValueFrom(
-            this._http.get<PostResponse>(`http://localhost:3000/image/${index}`)
+            this._http.get<PostResponse>(`${Endpoints.images}/${index}`)
         );
     }
 }

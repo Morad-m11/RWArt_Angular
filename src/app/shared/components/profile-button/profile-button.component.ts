@@ -3,6 +3,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Component, inject, resource } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
+import { Endpoints } from 'src/app/core/api-endpoints';
 import { AuthService } from '../../../core/services/auth/auth.service';
 import { SnackbarService } from '../../../core/services/snackbar/snackbar.service';
 import { MaterialModule } from '../../material.module';
@@ -45,7 +46,7 @@ export class ProfileButtonComponent {
 
     private async _fetchUser(): Promise<UserInfo> {
         const response = await firstValueFrom(
-            this._http.get<UserInfoResponse>('http://localhost:3000/user/profile')
+            this._http.get<UserInfoResponse>(Endpoints.profile)
         );
 
         const parsed = this._parseUserResponse(response);
