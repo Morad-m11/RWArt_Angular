@@ -36,14 +36,18 @@ function attachAuth(req: HttpRequest<unknown>): typeof req {
 }
 
 function shouldRefreshToken(error: unknown, req: HttpRequest<unknown>): boolean {
+    const hasAccessToken = localStorage.getItem(ACCESS_TOKEN_STORAGE_KEY);
+    if (!hasAccessToken) {
+        return false;
+    }
+
     const isHttpError = error instanceof HttpErrorResponse;
     if (!isHttpError) {
         return false;
     }
 
-    const is401 = error.status === HttpStatusCode.Unauthorized;
+    const is401 = isHttpError && error.status === HttpStatusCode.Unauthorized;
     const isLoginRequest = req.url.includes('auth/login');
-
     return is401 && !isLoginRequest;
 }
 

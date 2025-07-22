@@ -15,7 +15,7 @@ import { provideValue } from 'src/app/shared/provide';
 import { SnackbarService } from '../../services/snackbar/snackbar.service';
 import { serverErrorInterceptor } from './server-error.interceptor';
 
-fdescribe('serverErrorInterceptor', () => {
+describe('serverErrorInterceptor', () => {
     let httpClient: HttpClient;
     let httpTesting: HttpTestingController;
 

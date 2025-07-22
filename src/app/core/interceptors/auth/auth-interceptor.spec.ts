@@ -39,6 +39,8 @@ describe('authInterceptor', () => {
         httpClient = TestBed.inject(HttpClient);
         httpTesting = TestBed.inject(HttpTestingController);
         authService = TestBed.inject(AuthService);
+
+        localStorage.setItem(ACCESS_TOKEN_STORAGE_KEY, 'test_access_token');
     });
 
     afterEach(() => {
@@ -51,8 +53,6 @@ describe('authInterceptor', () => {
 
     describe('Auth Flow', () => {
         it('should attach Authorization header with access token from storage', async () => {
-            localStorage.setItem(ACCESS_TOKEN_STORAGE_KEY, 'test_access_token');
-
             const promise = firstValueFrom(
                 httpClient.get('test', { headers: { custom: 'foo' } })
             );
@@ -73,6 +73,15 @@ describe('authInterceptor', () => {
     describe('Error propagation', () => {
         afterEach(() => {
             expect(authService.refreshToken).not.toHaveBeenCalled();
+        });
+
+        it('should propagate if no access token is stored', async () => {
+            const promise = firstValueFrom(httpClient.get('test'));
+
+            const req = httpTesting.expectOne('test');
+            req.flush('Failed!', { status: 500, statusText: 'Server Error' });
+
+            await expect(promise).rejects.toMatchObject({ status: 500 });
         });
 
         it('should propagate non-401 errors', async () => {
