@@ -29,12 +29,14 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
 function attachAuth(req: HttpRequest<unknown>): typeof req {
     const accessToken = localStorage.getItem(ACCESS_TOKEN_STORAGE_KEY);
 
-    return accessToken
-        ? req.clone({
-              withCredentials: true,
-              setHeaders: { Authorization: `Bearer ${accessToken}` }
-          })
-        : req;
+    if (!accessToken) {
+        return req;
+    }
+
+    return req.clone({
+        withCredentials: true,
+        setHeaders: { Authorization: `Bearer ${accessToken}` }
+    });
 }
 
 function shouldRefreshToken(error: unknown, req: HttpRequest<unknown>): boolean {

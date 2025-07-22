@@ -13,7 +13,7 @@ import { firstValueFrom } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { apiBaseUrlInterceptor } from './api-base-url.interceptor';
 
-fdescribe('apiBaseUrlInterceptor', () => {
+describe('apiBaseUrlInterceptor', () => {
     let httpClient: HttpClient;
     let httpTesting: HttpTestingController;
 

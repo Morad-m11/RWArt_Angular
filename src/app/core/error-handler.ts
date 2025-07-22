@@ -1,5 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { ErrorHandler, inject } from '@angular/core';
+import { CoreSnackbarMessages } from './messages';
 import { SnackbarService } from './services/snackbar/snackbar.service';
 
 export class GlobalErrorHandler implements ErrorHandler {
@@ -13,7 +14,9 @@ export class GlobalErrorHandler implements ErrorHandler {
                 console.error(error);
             }
 
-            this._snackbar.error(`Unhandled error ${JSON.stringify(error)}`);
+            this._snackbar.error(
+                `${CoreSnackbarMessages.unhandled}: ${JSON.stringify(error)}`
+            );
         } catch (error2) {
             console.error('Error while handling uncaught error', {
                 error: error2,

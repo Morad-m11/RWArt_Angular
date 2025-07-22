@@ -1,6 +1,7 @@
 import { HttpErrorResponse, HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { catchError } from 'rxjs';
+import { CoreSnackbarMessages } from '../../messages';
 import { SnackbarService } from '../../services/snackbar/snackbar.service';
 
 export const serverErrorInterceptor: HttpInterceptorFn = (req, next) => {
@@ -9,7 +10,7 @@ export const serverErrorInterceptor: HttpInterceptorFn = (req, next) => {
     return next(req).pipe(
         catchError((error) => {
             if (isConnectionError(error)) {
-                snackbar.error('Server is unreachable. Please check your connection');
+                snackbar.error(CoreSnackbarMessages.connection);
             }
 
             throw error;
