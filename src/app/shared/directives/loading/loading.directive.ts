@@ -19,7 +19,7 @@ export class LoadingDirective {
     private readonly _element = inject(ElementRef);
     private readonly _renderer = inject(Renderer2);
 
-    appLoading = input.required();
+    appLoading = input.required<boolean>();
 
     spinner?: ComponentRef<MatProgressSpinner>;
 

@@ -4,6 +4,9 @@ export const Endpoints = {
         logout: 'auth/logout',
         refresh: 'auth/refresh'
     },
-    profile: 'user/profile',
+    user: {
+        profile: 'user/profile',
+        checkUnique: 'user/check-unique'
+    },
     images: 'image'
 };

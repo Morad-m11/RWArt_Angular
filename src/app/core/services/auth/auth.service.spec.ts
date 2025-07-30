@@ -12,7 +12,7 @@ import { CoreSnackbarMessages } from '../../messages';
 import { SnackbarService } from '../snackbar/snackbar.service';
 import { AuthService } from './auth.service';
 
-fdescribe('AuthService', () => {
+describe('AuthService', () => {
     let service: AuthService;
     let httpTesting: HttpTestingController;
 
@@ -59,7 +59,7 @@ fdescribe('AuthService', () => {
             service = TestBed.inject(AuthService);
             TestBed.tick();
 
-            httpTesting.expectNone(Endpoints.profile);
+            httpTesting.expectNone(Endpoints.user.profile);
         });
 
         it('should send a request for profile when logged in', async () => {
@@ -67,7 +67,7 @@ fdescribe('AuthService', () => {
             service.loggedIn.set(true);
             TestBed.tick();
 
-            httpTesting.expectOne(Endpoints.profile);
+            httpTesting.expectOne(Endpoints.user.profile);
         });
     });
 
@@ -80,7 +80,7 @@ fdescribe('AuthService', () => {
             it('should do nothing on failure', async () => {
                 service = TestBed.inject(AuthService);
 
-                const promise = service.login({ username: 'user', password: 'pass' });
+                const promise = service.login('user', 'pass');
                 const req = httpTesting.expectOne(Endpoints.auth.login);
 
                 req.flush('Login failed', { status: 401, statusText: 'Unauthorized' });
@@ -93,7 +93,7 @@ fdescribe('AuthService', () => {
             it('should set logged in state & access token on success', async () => {
                 service = TestBed.inject(AuthService);
 
-                const promise = service.login({ username: 'user', password: 'pass' });
+                const promise = service.login('user', 'pass');
                 const req = httpTesting.expectOne(Endpoints.auth.login);
 
                 req.flush({ accessToken: 'some token' });

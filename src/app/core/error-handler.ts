@@ -8,14 +8,12 @@ export class GlobalErrorHandler implements ErrorHandler {
 
     handleError(error: Error | unknown): void {
         try {
-            const isHttpError = error instanceof HttpErrorResponse;
-
-            if (!isHttpError) {
+            if (!(error instanceof HttpErrorResponse)) {
                 console.error(error);
             }
 
             this._snackbar.error(
-                `${CoreSnackbarMessages.unhandled}: ${JSON.stringify(error)}`
+                `${CoreSnackbarMessages.unhandled}: ${this._extractMessage(error)}`
             );
         } catch (error2) {
             console.error('Error while handling uncaught error', {
@@ -23,5 +21,17 @@ export class GlobalErrorHandler implements ErrorHandler {
                 originalError: error
             });
         }
+    }
+
+    private _extractMessage(error: Error | unknown) {
+        if (error instanceof Error) {
+            return error.message;
+        }
+
+        if (typeof error === 'string') {
+            return error;
+        }
+
+        return JSON.stringify(error);
     }
 }

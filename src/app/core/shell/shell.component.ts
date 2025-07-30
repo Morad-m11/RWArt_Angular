@@ -12,7 +12,7 @@ interface Link {
 }
 
 @Component({
-    selector: 'app-shell',
+    selector: 'app-auth-shell',
     templateUrl: './shell.component.html',
     styleUrl: './shell.component.scss',
     imports: [MaterialModule, RouterLink, ProfileButtonComponent, ProfileButtonComponent]
@@ -22,9 +22,7 @@ export class ShellComponent {
 
     links: Link[] = [
         { label: 'Featured Posts', path: 'featured' },
-        { label: 'Give feedback', path: 'feedback' },
-        { label: 'Login', path: 'login' },
-        { label: 'Profile', path: 'profile' }
+        { label: 'Give feedback', path: 'feedback' }
     ];
 
     isHandset = toSignal(

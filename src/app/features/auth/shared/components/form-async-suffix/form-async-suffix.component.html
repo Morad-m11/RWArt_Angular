@@ -1,0 +1,17 @@
+<mat-icon style="padding: 0 12px">
+    @if (control().pristine) {
+        search
+    } @else {
+        @switch (control().status) {
+            @case ('VALID') {
+                check
+            }
+            @case ('PENDING') {
+                <mat-spinner diameter="24" />
+            }
+            @case ('INVALID') {
+                close
+            }
+        }
+    }
+</mat-icon>

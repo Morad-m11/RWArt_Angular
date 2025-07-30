@@ -1,7 +1,6 @@
 import { HttpClient, httpResource } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
-import { Credentials } from 'src/app/features/login/login.component';
 import { Endpoints } from '../../api-endpoints';
 import { ACCESS_TOKEN_STORAGE_KEY } from '../../constants';
 import { CoreSnackbarMessages } from '../../messages';
@@ -21,14 +20,17 @@ export class AuthService {
     private readonly _snackbar = inject(SnackbarService);
 
     profile = httpResource<UserInfo>(() =>
-        this.loggedIn() ? Endpoints.profile : undefined
+        this.loggedIn() ? Endpoints.user.profile : undefined
     );
 
     loggedIn = signal(!!this._getAccessToken());
 
-    async login(credentials: Credentials): Promise<void> {
+    async login(username: string, password: string): Promise<void> {
         const { accessToken } = await firstValueFrom(
-            this._http.post<{ accessToken: string }>(Endpoints.auth.login, credentials)
+            this._http.post<{ accessToken: string }>(Endpoints.auth.login, {
+                username,
+                password
+            })
         );
 
         this._setAccessToken(accessToken);

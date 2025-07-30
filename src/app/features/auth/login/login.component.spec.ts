@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { AuthService } from '../../core/services/auth/auth.service';
-import { provideValue } from '../../shared/provide';
+import { provideRouter } from '@angular/router';
+import { AuthService } from 'src/app/core/services/auth/auth.service';
+import { provideValue } from 'src/app/shared/provide';
 import { LoginComponent } from './login.component';
 
 describe('LoginComponent', () => {
@@ -10,7 +11,7 @@ describe('LoginComponent', () => {
     beforeEach(async () => {
         await TestBed.configureTestingModule({
             imports: [LoginComponent],
-            providers: [provideValue(AuthService)]
+            providers: [provideValue(AuthService), provideRouter([])]
         }).compileComponents();
 
         fixture = TestBed.createComponent(LoginComponent);

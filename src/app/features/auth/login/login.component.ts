@@ -1,12 +1,14 @@
 import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 import { CoreSnackbarMessages } from 'src/app/core/messages';
 import { AuthService } from 'src/app/core/services/auth/auth.service';
 import { SnackbarService } from 'src/app/core/services/snackbar/snackbar.service';
 import { LoadingDirective } from 'src/app/shared/directives/loading/loading.directive';
 import { MaterialModule } from 'src/app/shared/material.module';
-import { LoginMessages } from './messages';
+import { LoginMessages } from '../shared/constants';
+import { FormErrorDirective } from '../shared/directives/form-error/form-error.directive';
 
 export interface Credentials {
     username: string;
@@ -16,7 +18,7 @@ export interface Credentials {
 @Component({
     selector: 'app-user',
     standalone: true,
-    imports: [MaterialModule, LoadingDirective],
+    imports: [MaterialModule, RouterLink, LoadingDirective, FormErrorDirective],
     templateUrl: './login.component.html',
     styleUrl: './login.component.scss'
 })
@@ -40,7 +42,7 @@ export class LoginComponent {
         const user = this.form.getRawValue();
 
         await this._authService
-            .login(user)
+            .login(user.username, user.password)
             .then(() => this._handleSuccess(user.username))
             .catch((error: HttpErrorResponse) => this._handleError(error))
             .finally(() => this.loading.set(false));
@@ -56,6 +58,6 @@ export class LoginComponent {
             return;
         }
 
-        this.errorMessage.set(`(${error.status})`);
+        this.errorMessage.set(`${LoginMessages.failed} (${error.status})`);
     }
 }

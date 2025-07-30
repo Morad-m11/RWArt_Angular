@@ -1,0 +1,10 @@
+.login-button {
+    width: clamp(100px, 100%, 250px);
+    margin: 0 auto;
+}
+
+.form-fields {
+    display: flex;
+    flex-direction: column;
+    row-gap: 5px;
+}
