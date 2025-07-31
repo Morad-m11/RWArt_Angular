@@ -3,7 +3,10 @@ import { inject, Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { Endpoints } from 'src/app/core/api-endpoints';
 
-type UniqueCheckParams = { name: string } | { email: string };
+interface UniqueCheckParams {
+    username?: string;
+    email?: string;
+}
 
 interface UniqueCheckResponse {
     exists: boolean;
@@ -15,11 +18,11 @@ interface UniqueCheckResponse {
 export class UserService {
     private _http = inject(HttpClient);
 
-    isUnique(value: string): Observable<boolean> {
-        const params: UniqueCheckParams = { name: value };
-
+    isUnique(params: UniqueCheckParams): Observable<boolean> {
         return this._http
-            .get<UniqueCheckResponse>(Endpoints.user.checkUnique, { params })
+            .get<UniqueCheckResponse>(Endpoints.user.checkUnique, {
+                params: { ...params }
+            })
             .pipe(map(({ exists }) => !exists));
     }
 }

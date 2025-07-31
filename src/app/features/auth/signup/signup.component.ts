@@ -5,9 +5,10 @@ import { AuthService } from 'src/app/core/services/auth/auth.service';
 import { assert } from 'src/app/shared/assert';
 import { LoadingDirective } from 'src/app/shared/directives/loading/loading.directive';
 import { MaterialModule } from 'src/app/shared/material.module';
+import { UserService } from 'src/app/shared/services/user/user.service';
 import { FormAsyncSuffixComponent } from '../shared/components/form-async-suffix/form-async-suffix.component';
 import { FormErrorDirective } from '../shared/directives/form-error/form-error.directive';
-import { AsyncUniqueValidator } from '../shared/services/unique.validator';
+import { AsyncUniqueUserValidator } from '../shared/services/unique-user.validator';
 import { TypedValidatorFn } from '../shared/validation-types';
 
 @Component({
@@ -25,8 +26,8 @@ import { TypedValidatorFn } from '../shared/validation-types';
 })
 export class SignupComponent {
     private readonly _authService = inject(AuthService);
+    private readonly _userService = inject(UserService);
     private readonly _fb = inject(FormBuilder);
-    private readonly _uniqueValidator = inject(AsyncUniqueValidator);
 
     errorMessage = signal('');
     loading = signal(false);
@@ -36,12 +37,12 @@ export class SignupComponent {
             email: [
                 '',
                 [Validators.required, Validators.email],
-                this._uniqueValidator.validate.bind(this._uniqueValidator)
+                AsyncUniqueUserValidator(this._userService, 'email')
             ],
             username: [
                 '',
                 Validators.required,
-                this._uniqueValidator.validate.bind(this._uniqueValidator)
+                AsyncUniqueUserValidator(this._userService, 'username')
             ],
             password: [
                 '',
