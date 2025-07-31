@@ -1,10 +1,9 @@
 import { Routes } from '@angular/router';
 import { AuthShellComponent } from './features/auth/auth-shell/auth-shell.component';
-import { LoginComponent } from './features/auth/login/login.component';
-import { SignupComponent } from './features/auth/signup/signup.component';
 import PostsComponent from './features/featured/posts/posts.component';
 import FeedbackComponent from './features/feedback/feedback.component';
 import { ProfileComponent } from './features/profile/profile.component';
+import { authRoutesGuard } from './shared/guards/auth-routes.guard';
 
 export const routes: Routes = [
     { path: '', pathMatch: 'full', redirectTo: 'posts' },
@@ -13,13 +12,9 @@ export const routes: Routes = [
     {
         path: 'auth',
         component: AuthShellComponent,
-        children: [
-            { path: '', pathMatch: 'full', redirectTo: 'login' },
-            { path: 'login', component: LoginComponent },
-            { path: 'signup', component: SignupComponent },
-            { path: 'forgot', component: SignupComponent },
-            { path: '**', pathMatch: 'full', redirectTo: 'login' }
-        ]
+        canMatch: [authRoutesGuard],
+        loadChildren: () => import('./features/auth/auth.routes')
     },
-    { path: 'profile', component: ProfileComponent }
+    { path: 'profile', component: ProfileComponent },
+    { path: '**', redirectTo: 'featured' }
 ];

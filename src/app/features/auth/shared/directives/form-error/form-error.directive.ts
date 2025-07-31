@@ -2,7 +2,7 @@ import { Directive, effect, ElementRef, inject, input, Renderer2 } from '@angula
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { FormControl } from '@angular/forms';
 import { filter, map, startWith, switchMap } from 'rxjs';
-import { ValidationMessages } from '../../constants';
+import { ValidationMessages } from '../../validation-messages';
 import { TypedValidationErrors } from '../../validation-types';
 
 @Directive({

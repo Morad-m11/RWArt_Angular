@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, inject, signal } from '@angular/core';
 import { AbstractControl, FormBuilder, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
@@ -8,6 +9,7 @@ import { MaterialModule } from 'src/app/shared/material.module';
 import { UserService } from 'src/app/shared/services/user/user.service';
 import { FormAsyncSuffixComponent } from '../shared/components/form-async-suffix/form-async-suffix.component';
 import { FormErrorDirective } from '../shared/directives/form-error/form-error.directive';
+import { SignupSnackbarMessages } from '../shared/messages';
 import { AsyncUniqueUserValidator } from '../shared/services/unique-user.validator';
 import { TypedValidatorFn } from '../shared/validation-types';
 
@@ -58,8 +60,18 @@ export class SignupComponent {
         { validators: passwordMatchValidator }
     );
 
-    signup() {
-        throw new Error('Method not implemented');
+    async signup() {
+        await this._authService
+            .signup({
+                email: this.form.controls.email.value,
+                username: this.form.controls.username.value,
+                password: this.form.controls.password.value
+            })
+            .catch((error: HttpErrorResponse) => {
+                this.errorMessage.set(
+                    `${SignupSnackbarMessages.failed} (${error.status})`
+                );
+            });
     }
 }
 

@@ -12,6 +12,12 @@ export interface UserInfo {
     username: string;
 }
 
+interface SignupRequestBody {
+    email: string;
+    username: string;
+    password: string;
+}
+
 @Injectable({
     providedIn: 'root'
 })
@@ -46,6 +52,10 @@ export class AuthService {
 
         this._clearAccessToken();
         this.loggedIn.set(false);
+    }
+
+    async signup(body: SignupRequestBody) {
+        await firstValueFrom(this._http.post(Endpoints.auth.signup, body));
     }
 
     async refreshToken(): Promise<void> {

@@ -9,7 +9,7 @@ interface UniqueCheckParams {
 }
 
 interface UniqueCheckResponse {
-    exists: boolean;
+    unique: boolean;
 }
 
 @Injectable({
@@ -23,6 +23,6 @@ export class UserService {
             .get<UniqueCheckResponse>(Endpoints.user.checkUnique, {
                 params: { ...params }
             })
-            .pipe(map(({ exists }) => !exists));
+            .pipe(map(({ unique }) => unique));
     }
 }

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, Validators } from '@angular/forms';
-import { ValidationMessages } from '../../constants';
+import { ValidationMessages } from '../../validation-messages';
 import { FormErrorDirective } from './form-error.directive';
 
 describe('FormErrorComponent', () => {

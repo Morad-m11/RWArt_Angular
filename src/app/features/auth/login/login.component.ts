@@ -1,14 +1,14 @@
 import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { CoreSnackbarMessages } from 'src/app/core/messages';
 import { AuthService } from 'src/app/core/services/auth/auth.service';
 import { SnackbarService } from 'src/app/core/services/snackbar/snackbar.service';
 import { LoadingDirective } from 'src/app/shared/directives/loading/loading.directive';
 import { MaterialModule } from 'src/app/shared/material.module';
-import { LoginMessages } from '../shared/constants';
 import { FormErrorDirective } from '../shared/directives/form-error/form-error.directive';
+import { LoginSnackbarMessages } from '../shared/messages';
 
 export interface Credentials {
     username: string;
@@ -26,6 +26,7 @@ export class LoginComponent {
     private readonly _authService = inject(AuthService);
     private readonly _fb = inject(FormBuilder);
     private readonly _snackbar = inject(SnackbarService);
+    private readonly _router = inject(Router);
 
     form = this._fb.nonNullable.group({
         username: ['', Validators.required],
@@ -48,16 +49,17 @@ export class LoginComponent {
             .finally(() => this.loading.set(false));
     }
 
-    private _handleSuccess(name: string): void | PromiseLike<void> {
-        return this._snackbar.success(`${CoreSnackbarMessages.login.success} ${name}`);
+    private _handleSuccess(name: string): void {
+        this._snackbar.success(`${CoreSnackbarMessages.login.success} ${name}`);
+        this._router.navigateByUrl('/');
     }
 
     private _handleError(error: HttpErrorResponse): void {
         if (error.status === HttpStatusCode.Unauthorized) {
-            this.errorMessage.set(LoginMessages.unauthorized);
+            this.errorMessage.set(LoginSnackbarMessages.unauthorized);
             return;
         }
 
-        this.errorMessage.set(`${LoginMessages.failed} (${error.status})`);
+        this.errorMessage.set(`${LoginSnackbarMessages.failed} (${error.status})`);
     }
 }

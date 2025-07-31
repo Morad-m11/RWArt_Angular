@@ -13,8 +13,3 @@ export const ValidationMessages: TypedValidationErrorMessages = {
     max: () => 'min',
     maxlength: ({ actualLength, requiredLength }) => `${actualLength}/${requiredLength}`
 };
-
-export const LoginMessages = {
-    unauthorized: 'Invalid username/password',
-    failed: 'Login failed'
-};
