@@ -1,17 +1,17 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, inject, signal } from '@angular/core';
-import { AbstractControl, FormBuilder, Validators } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { FormBuilder, Validators } from '@angular/forms';
+import { Router, RouterLink } from '@angular/router';
 import { AuthService } from 'src/app/core/services/auth/auth.service';
-import { assert } from 'src/app/shared/assert';
 import { LoadingDirective } from 'src/app/shared/directives/loading/loading.directive';
 import { MaterialModule } from 'src/app/shared/material.module';
+import { omit } from 'src/app/shared/omit';
 import { UserService } from 'src/app/shared/services/user/user.service';
 import { FormAsyncSuffixComponent } from '../shared/components/form-async-suffix/form-async-suffix.component';
 import { FormErrorDirective } from '../shared/directives/form-error/form-error.directive';
 import { SignupSnackbarMessages } from '../shared/messages';
-import { AsyncUniqueUserValidator } from '../shared/services/unique-user.validator';
-import { TypedValidatorFn } from '../shared/validation-types';
+import { passwordMatchValidator } from '../shared/validators/password-match/password-match.validator';
+import { AsyncUniqueUserValidator } from '../shared/validators/unique/unique-user.validator';
 
 @Component({
     selector: 'app-signup',
@@ -29,6 +29,7 @@ import { TypedValidatorFn } from '../shared/validation-types';
 export class SignupComponent {
     private readonly _authService = inject(AuthService);
     private readonly _userService = inject(UserService);
+    private readonly _router = inject(Router);
     private readonly _fb = inject(FormBuilder);
 
     errorMessage = signal('');
@@ -55,38 +56,27 @@ export class SignupComponent {
                     Validators.maxLength(15)
                 ]
             ],
-            confirmPassword: ['', Validators.required]
+            passwordConfirm: ['', Validators.required]
         },
         { validators: passwordMatchValidator }
     );
 
     async signup() {
+        this.errorMessage.set('');
+
+        const body = omit(this.form.getRawValue(), 'passwordConfirm');
+
         await this._authService
-            .signup({
-                email: this.form.controls.email.value,
-                username: this.form.controls.username.value,
-                password: this.form.controls.password.value
-            })
-            .catch((error: HttpErrorResponse) => {
-                this.errorMessage.set(
-                    `${SignupSnackbarMessages.failed} (${error.status})`
-                );
-            });
+            .signup(body)
+            .then(() => this._handleSuccess())
+            .catch((error) => this._handleError(error));
+    }
+
+    private _handleSuccess() {
+        this._router.navigate(['/', 'auth', 'verify']);
+    }
+
+    private _handleError(error: HttpErrorResponse) {
+        this.errorMessage.set(`${SignupSnackbarMessages.failed} (${error.status})`);
     }
 }
-
-const passwordMatchValidator: TypedValidatorFn = (control: AbstractControl) => {
-    const password = control.get('password');
-    const passwordConfirm = control.get('confirmPassword');
-
-    assert(password && passwordConfirm, 'Missing one of the password controls');
-
-    const matched = password.value === passwordConfirm.value;
-
-    if (matched) {
-        return null;
-    }
-
-    passwordConfirm.setErrors({ passwordMatch: true });
-    return { passwordMatch: true };
-};

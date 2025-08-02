@@ -45,7 +45,7 @@ export class LoginComponent {
         await this._authService
             .login(user.username, user.password)
             .then(() => this._handleSuccess(user.username))
-            .catch((error: HttpErrorResponse) => this._handleError(error))
+            .catch((error) => this._handleError(error))
             .finally(() => this.loading.set(false));
     }
 
@@ -55,11 +55,17 @@ export class LoginComponent {
     }
 
     private _handleError(error: HttpErrorResponse): void {
-        if (error.status === HttpStatusCode.Unauthorized) {
-            this.errorMessage.set(LoginSnackbarMessages.unauthorized);
-            return;
+        switch (error.status) {
+            case HttpStatusCode.Unauthorized:
+                this.errorMessage.set(LoginSnackbarMessages.unauthorized);
+                break;
+            case HttpStatusCode.Forbidden:
+                this.errorMessage.set(LoginSnackbarMessages.unverified);
+                break;
+            default:
+                this.errorMessage.set(
+                    `${LoginSnackbarMessages.failed} (${error.status})`
+                );
         }
-
-        this.errorMessage.set(`${LoginSnackbarMessages.failed} (${error.status})`);
     }
 }

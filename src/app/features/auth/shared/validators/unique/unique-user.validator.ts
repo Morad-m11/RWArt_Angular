@@ -15,7 +15,6 @@ export const AsyncUniqueUserValidator: AsyncValidatorFnWrapper = (
     controlName
 ) => {
     let previousValue: string | undefined;
-
     return (control) => {
         // this function needs custom debounce & distinct logic
         // because a new observable is created on each value change

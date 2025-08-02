@@ -21,7 +21,7 @@
 
     <div class="fx-center mg-1">
         <button
-            class="login-button"
+            id="submit-button"
             mat-flat-button
             type="submit"
             [appLoading]="loading() || form.pending"
@@ -32,12 +32,8 @@
 
     <mat-divider inset />
 
-    <div class="mg-1">
-        <a matButton routerLink="../recovery">Forgot password?</a>
-
-        <div class="fx-row fx-align" role="text">
-            <p>New here?</p>
-            <a matButton routerLink="../signup">Sign up</a>
-        </div>
+    <div class="fx-col mg-1" style="width: fit-content">
+        <a id="recovery-button" matButton routerLink="/auth/recovery">Forgot password?</a>
+        <a id="signup-button" matButton routerLink="/auth/signup">Create an account</a>
     </div>
 </form>

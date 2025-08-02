@@ -26,8 +26,8 @@
         <mat-form-field>
             <mat-icon matPrefix>key</mat-icon>
             <mat-label>Confirm password</mat-label>
-            <input matInput type="password" [formControl]="form.controls.confirmPassword" />
-            <mat-error [appFormError]="form.controls.confirmPassword" />
+            <input matInput type="password" [formControl]="form.controls.passwordConfirm" />
+            <mat-error [appFormError]="form.controls.passwordConfirm" />
         </mat-form-field>
 
         @if (errorMessage()) {
@@ -37,7 +37,7 @@
 
     <div class="fx-center mg-1">
         <button
-            class="login-button"
+            id="submit-button"
             mat-flat-button
             type="submit"
             [appLoading]="loading()"
@@ -48,7 +48,7 @@
 
     <mat-divider inset />
 
-    <button class="mg-1" type="button" mat-button routerLink="../login">
+    <button id="login-button" class="mg-1" type="button" mat-button routerLink="/auth/login">
         Already have an account?
     </button>
 </form>

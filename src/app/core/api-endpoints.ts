@@ -3,7 +3,8 @@ export const Endpoints = {
         login: 'auth/login',
         logout: 'auth/logout',
         refresh: 'auth/refresh',
-        signup: 'auth/signup'
+        signup: 'auth/signup',
+        verify: 'auth/verify'
     },
     user: {
         profile: 'user/profile',

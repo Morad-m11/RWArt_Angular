@@ -4,7 +4,7 @@ import {
     provideBrowserGlobalErrorListeners,
     provideZonelessChangeDetection
 } from '@angular/core';
-import { provideRouter } from '@angular/router';
+import { provideRouter, withComponentInputBinding } from '@angular/router';
 
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { routes } from './app.routes';
@@ -25,7 +25,7 @@ export const appConfig: ApplicationConfig = {
                 authInterceptor
             ])
         ),
-        provideRouter(routes),
+        provideRouter(routes, withComponentInputBinding()),
         { provide: ErrorHandler, useClass: GlobalErrorHandler },
         provideMaterialDefaults()
     ]
