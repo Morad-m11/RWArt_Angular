@@ -6,13 +6,11 @@ import {
     RouterStateSnapshot,
     UrlSegment
 } from '@angular/router';
-import { verificationTokenResolver } from './verification.resolver';
+import { tokenResolver } from './verification.resolver';
 
 describe('verificationResolver', () => {
     const executeResolver: ResolveFn<string | null> = (...resolverParameters) =>
-        TestBed.runInInjectionContext(() =>
-            verificationTokenResolver(...resolverParameters)
-        );
+        TestBed.runInInjectionContext(() => tokenResolver(...resolverParameters));
 
     it('should be created', () => {
         expect(executeResolver).toBeTruthy();

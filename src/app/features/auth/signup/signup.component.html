@@ -1,54 +1,66 @@
-<form [formGroup]="form" (submit)="signup()">
-    <div class="form-fields">
-        <mat-form-field>
-            <mat-icon matPrefix>email</mat-icon>
-            <mat-label>Email</mat-label>
-            <input matInput [formControl]="form.controls.email" />
-            <mat-error [appFormError]="form.controls.email" />
-            <app-form-async-suffix matSuffix [control]="form.controls.email" />
-        </mat-form-field>
+@if (!success()) {
+    <form [formGroup]="form" (submit)="signup()">
+        <div class="form-fields">
+            <mat-form-field>
+                <mat-icon matPrefix>email</mat-icon>
+                <mat-label>Email</mat-label>
+                <input matInput [formControl]="form.controls.email" />
+                <mat-error [appFormError]="form.controls.email" />
+                <app-form-async-suffix matSuffix [control]="form.controls.email" />
+            </mat-form-field>
 
-        <mat-form-field>
-            <mat-icon matPrefix>person</mat-icon>
-            <mat-label>Username</mat-label>
-            <input matInput [formControl]="form.controls.username" />
-            <mat-error [appFormError]="form.controls.username" />
-            <app-form-async-suffix matSuffix [control]="form.controls.username" />
-        </mat-form-field>
+            <mat-form-field>
+                <mat-icon matPrefix>person</mat-icon>
+                <mat-label>Username</mat-label>
+                <input matInput [formControl]="form.controls.username" />
+                <mat-error [appFormError]="form.controls.username" />
+                <app-form-async-suffix matSuffix [control]="form.controls.username" />
+            </mat-form-field>
 
-        <mat-form-field>
-            <mat-icon matPrefix>key</mat-icon>
-            <mat-label>Password</mat-label>
-            <input matInput type="password" [formControl]="form.controls.password" />
-            <mat-error [appFormError]="form.controls.password" />
-        </mat-form-field>
+            <mat-form-field>
+                <mat-icon matPrefix>key</mat-icon>
+                <mat-label>Password</mat-label>
+                <input matInput type="password" [formControl]="form.controls.password" />
+                <mat-error [appFormError]="form.controls.password" />
+            </mat-form-field>
 
-        <mat-form-field>
-            <mat-icon matPrefix>key</mat-icon>
-            <mat-label>Confirm password</mat-label>
-            <input matInput type="password" [formControl]="form.controls.passwordConfirm" />
-            <mat-error [appFormError]="form.controls.passwordConfirm" />
-        </mat-form-field>
+            <mat-form-field>
+                <mat-icon matPrefix>key</mat-icon>
+                <mat-label>Confirm password</mat-label>
+                <input matInput type="password" [formControl]="form.controls.passwordConfirm" />
+                <mat-error [appFormError]="form.controls.passwordConfirm" />
+            </mat-form-field>
 
-        @if (errorMessage()) {
-            <p class="text-error">{{ errorMessage() }}</p>
-        }
-    </div>
+            @if (errorMessage()) {
+                <p class="text-error">{{ errorMessage() }}</p>
+            }
+        </div>
 
-    <div class="fx-center mg-1">
-        <button
-            id="submit-button"
-            mat-flat-button
-            type="submit"
-            [appLoading]="loading()"
-            [disabled]="loading() || form.invalid || form.pending">
-            Sign up!
+        <div class="fx-center mg-1">
+            <button
+                id="submit-button"
+                mat-flat-button
+                type="submit"
+                [appLoading]="loading()"
+                [disabled]="loading() || form.invalid || form.pending">
+                Sign up!
+            </button>
+        </div>
+
+        <mat-divider inset />
+
+        <button id="login-button" class="mg-1" type="button" mat-button routerLink="/auth/login">
+            Already have an account?
         </button>
-    </div>
-
-    <mat-divider inset />
-
-    <button id="login-button" class="mg-1" type="button" mat-button routerLink="/auth/login">
-        Already have an account?
-    </button>
-</form>
+    </form>
+} @else {
+    <mat-card>
+        <mat-card-content>
+            <div class="fx-col fx-align fx-gap-1">
+                <mat-icon class="icon-primary">done</mat-icon>
+                <span class="text-primary">Signup complete</span>
+                <p>Please check your email to complete the verification process</p>
+            </div>
+        </mat-card-content>
+    </mat-card>
+}

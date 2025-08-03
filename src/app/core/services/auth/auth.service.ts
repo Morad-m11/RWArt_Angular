@@ -58,6 +58,16 @@ export class AuthService {
         await firstValueFrom(this._http.post(Endpoints.auth.signup, body));
     }
 
+    async recoverAccount(email: string): Promise<void> {
+        await firstValueFrom(this._http.post(Endpoints.auth.forgotPassword, { email }));
+    }
+
+    async resetPassword(pass: string, token: string) {
+        await firstValueFrom(
+            this._http.post(Endpoints.auth.resetPassword, { password: pass, token })
+        );
+    }
+
     async refreshToken(): Promise<void> {
         const { accessToken } = await firstValueFrom(
             this._http.post<{ accessToken: string }>(Endpoints.auth.refresh, null)

@@ -4,7 +4,9 @@ export const Endpoints = {
         logout: 'auth/logout',
         refresh: 'auth/refresh',
         signup: 'auth/signup',
-        verify: 'auth/verify'
+        verifyAccount: 'auth/verify-account',
+        forgotPassword: 'auth/forgot-password',
+        resetPassword: 'auth/reset-password'
     },
     user: {
         profile: 'user/profile',

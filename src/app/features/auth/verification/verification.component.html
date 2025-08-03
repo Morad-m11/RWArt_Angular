@@ -1,6 +1,15 @@
-@if (!token()) {
-    <h3>Signup complete</h3>
-    <p>Please check your email to complete the verification process</p>
-} @else {
-    <p>{{ verificationResult() }}</p>
-}
+<mat-card>
+    <mat-card-content>
+        <div class="fx-col fx-align fx-gap-1">
+            @if (verified.error()) {
+                <mat-icon class="icon-error">close</mat-icon>
+                <span class="text-error">{{ errorMessage() }}</span>
+            }
+
+            @if (verified.hasValue()) {
+                <mat-icon class="icon-primary">done</mat-icon>
+                <span class="text-primary">Your account has been verified. Enjoy!</span>
+            }
+        </div>
+    </mat-card-content>
+</mat-card>

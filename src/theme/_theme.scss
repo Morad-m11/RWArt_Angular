@@ -45,6 +45,14 @@ $colors: primary, secondary, tertiary, error;
     .text-#{$color} {
         color: var(--mat-sys-#{$color});
     }
+
+    .icon-#{$color} {
+        @include mat.icon-overrides(
+            (
+                color: var(--mat-sys-#{$color})
+            )
+        );
+    }
 }
 
 mat-divider[inset] {

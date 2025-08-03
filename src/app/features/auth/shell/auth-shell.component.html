@@ -1,6 +1,11 @@
 <mat-card appearance="outlined">
     <mat-card-header class="header">
-        <mat-icon matCardAvatar>star</mat-icon>
+        @if (showBackButton()) {
+            <button matCardAvatar matIconButton routerLink="/auth">
+                <mat-icon>chevron_left</mat-icon>
+            </button>
+        }
+
         <mat-card-title>{{ title() }}</mat-card-title>
     </mat-card-header>
 

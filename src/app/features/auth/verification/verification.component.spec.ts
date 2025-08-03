@@ -47,7 +47,7 @@ describe('VerificationComponent', () => {
         });
 
         it('should not make a request', () => {
-            httpTesting.expectNone(Endpoints.auth.verify);
+            httpTesting.expectNone(Endpoints.auth.verifyAccount);
         });
     });
 
@@ -57,14 +57,14 @@ describe('VerificationComponent', () => {
 
             await fixture.whenStable();
 
-            httpTesting.expectOne(Endpoints.auth.verify);
+            httpTesting.expectOne(Endpoints.auth.verifyAccount);
         });
 
         it('should display an "invalid" error on 400', async () => {
             setInputs(fixture, { token: 'some token' });
             await fixture.whenStable();
 
-            const req = httpTesting.expectOne(Endpoints.auth.verify);
+            const req = httpTesting.expectOne(Endpoints.auth.verifyAccount);
             req.flush('failed', { status: 400, statusText: 'Bad Request' });
             await fixture.whenStable();
 
@@ -76,7 +76,7 @@ describe('VerificationComponent', () => {
             setInputs(fixture, { token: 'some token' });
             await fixture.whenStable();
 
-            const req = httpTesting.expectOne(Endpoints.auth.verify);
+            const req = httpTesting.expectOne(Endpoints.auth.verifyAccount);
             req.flush('failed', { status: 401, statusText: 'Unauthorized' });
             await fixture.whenStable();
 
@@ -88,7 +88,7 @@ describe('VerificationComponent', () => {
             setInputs(fixture, { token: 'some token' });
             await fixture.whenStable();
 
-            const req = httpTesting.expectOne(Endpoints.auth.verify);
+            const req = httpTesting.expectOne(Endpoints.auth.verifyAccount);
             req.flush('failed', { status: 500, statusText: 'Unknown Error' });
             await fixture.whenStable();
 

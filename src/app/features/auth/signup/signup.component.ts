@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { AuthService } from 'src/app/core/services/auth/auth.service';
 import { LoadingDirective } from 'src/app/shared/directives/loading/loading.directive';
 import { MaterialModule } from 'src/app/shared/material.module';
@@ -29,11 +29,11 @@ import { AsyncUniqueUserValidator } from '../shared/validators/unique/unique-use
 export class SignupComponent {
     private readonly _authService = inject(AuthService);
     private readonly _userService = inject(UserService);
-    private readonly _router = inject(Router);
     private readonly _fb = inject(FormBuilder);
 
     errorMessage = signal('');
     loading = signal(false);
+    success = signal(false);
 
     form = this._fb.nonNullable.group(
         {
@@ -62,18 +62,17 @@ export class SignupComponent {
     );
 
     async signup() {
+        this.loading.set(true);
+        this.success.set(false);
         this.errorMessage.set('');
 
         const body = omit(this.form.getRawValue(), 'passwordConfirm');
 
         await this._authService
             .signup(body)
-            .then(() => this._handleSuccess())
-            .catch((error) => this._handleError(error));
-    }
-
-    private _handleSuccess() {
-        this._router.navigate(['/', 'auth', 'verify']);
+            .then(() => this.success.set(true))
+            .catch((error) => this._handleError(error))
+            .finally(() => this.loading.set(false));
     }
 
     private _handleError(error: HttpErrorResponse) {
