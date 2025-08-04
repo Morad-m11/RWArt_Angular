@@ -29,7 +29,7 @@ describe('LoginComponent', () => {
                         path: 'auth',
                         children: [
                             { path: 'login', component: LoginComponent },
-                            { path: 'recovery', component: DummyComponent },
+                            { path: 'forgot-password', component: DummyComponent },
                             { path: 'signup', component: DummyComponent }
                         ]
                     }
@@ -172,7 +172,7 @@ describe('LoginComponent', () => {
 
             await recovery.click();
 
-            expect(router.url).toEqual('/auth/recovery');
+            expect(router.url).toEqual('/auth/forgot-password');
         });
 
         it('should route to the signup page on button click', async () => {

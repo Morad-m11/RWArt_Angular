@@ -4,7 +4,7 @@ export const Endpoints = {
         logout: 'auth/logout',
         refresh: 'auth/refresh',
         signup: 'auth/signup',
-        verifyAccount: 'auth/verify-account',
+        verifyAccount: (token: string) => `auth/verify-account/${token}`,
         forgotPassword: 'auth/forgot-password',
         resetPassword: 'auth/reset-password'
     },

@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl } from '@angular/forms';
-import { setInputs } from 'src/app/shared/testing/set-inputs';
+import { setInputs } from 'src/app/shared/test/set-inputs';
 import { FormAsyncSuffixComponent } from './form-async-suffix.component';
 
 describe('FormAsyncSuffixComponent', () => {

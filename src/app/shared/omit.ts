@@ -1,5 +1,5 @@
 /**
- * Emit certain properties of an object
+ * Emit properties of an object
  */
 export const omit = <T extends object, K extends keyof T>(obj: T, ...keys: K[]): T => {
     return Object.fromEntries(

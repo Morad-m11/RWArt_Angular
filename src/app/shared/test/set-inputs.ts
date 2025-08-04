@@ -13,11 +13,11 @@ type FilteredInputs<T> = RemoveNever<ExtractedInputs<T>>;
 
 type ComponentInputs<T> = Partial<FilteredInputs<T>>;
 
-export function setInputs<T>(
+export const setInputs = <T>(
     fixture: ComponentFixture<T>,
     inputs: ComponentInputs<T>
-): void {
+): void => {
     Object.entries(inputs).forEach(([key, value]) => {
         fixture.componentRef.setInput(key, value);
     });
-}
+};

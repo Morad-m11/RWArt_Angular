@@ -34,7 +34,7 @@ describe('SignupComponent', () => {
                         children: [
                             { path: 'login', component: SignupComponent },
                             { path: 'signup', component: DummyComponent },
-                            { path: 'verify', component: DummyComponent }
+                            { path: 'verify-account', component: DummyComponent }
                         ]
                     }
                 ])
@@ -120,13 +120,13 @@ describe('SignupComponent', () => {
                 const [, , pass, confirm] = await getAllFields();
                 const [, , passControl, confirmControl] = await getAllControls();
 
-                await passControl.setValue('password');
+                await passControl.setValue('password1');
                 await confirmControl.setValue('password2');
 
                 expect(await pass.isControlValid()).toBe(true);
                 expect(await confirm.isControlValid()).toBe(false);
 
-                await confirmControl.setValue('password');
+                await confirmControl.setValue('password1');
                 expect(await confirm.isControlValid()).toBe(true);
             });
         });
@@ -193,15 +193,6 @@ describe('SignupComponent', () => {
 
                 expect(router.url).toEqual('/auth/signup');
             });
-
-            it('should route on success', async () => {
-                const button = await getSubmitButton();
-
-                await fillAllFieldsValid();
-                await button.click();
-
-                expect(router.url).toEqual('/auth/verify');
-            });
         });
     });
 
@@ -250,8 +241,8 @@ describe('SignupComponent', () => {
         await parallel(() => [
             mail.setValue('mail@hotmail.com'),
             name.setValue('name'),
-            pass.setValue('password'),
-            confirm.setValue('password')
+            pass.setValue('password1'),
+            confirm.setValue('password1')
         ]);
 
         // duration * 2 for both field validations

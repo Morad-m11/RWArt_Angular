@@ -8,8 +8,8 @@ import { MatFormFieldHarness } from '@angular/material/form-field/testing';
 import { MatInputHarness } from '@angular/material/input/testing';
 import { AuthService } from 'src/app/core/services/auth/auth.service';
 import { provideValue } from 'src/app/shared/provide';
-import { ValidationMessages } from '../shared/validators/validation-messages';
-import { RecoveryMessages } from './messages';
+import { RecoveryMessages } from '../shared/error-messages';
+import { ValidationMessages } from '../shared/validators/validation-errors';
 import { ForgotPasswordComponent } from './forgot-password.component';
 
 describe('ForgotPasswordComponent', () => {

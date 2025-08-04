@@ -26,60 +26,76 @@ describe('UniqueValidator Unit Test', () => {
         control = new FormControl('', { nonNullable: true, asyncValidators: validator });
     });
 
-    it('should call the service validation after a delay', async () => {
-        control.setValue('value');
-        expect(isUniqueMock).not.toHaveBeenCalled();
+    describe('Service validation call', () => {
+        it('should call after a delay', async () => {
+            control.setValue('value');
+            expect(isUniqueMock).not.toHaveBeenCalled();
 
-        await jest.advanceTimersByTimeAsync(ASYNC_VALIDATION_DELAY);
-        expect(isUniqueMock).toHaveBeenCalledTimes(1);
+            await jest.advanceTimersByTimeAsync(ASYNC_VALIDATION_DELAY);
+            expect(isUniqueMock).toHaveBeenCalledTimes(1);
+        });
+
+        it('should call on changed values', async () => {
+            control.setValue('value');
+            await jest.advanceTimersByTimeAsync(ASYNC_VALIDATION_DELAY);
+            expect(isUniqueMock).toHaveBeenCalledTimes(1);
+
+            control.setValue('value');
+            await jest.advanceTimersByTimeAsync(ASYNC_VALIDATION_DELAY);
+            expect(isUniqueMock).toHaveBeenCalledTimes(1);
+
+            control.setValue('changed value');
+            await jest.advanceTimersByTimeAsync(ASYNC_VALIDATION_DELAY);
+            expect(isUniqueMock).toHaveBeenCalledTimes(2);
+        });
+
+        it('should call with the control name and value', async () => {
+            control.setValue('value');
+            await jest.advanceTimersByTimeAsync(ASYNC_VALIDATION_DELAY);
+            expect(isUniqueMock).toHaveBeenCalledWith({ username: 'value' });
+        });
     });
 
-    it('should call the service validation on changed values', async () => {
-        control.setValue('value');
-        await jest.advanceTimersByTimeAsync(ASYNC_VALIDATION_DELAY);
-        expect(isUniqueMock).toHaveBeenCalledTimes(1);
+    describe('Responses', () => {
+        it('should return the same response as before on unchanged values (distinct check)', async () => {
+            isUniqueMock.mockReturnValue(of(true));
 
-        control.setValue('value');
-        await jest.advanceTimersByTimeAsync(ASYNC_VALIDATION_DELAY);
-        expect(isUniqueMock).toHaveBeenCalledTimes(1);
+            control.setValue('value');
+            await jest.advanceTimersByTimeAsync(ASYNC_VALIDATION_DELAY);
+            expect(control.errors).toEqual(null);
 
-        control.setValue('changed value');
-        await jest.advanceTimersByTimeAsync(ASYNC_VALIDATION_DELAY);
-        expect(isUniqueMock).toHaveBeenCalledTimes(2);
-    });
+            control.setValue('value');
+            await jest.advanceTimersByTimeAsync(ASYNC_VALIDATION_DELAY);
+            expect(control.errors).toEqual(null);
+        });
 
-    it("should call the service validation with it's control name and value", async () => {
-        control.setValue('value');
-        await jest.advanceTimersByTimeAsync(ASYNC_VALIDATION_DELAY);
-        expect(isUniqueMock).toHaveBeenCalledWith({ username: 'value' });
-    });
+        it('should return null if the response is "true"', async () => {
+            isUniqueMock.mockReturnValue(of(true));
 
-    it('should return null if the response is "true"', async () => {
-        isUniqueMock.mockReturnValue(of(true));
+            control.setValue('value');
+            await jest.advanceTimersByTimeAsync(ASYNC_VALIDATION_DELAY);
 
-        control.setValue('value');
-        await jest.advanceTimersByTimeAsync(ASYNC_VALIDATION_DELAY);
+            expect(control.errors).toEqual(null);
+        });
 
-        expect(control.errors).toEqual(null);
-    });
+        it('should return a "unique" property if the response is "false"', async () => {
+            isUniqueMock.mockReturnValue(of(false));
 
-    it('should return a "unique" property if the response is "false"', async () => {
-        isUniqueMock.mockReturnValue(of(false));
+            control.setValue('value');
+            await jest.advanceTimersByTimeAsync(ASYNC_VALIDATION_DELAY);
 
-        control.setValue('value');
-        await jest.advanceTimersByTimeAsync(ASYNC_VALIDATION_DELAY);
+            expect(control.errors).toEqual({ unique: false });
+        });
 
-        expect(control.errors).toEqual({ unique: false });
-    });
+        it('should return a "check failed" property if the request fails', async () => {
+            isUniqueMock.mockReturnValue(
+                throwError(() => new HttpErrorResponse({ status: 404 }))
+            );
 
-    it('should return a "check failed" property if the request fails', async () => {
-        isUniqueMock.mockReturnValue(
-            throwError(() => new HttpErrorResponse({ status: 404 }))
-        );
+            control.setValue('value');
+            await jest.advanceTimersByTimeAsync(ASYNC_VALIDATION_DELAY);
 
-        control.setValue('value');
-        await jest.advanceTimersByTimeAsync(ASYNC_VALIDATION_DELAY);
-
-        expect(control.errors).toEqual({ serverCheck: 404 });
+            expect(control.errors).toEqual({ serverCheck: 404 });
+        });
     });
 });

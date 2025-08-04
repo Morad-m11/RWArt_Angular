@@ -10,9 +10,9 @@ export const ValidationMessages: TypedValidationErrorMessages = {
     serverCheck: (status) => `Server check failed (${status})`,
     passwordMatch: 'Passwords do not match',
     min: ({ requiredLength }) => `Must not be less than ${requiredLength}`,
-    minlength: ({ actualLength, requiredLength }) =>
-        `Must have a min. length of ${requiredLength}. Current: ${actualLength}`,
     max: ({ requiredLength }) => `Must not be larger than ${requiredLength}`,
+    minlength: ({ actualLength, requiredLength }) =>
+        `Must contain at least ${requiredLength} characters. Current: ${actualLength}`,
     maxlength: ({ actualLength, requiredLength }) =>
-        `Must have a max. length of ${requiredLength}. Current: ${actualLength}`
+        `Must not contain more than ${requiredLength} characters. Current: ${actualLength}`
 };

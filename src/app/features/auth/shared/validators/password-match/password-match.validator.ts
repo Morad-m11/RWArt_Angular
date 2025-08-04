@@ -11,7 +11,8 @@ export const passwordMatchValidator: TypedValidatorFn = (control: AbstractContro
     if (password.value !== passwordConfirm.value) {
         passwordConfirm.setErrors({ passwordMatch: true });
         return { passwordMatch: true };
+    } else {
+        passwordConfirm.setErrors(null);
+        return null;
     }
-
-    return null;
 };

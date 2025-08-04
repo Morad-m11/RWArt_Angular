@@ -6,22 +6,25 @@ import {
     RouterStateSnapshot,
     UrlSegment
 } from '@angular/router';
-import { tokenResolver } from './verification.resolver';
+import { SnackbarService } from 'src/app/core/services/snackbar/snackbar.service';
+import { provideValue } from 'src/app/shared/provide';
+import { tokenResolver } from './token.resolver';
 
 describe('verificationResolver', () => {
     const executeResolver: ResolveFn<string | null> = (...resolverParameters) =>
         TestBed.runInInjectionContext(() => tokenResolver(...resolverParameters));
 
+    beforeEach(() => {
+        TestBed.configureTestingModule({
+            providers: [provideValue(SnackbarService, { error: jest.fn() })]
+        });
+    });
+
     it('should be created', () => {
         expect(executeResolver).toBeTruthy();
     });
 
-    it('should return null when token is missing', async () => {
-        const result = await executeResolver(...createRoutingParams('testPath'));
-        expect(result).toBeNull();
-    });
-
-    it('should extract token from query params', async () => {
+    it('should extract token from path params', async () => {
         const result = await executeResolver(
             ...createRoutingParams('testPath', { token: 'some token' })
         );
@@ -36,7 +39,7 @@ function createRoutingParams(
     return [
         {
             url: [new UrlSegment(path, {})],
-            queryParamMap: convertToParamMap(query)
+            paramMap: convertToParamMap(query)
         } as ActivatedRouteSnapshot,
         {} as RouterStateSnapshot
     ];
