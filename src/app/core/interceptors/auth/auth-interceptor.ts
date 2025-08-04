@@ -8,7 +8,7 @@ import {
 } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { catchError, from, Observable, switchMap, tap } from 'rxjs';
-import { ACCESS_TOKEN_STORAGE_KEY } from '../../constants';
+import { ACCESS_TOKEN_STORAGE_KEY } from '../../constants/access-token';
 import { AuthService } from '../../services/auth/auth.service';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {

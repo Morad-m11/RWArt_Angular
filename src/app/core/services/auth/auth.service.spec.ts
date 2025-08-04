@@ -6,9 +6,9 @@ import {
     provideHttpClientTesting
 } from '@angular/common/http/testing';
 import { provideValue } from 'src/app/shared/provide';
-import { Endpoints } from '../../api-endpoints';
-import { ACCESS_TOKEN_STORAGE_KEY } from '../../constants';
-import { CoreSnackbarMessages } from '../../messages';
+import { ACCESS_TOKEN_STORAGE_KEY } from '../../constants/access-token';
+import { Endpoints } from '../../constants/api-endpoints';
+import { CoreSnackbarMessages } from '../../constants/snackbar-messages';
 import { SnackbarService } from '../snackbar/snackbar.service';
 import { AuthService } from './auth.service';
 

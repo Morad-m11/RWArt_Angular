@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
-import { Endpoints } from 'src/app/core/api-endpoints';
+import { Endpoints } from 'src/app/core/constants/api-endpoints';
 
 interface PostResponse {
     albumId: number;

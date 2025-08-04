@@ -2,13 +2,13 @@ import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
-import { CoreSnackbarMessages } from 'src/app/core/messages';
+import { CoreSnackbarMessages } from 'src/app/core/constants/snackbar-messages';
 import { AuthService } from 'src/app/core/services/auth/auth.service';
 import { SnackbarService } from 'src/app/core/services/snackbar/snackbar.service';
 import { LoadingDirective } from 'src/app/shared/directives/loading/loading.directive';
 import { MaterialModule } from 'src/app/shared/material.module';
 import { FormErrorDirective } from '../shared/directives/form-error/form-error.directive';
-import { LoginSnackbarMessages } from '../shared/messages';
+import { LoginSnackbarMessages } from '../shared/error-messages';
 
 export interface Credentials {
     username: string;

@@ -12,7 +12,7 @@ import {
 } from '@angular/common/http/testing';
 import { firstValueFrom } from 'rxjs';
 import { provideValue } from 'src/app/shared/provide';
-import { ACCESS_TOKEN_STORAGE_KEY } from '../../constants';
+import { ACCESS_TOKEN_STORAGE_KEY } from '../../constants/access-token';
 import { AuthService } from '../../services/auth/auth.service';
 import { authInterceptor } from './auth-interceptor';
 

@@ -28,11 +28,7 @@ export class AuthShellComponent {
         'reset-password': 'Enter a new password'
     };
 
-    showBackButton = computed(
-        () =>
-            this.title() === this.titles.signup ||
-            this.title() === this.titles['forgot-password']
-    );
+    showBackButton = computed(() => this.title() !== this.titles.login);
     title = computed(() => this.titles[this.currentPath() as keyof typeof this.titles]);
 
     currentPath = toSignal(

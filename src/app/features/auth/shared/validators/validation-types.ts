@@ -9,6 +9,7 @@ enum Keys {
     required = 'required',
     requiredtrue = 'requiredtrue',
     passwordMatch = 'passwordMatch',
+    hasNumber = 'hasNumber',
     unique = 'unique',
     min = 'min',
     max = 'max',
@@ -23,6 +24,7 @@ interface ArgumentMap {
     [Keys.required]: boolean;
     [Keys.requiredtrue]: boolean;
     [Keys.passwordMatch]: boolean;
+    [Keys.hasNumber]: boolean;
     [Keys.unique]: boolean;
     [Keys.min]: boolean;
     [Keys.max]: boolean;
@@ -37,6 +39,7 @@ export interface TypedValidationErrorMessages {
     [Keys.required]: string;
     [Keys.requiredtrue]: string;
     [Keys.passwordMatch]: string;
+    [Keys.hasNumber]: string;
     [Keys.unique]: string;
     [Keys.min]: LengthFn;
     [Keys.max]: LengthFn;

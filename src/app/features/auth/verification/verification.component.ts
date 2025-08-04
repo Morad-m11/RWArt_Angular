@@ -1,8 +1,8 @@
 import { HttpErrorResponse, httpResource, HttpStatusCode } from '@angular/common/http';
 import { Component, computed, input } from '@angular/core';
-import { Endpoints } from 'src/app/core/api-endpoints';
+import { Endpoints } from 'src/app/core/constants/api-endpoints';
 import { MaterialModule } from 'src/app/shared/material.module';
-import { VerificationMessages } from './messages';
+import { VerificationMessages } from '../shared/error-messages';
 
 @Component({
     selector: 'app-verification',
@@ -18,9 +18,10 @@ export class VerificationComponent {
         this.verified.error() ? this._getErrorMessage(this.verified.error()!) : null
     );
 
-    verified = httpResource<void>(
-        () => `${Endpoints.auth.verifyAccount}/${this.token()}`
-    );
+    verified = httpResource<void>(() => ({
+        url: `${Endpoints.auth.verifyAccount}/${this.token()}`,
+        method: 'POST'
+    }));
 
     private _getErrorMessage(error: Error): string {
         const status = (error as HttpErrorResponse).status;

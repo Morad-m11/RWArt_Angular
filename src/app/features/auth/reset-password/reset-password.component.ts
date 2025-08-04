@@ -3,13 +3,15 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/core/services/auth/auth.service';
 import { LoadingDirective } from 'src/app/shared/directives/loading/loading.directive';
 import { MaterialModule } from 'src/app/shared/material.module';
+import { ResultCardComponent } from '../shared/components/result-card/result-card.component';
 import { FormErrorDirective } from '../shared/directives/form-error/form-error.directive';
+import { hasNumberValidator } from '../shared/validators/has-number/has-number.validator';
 import { passwordMatchValidator } from '../shared/validators/password-match/password-match.validator';
 
 @Component({
     selector: 'app-reset-password',
     standalone: true,
-    imports: [MaterialModule, FormErrorDirective, LoadingDirective],
+    imports: [MaterialModule, ResultCardComponent, FormErrorDirective, LoadingDirective],
     templateUrl: './reset-password.component.html',
     styleUrl: './reset-password.component.scss'
 })
@@ -29,20 +31,12 @@ export class ResetPasswordComponent {
                 '',
                 [
                     Validators.required,
-                    Validators.pattern('[a-zA-Z]*'),
                     Validators.minLength(8),
-                    Validators.maxLength(15)
+                    Validators.maxLength(64),
+                    hasNumberValidator
                 ]
             ],
-            passwordConfirm: [
-                '',
-                [
-                    Validators.required,
-                    Validators.pattern('[a-zA-Z]*'),
-                    Validators.minLength(8),
-                    Validators.maxLength(15)
-                ]
-            ]
+            passwordConfirm: ['', Validators.required]
         },
         { validators: passwordMatchValidator }
     );

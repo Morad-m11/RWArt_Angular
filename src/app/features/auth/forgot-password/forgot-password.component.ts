@@ -4,13 +4,19 @@ import { FormControl, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/core/services/auth/auth.service';
 import { LoadingDirective } from 'src/app/shared/directives/loading/loading.directive';
 import { MaterialModule } from 'src/app/shared/material.module';
+import { ResultCardComponent } from '../shared/components/result-card/result-card.component';
 import { FormErrorDirective } from '../shared/directives/form-error/form-error.directive';
-import { RecoveryMessages } from './messages';
+import { RecoveryMessages } from '../shared/error-messages';
 
 @Component({
     selector: 'app-forgot-password',
     standalone: true,
-    imports: [MaterialModule, FormErrorDirective, LoadingDirective],
+    imports: [
+        MaterialModule,
+        FormErrorDirective,
+        LoadingDirective,
+        ResultCardComponent
+    ],
     templateUrl: './forgot-password.component.html',
     styleUrl: './forgot-password.component.scss'
 })

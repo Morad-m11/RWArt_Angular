@@ -10,4 +10,4 @@ export const CoreSnackbarMessages = {
     expired: 'Your session has expired. Please log in again',
     connection: 'The server is unreachable. Please check your connection',
     unhandled: 'Unhandled error'
-} as const;
+};

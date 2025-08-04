@@ -1,6 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { ErrorHandler, inject } from '@angular/core';
-import { CoreSnackbarMessages } from './messages';
+import { CoreSnackbarMessages } from './constants/snackbar-messages';
 import { SnackbarService } from './services/snackbar/snackbar.service';
 
 export class GlobalErrorHandler implements ErrorHandler {

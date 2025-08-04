@@ -2,7 +2,7 @@ import { TitleCasePipe } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { CoreSnackbarMessages } from 'src/app/core/messages';
+import { CoreSnackbarMessages } from 'src/app/core/constants/snackbar-messages';
 import { SnackbarService } from 'src/app/core/services/snackbar/snackbar.service';
 import { AuthService } from '../../../core/services/auth/auth.service';
 import { MaterialModule } from '../../material.module';

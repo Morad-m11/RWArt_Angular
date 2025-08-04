@@ -8,8 +8,10 @@ import { MaterialModule } from 'src/app/shared/material.module';
 import { omit } from 'src/app/shared/omit';
 import { UserService } from 'src/app/shared/services/user/user.service';
 import { FormAsyncSuffixComponent } from '../shared/components/form-async-suffix/form-async-suffix.component';
+import { ResultCardComponent } from '../shared/components/result-card/result-card.component';
 import { FormErrorDirective } from '../shared/directives/form-error/form-error.directive';
-import { SignupSnackbarMessages } from '../shared/messages';
+import { SignupSnackbarMessages } from '../shared/error-messages';
+import { hasNumberValidator } from '../shared/validators/has-number/has-number.validator';
 import { passwordMatchValidator } from '../shared/validators/password-match/password-match.validator';
 import { AsyncUniqueUserValidator } from '../shared/validators/unique/unique-user.validator';
 
@@ -21,7 +23,8 @@ import { AsyncUniqueUserValidator } from '../shared/validators/unique/unique-use
         RouterLink,
         LoadingDirective,
         FormErrorDirective,
-        FormAsyncSuffixComponent
+        FormAsyncSuffixComponent,
+        ResultCardComponent
     ],
     templateUrl: './signup.component.html',
     styleUrl: './signup.component.scss'
@@ -51,9 +54,9 @@ export class SignupComponent {
                 '',
                 [
                     Validators.required,
-                    Validators.pattern('[a-zA-Z]*'),
                     Validators.minLength(8),
-                    Validators.maxLength(15)
+                    Validators.maxLength(64),
+                    hasNumberValidator
                 ]
             ],
             passwordConfirm: ['', Validators.required]
