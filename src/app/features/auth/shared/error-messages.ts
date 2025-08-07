@@ -16,5 +16,10 @@ export const VerificationMessages = {
 };
 
 export const RecoveryMessages = {
-    failed: 'Recovery failed'
+    failed: 'Request failed'
+};
+
+export const ForgotPasswordMessages = {
+    invalid: 'Invalid or expired link',
+    failed: 'Request failed'
 };

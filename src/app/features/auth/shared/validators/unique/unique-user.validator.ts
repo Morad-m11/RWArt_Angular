@@ -10,7 +10,7 @@ type AsyncValidatorFnWrapper = (
     controlName: 'username' | 'email'
 ) => AsyncValidatorFn;
 
-export const AsyncUniqueUserValidator: AsyncValidatorFnWrapper = (
+export const asyncUniqueUserValidator: AsyncValidatorFnWrapper = (
     service,
     controlName
 ) => {

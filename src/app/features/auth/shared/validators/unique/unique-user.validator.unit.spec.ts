@@ -4,7 +4,7 @@ import { of, throwError } from 'rxjs';
 import { UserService } from 'src/app/shared/services/user/user.service';
 import {
     ASYNC_VALIDATION_DELAY,
-    AsyncUniqueUserValidator
+    asyncUniqueUserValidator
 } from './unique-user.validator';
 
 describe('UniqueValidator Unit Test', () => {
@@ -22,7 +22,7 @@ describe('UniqueValidator Unit Test', () => {
             isUnique: isUniqueMock
         } as unknown as UserService;
 
-        const validator = AsyncUniqueUserValidator(userServiceMock, 'username');
+        const validator = asyncUniqueUserValidator(userServiceMock, 'username');
         control = new FormControl('', { nonNullable: true, asyncValidators: validator });
     });
 

@@ -1,3 +1,4 @@
+import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { Component, inject, input, signal } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/core/services/auth/auth.service';
@@ -5,6 +6,7 @@ import { LoadingDirective } from 'src/app/shared/directives/loading/loading.dire
 import { MaterialModule } from 'src/app/shared/material.module';
 import { ResultCardComponent } from '../shared/components/result-card/result-card.component';
 import { FormErrorDirective } from '../shared/directives/form-error/form-error.directive';
+import { ForgotPasswordMessages } from '../shared/error-messages';
 import { hasNumberValidator } from '../shared/validators/has-number/has-number.validator';
 import { passwordMatchValidator } from '../shared/validators/password-match/password-match.validator';
 
@@ -49,7 +51,16 @@ export class ResetPasswordComponent {
         await this._authService
             .resetPassword(this.form.controls.password.value, this.token())
             .then(() => this.success.set(true))
-            .catch(() => this.errorMessage.set('Failed'))
+            .catch((error) => this._handleError(error))
             .finally(() => this.loading.set(false));
+    }
+
+    private _handleError(error: HttpErrorResponse): void | PromiseLike<void> {
+        if (error.status === HttpStatusCode.BadRequest) {
+            this.errorMessage.set(ForgotPasswordMessages.invalid);
+            return;
+        }
+
+        this.errorMessage.set(ForgotPasswordMessages.failed);
     }
 }

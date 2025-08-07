@@ -1,4 +1,4 @@
-import { HttpErrorResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
@@ -13,7 +13,7 @@ import { FormErrorDirective } from '../shared/directives/form-error/form-error.d
 import { SignupSnackbarMessages } from '../shared/error-messages';
 import { hasNumberValidator } from '../shared/validators/has-number/has-number.validator';
 import { passwordMatchValidator } from '../shared/validators/password-match/password-match.validator';
-import { AsyncUniqueUserValidator } from '../shared/validators/unique/unique-user.validator';
+import { asyncUniqueUserValidator } from '../shared/validators/unique/unique-user.validator';
 
 @Component({
     selector: 'app-signup',
@@ -43,12 +43,12 @@ export class SignupComponent {
             email: [
                 '',
                 [Validators.required, Validators.email],
-                AsyncUniqueUserValidator(this._userService, 'email')
+                asyncUniqueUserValidator(this._userService, 'email')
             ],
             username: [
                 '',
                 Validators.required,
-                AsyncUniqueUserValidator(this._userService, 'username')
+                asyncUniqueUserValidator(this._userService, 'username')
             ],
             password: [
                 '',
@@ -79,6 +79,11 @@ export class SignupComponent {
     }
 
     private _handleError(error: HttpErrorResponse) {
+        if (error.status === HttpStatusCode.BadRequest) {
+            this.errorMessage.set('Invalid email or username');
+            return;
+        }
+
         this.errorMessage.set(`${SignupSnackbarMessages.failed} (${error.status})`);
     }
 }

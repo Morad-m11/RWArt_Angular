@@ -6,6 +6,7 @@ export const ValidationMessages: TypedValidationErrorMessages = {
     pattern: 'Mismatching pattern',
     unique: 'Already exists',
     email: 'Email is invalid',
+    profane: 'Profane word detected',
     hasNumber: 'Must contain a number',
     serverCheck: (status) => `Server check failed (${status})`,
     passwordMatch: 'Passwords do not match',
