@@ -1,6 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { AbstractControl, FormControl } from '@angular/forms';
-import { of, throwError } from 'rxjs';
 import { UserService } from 'src/app/shared/services/user/user.service';
 import {
     ASYNC_VALIDATION_DELAY,
@@ -58,7 +57,7 @@ describe('UniqueValidator Unit Test', () => {
 
     describe('Responses', () => {
         it('should return the same response as before on unchanged values (distinct check)', async () => {
-            isUniqueMock.mockReturnValue(of(true));
+            isUniqueMock.mockResolvedValue(true);
 
             control.setValue('value');
             await jest.advanceTimersByTimeAsync(ASYNC_VALIDATION_DELAY);
@@ -70,7 +69,7 @@ describe('UniqueValidator Unit Test', () => {
         });
 
         it('should return null if the response is "true"', async () => {
-            isUniqueMock.mockReturnValue(of(true));
+            isUniqueMock.mockResolvedValue(true);
 
             control.setValue('value');
             await jest.advanceTimersByTimeAsync(ASYNC_VALIDATION_DELAY);
@@ -79,7 +78,7 @@ describe('UniqueValidator Unit Test', () => {
         });
 
         it('should return a "unique" property if the response is "false"', async () => {
-            isUniqueMock.mockReturnValue(of(false));
+            isUniqueMock.mockResolvedValue(false);
 
             control.setValue('value');
             await jest.advanceTimersByTimeAsync(ASYNC_VALIDATION_DELAY);
@@ -88,9 +87,7 @@ describe('UniqueValidator Unit Test', () => {
         });
 
         it('should return a "check failed" property if the request fails', async () => {
-            isUniqueMock.mockReturnValue(
-                throwError(() => new HttpErrorResponse({ status: 404 }))
-            );
+            isUniqueMock.mockRejectedValue(new HttpErrorResponse({ status: 404 }));
 
             control.setValue('value');
             await jest.advanceTimersByTimeAsync(ASYNC_VALIDATION_DELAY);

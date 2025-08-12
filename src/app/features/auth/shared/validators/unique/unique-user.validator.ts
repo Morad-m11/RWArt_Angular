@@ -1,6 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { AsyncValidatorFn } from '@angular/forms';
-import { Observable, catchError, map, of, switchMap, tap, timer } from 'rxjs';
+import { catchError, map, of, switchMap, tap, timer } from 'rxjs';
 import { UserService } from 'src/app/shared/services/user/user.service';
 
 export const ASYNC_VALIDATION_DELAY = 500;
@@ -21,16 +21,16 @@ export const asyncUniqueUserValidator: AsyncValidatorFnWrapper = (
         // this function needs custom debounce & distinct logic
         // because a new observable is created on each value change
         return timer(ASYNC_VALIDATION_DELAY).pipe(
-            switchMap(() => requestChangedValue(control.value)),
+            switchMap(() => uniqueCheckIfChanged(control.value)),
             tap((result) => (previousResult = result)),
             map((unique) => (unique ? null : { unique: false })),
             catchError((error: HttpErrorResponse) => of({ serverCheck: error.status }))
         );
     };
 
-    function requestChangedValue(value: string): Observable<boolean> {
+    async function uniqueCheckIfChanged(value: string): Promise<boolean> {
         if (value === previousValue) {
-            return of(previousResult);
+            return previousResult;
         }
 
         previousValue = value;
