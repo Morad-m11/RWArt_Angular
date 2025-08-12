@@ -1,9 +1,8 @@
 import { Routes } from '@angular/router';
-import { AuthShellComponent } from './features/auth/shell/auth-shell.component';
 import PostsComponent from './features/featured/posts/posts.component';
 import FeedbackComponent from './features/feedback/feedback.component';
-import { ProfileComponent } from './features/profile/profile.component';
 import { NotFoundComponent } from './shared/components/not-found/not-found/not-found.component';
+import { authGuard } from './shared/guards/auth/auth.guard';
 
 export const routes: Routes = [
     { path: '', pathMatch: 'full', redirectTo: 'featured' },
@@ -11,10 +10,12 @@ export const routes: Routes = [
     { path: 'feedback', component: FeedbackComponent },
     {
         path: 'auth',
-        component: AuthShellComponent,
-        // canMatch: [authRoutesGuard],
         loadChildren: () => import('./features/auth/auth.routes')
     },
-    { path: 'profile', component: ProfileComponent },
+    {
+        path: 'profile',
+        canMatch: [authGuard],
+        loadComponent: () => import('./features/profile/profile.component')
+    },
     { path: '**', pathMatch: 'full', component: NotFoundComponent }
 ];

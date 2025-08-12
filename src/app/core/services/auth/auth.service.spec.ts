@@ -40,13 +40,13 @@ describe('AuthService', () => {
 
         it("should be false if token doesn't exist", () => {
             service = TestBed.inject(AuthService);
-            expect(service.loggedIn()).toBe(false);
+            expect(service.isLoggedIn()).toBe(false);
         });
 
         it('should be true if token exists', () => {
             localStorage.setItem(ACCESS_TOKEN_STORAGE_KEY, 'sometoken');
             service = TestBed.inject(AuthService);
-            expect(service.loggedIn()).toBe(true);
+            expect(service.isLoggedIn()).toBe(true);
         });
     });
 
@@ -64,7 +64,7 @@ describe('AuthService', () => {
 
         it('should send a request for profile when logged in', async () => {
             service = TestBed.inject(AuthService);
-            service.loggedIn.set(true);
+            service.isLoggedIn.set(true);
             TestBed.tick();
 
             httpTesting.expectOne(Endpoints.user.profile);
@@ -86,7 +86,7 @@ describe('AuthService', () => {
                 req.flush('Login failed', { status: 401, statusText: 'Unauthorized' });
 
                 await expect(promise).rejects.toMatchObject({ status: 401 });
-                expect(service.loggedIn()).toBe(false);
+                expect(service.isLoggedIn()).toBe(false);
                 expect(localStorage.getItem(ACCESS_TOKEN_STORAGE_KEY)).toBeNull();
             });
 
@@ -99,14 +99,14 @@ describe('AuthService', () => {
                 req.flush({ accessToken: 'some token' });
                 await promise;
 
-                expect(service.loggedIn()).toBe(true);
+                expect(service.isLoggedIn()).toBe(true);
                 expect(localStorage.getItem(ACCESS_TOKEN_STORAGE_KEY)).toBe('some token');
             });
         });
 
         describe('Logout', () => {
             beforeEach(() => {
-                service.loggedIn.set(true);
+                service.isLoggedIn.set(true);
                 localStorage.setItem(ACCESS_TOKEN_STORAGE_KEY, 'some token');
             });
 
@@ -136,7 +136,7 @@ describe('AuthService', () => {
 
                 expect(snackbar.error).not.toHaveBeenCalled();
                 expect(localStorage.getItem(ACCESS_TOKEN_STORAGE_KEY)).toBe('some token');
-                expect(service.loggedIn()).toBe(true);
+                expect(service.isLoggedIn()).toBe(true);
             });
 
             it('should make a logout request if not expired, clear access-token & set logged in state', async () => {
@@ -151,7 +151,7 @@ describe('AuthService', () => {
 
                 expect(snackbar.error).not.toHaveBeenCalled();
                 expect(localStorage.getItem(ACCESS_TOKEN_STORAGE_KEY)).toBeNull();
-                expect(service.loggedIn()).toBe(false);
+                expect(service.isLoggedIn()).toBe(false);
             });
         });
 

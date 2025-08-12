@@ -26,10 +26,10 @@ export class AuthService {
     private readonly _snackbar = inject(SnackbarService);
 
     profile = httpResource<UserInfo>(() =>
-        this.loggedIn() ? Endpoints.user.profile : undefined
+        this.isLoggedIn() ? Endpoints.user.profile : undefined
     );
 
-    loggedIn = signal(!!this._getAccessToken());
+    isLoggedIn = signal(!!this._getAccessToken());
 
     async login(username: string, password: string): Promise<void> {
         const { accessToken } = await firstValueFrom(
@@ -40,7 +40,7 @@ export class AuthService {
         );
 
         this._setAccessToken(accessToken);
-        this.loggedIn.set(true);
+        this.isLoggedIn.set(true);
     }
 
     async logout(opts?: { expired: boolean }): Promise<void> {
@@ -51,7 +51,7 @@ export class AuthService {
         }
 
         this._clearAccessToken();
-        this.loggedIn.set(false);
+        this.isLoggedIn.set(false);
     }
 
     async signup(body: SignupRequestBody) {
