@@ -40,11 +40,7 @@ export class SignupComponent {
 
     form = this._fb.nonNullable.group(
         {
-            email: [
-                '',
-                [Validators.required, Validators.email],
-                asyncUniqueUserValidator(this._userService, 'email')
-            ],
+            email: ['', [Validators.required, Validators.email]],
             username: [
                 '',
                 Validators.required,
