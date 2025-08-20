@@ -33,7 +33,7 @@ function attachAuth(
     req: HttpRequest<unknown>,
     accessToken: string | null
 ): HttpRequest<unknown> {
-    const withCreds = [Endpoints.auth.refresh, Endpoints.auth.login].includes(req.url);
+    const withCreds = req.url.includes('auth/');
 
     const tokenHeaders: Record<string, string> = accessToken
         ? { Authorization: `Bearer ${accessToken}` }
