@@ -1,19 +1,19 @@
 import {
     HttpErrorResponse,
-    HttpEvent,
-    HttpHandlerFn,
     HttpInterceptorFn,
     HttpRequest,
     HttpStatusCode
 } from '@angular/common/http';
 import { inject } from '@angular/core';
-import { catchError, from, Observable, switchMap, tap } from 'rxjs';
-import { ACCESS_TOKEN_STORAGE_KEY } from '../../constants/access-token';
+import { catchError, from, switchMap, tap } from 'rxjs';
+import { Endpoints } from '../../constants/api-endpoints';
 import { AuthService } from '../../services/auth/auth.service';
+import { StorageService } from '../../services/storage/storage.service';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
     const authService = inject(AuthService);
-    const authReq = attachAuth(req);
+    const storage = inject(StorageService);
+    const authReq = attachAuth(req, storage.getAccessToken());
 
     return next(authReq).pipe(
         catchError((error) => {
@@ -21,47 +21,36 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
                 throw error;
             }
 
-            return refreshAndRetry(req, next, authService);
+            return from(authService.refreshToken()).pipe(
+                switchMap(() => next(attachAuth(req, storage.getAccessToken()))),
+                tap({ error: () => authService.logout({ expired: true }) })
+            );
         })
     );
 };
 
-function attachAuth(req: HttpRequest<unknown>): typeof req {
-    const accessToken = localStorage.getItem(ACCESS_TOKEN_STORAGE_KEY);
+function attachAuth(
+    req: HttpRequest<unknown>,
+    accessToken: string | null
+): HttpRequest<unknown> {
+    const withCreds = [Endpoints.auth.refresh, Endpoints.auth.login].includes(req.url);
 
-    if (!accessToken) {
-        return req;
-    }
+    const tokenHeaders: Record<string, string> = accessToken
+        ? { Authorization: `Bearer ${accessToken}` }
+        : {};
 
     return req.clone({
-        withCredentials: true,
-        setHeaders: { Authorization: `Bearer ${accessToken}` }
+        withCredentials: withCreds,
+        setHeaders: tokenHeaders
     });
 }
 
 function shouldRefreshToken(error: unknown, req: HttpRequest<unknown>): boolean {
-    const hasAccessToken = localStorage.getItem(ACCESS_TOKEN_STORAGE_KEY);
-    if (!hasAccessToken) {
-        return false;
-    }
+    const is401 =
+        error instanceof HttpErrorResponse &&
+        error.status === HttpStatusCode.Unauthorized;
 
-    const isHttpError = error instanceof HttpErrorResponse;
-    if (!isHttpError) {
-        return false;
-    }
+    const isLoginRequest = req.url.endsWith(Endpoints.auth.login);
 
-    const is401 = isHttpError && error.status === HttpStatusCode.Unauthorized;
-    const isLoginRequest = req.url.includes('auth/login');
     return is401 && !isLoginRequest;
-}
-
-function refreshAndRetry(
-    req: HttpRequest<unknown>,
-    next: HttpHandlerFn,
-    authService: AuthService
-): Observable<HttpEvent<unknown>> {
-    return from(authService.refreshToken()).pipe(
-        switchMap(() => next(attachAuth(req))),
-        tap({ error: () => authService.logout({ expired: true }) })
-    );
 }

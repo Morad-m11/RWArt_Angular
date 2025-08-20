@@ -6,26 +6,35 @@ import {
     provideHttpClientTesting
 } from '@angular/common/http/testing';
 import { provideValue } from 'src/app/shared/provide';
-import { ACCESS_TOKEN_STORAGE_KEY } from '../../constants/access-token';
 import { Endpoints } from '../../constants/api-endpoints';
 import { CoreSnackbarMessages } from '../../constants/snackbar-messages';
 import { SnackbarService } from '../snackbar/snackbar.service';
+import { StorageService } from '../storage/storage.service';
 import { AuthService } from './auth.service';
 
 describe('AuthService', () => {
     let service: AuthService;
     let httpTesting: HttpTestingController;
+    let storageService: jest.Mocked<StorageService>;
 
     beforeEach(() => {
         TestBed.configureTestingModule({
             providers: [
-                provideValue(SnackbarService, { error: jest.fn() }),
+                provideValue(SnackbarService, {
+                    error: jest.fn()
+                }),
+                provideValue(StorageService, {
+                    getAccessToken: jest.fn().mockReturnValue(null),
+                    setAccessToken: jest.fn(),
+                    clearAccessToken: jest.fn()
+                }),
                 provideHttpClient(),
                 provideHttpClientTesting()
             ]
         });
 
         httpTesting = TestBed.inject(HttpTestingController);
+        storageService = TestBed.inject(StorageService) as jest.Mocked<StorageService>;
     });
 
     it('should be created', () => {
@@ -34,17 +43,13 @@ describe('AuthService', () => {
     });
 
     describe('Logged in state on init', () => {
-        afterEach(() => {
-            localStorage.clear();
-        });
-
         it("should be false if token doesn't exist", () => {
             service = TestBed.inject(AuthService);
             expect(service.isLoggedIn()).toBe(false);
         });
 
         it('should be true if token exists', () => {
-            localStorage.setItem(ACCESS_TOKEN_STORAGE_KEY, 'sometoken');
+            storageService.getAccessToken.mockReturnValue('some token');
             service = TestBed.inject(AuthService);
             expect(service.isLoggedIn()).toBe(true);
         });
@@ -87,7 +92,7 @@ describe('AuthService', () => {
 
                 await expect(promise).rejects.toMatchObject({ status: 401 });
                 expect(service.isLoggedIn()).toBe(false);
-                expect(localStorage.getItem(ACCESS_TOKEN_STORAGE_KEY)).toBeNull();
+                expect(storageService.setAccessToken).not.toHaveBeenCalled();
             });
 
             it('should set logged in state & access token on success', async () => {
@@ -100,23 +105,21 @@ describe('AuthService', () => {
                 await promise;
 
                 expect(service.isLoggedIn()).toBe(true);
-                expect(localStorage.getItem(ACCESS_TOKEN_STORAGE_KEY)).toBe('some token');
+                expect(storageService.setAccessToken).toHaveBeenCalledWith('some token');
             });
         });
 
         describe('Logout', () => {
             beforeEach(() => {
+                service = TestBed.inject(AuthService);
                 service.isLoggedIn.set(true);
-                localStorage.setItem(ACCESS_TOKEN_STORAGE_KEY, 'some token');
             });
 
             afterEach(() => {
-                localStorage.clear();
                 httpTesting.verify();
             });
 
             it('should display an error message if called with expiration flag and not make a request', async () => {
-                const service = TestBed.inject(AuthService);
                 const snackbar = TestBed.inject(SnackbarService);
 
                 await service.logout({ expired: true });
@@ -124,8 +127,7 @@ describe('AuthService', () => {
                 expect(snackbar.error).toHaveBeenCalledWith(CoreSnackbarMessages.expired);
             });
 
-            it('should make a logout request if not expired, and do nothing on failure', async () => {
-                const service = TestBed.inject(AuthService);
+            it('should make a logout request if not marked as expired, and do nothing on failure', async () => {
                 const snackbar = TestBed.inject(SnackbarService);
 
                 const promise = service.logout();
@@ -135,12 +137,11 @@ describe('AuthService', () => {
                 await expect(promise).rejects.toMatchObject({ status: 500 });
 
                 expect(snackbar.error).not.toHaveBeenCalled();
-                expect(localStorage.getItem(ACCESS_TOKEN_STORAGE_KEY)).toBe('some token');
+                expect(storageService.clearAccessToken).not.toHaveBeenCalled();
                 expect(service.isLoggedIn()).toBe(true);
             });
 
             it('should make a logout request if not expired, clear access-token & set logged in state', async () => {
-                const service = TestBed.inject(AuthService);
                 const snackbar = TestBed.inject(SnackbarService);
 
                 const promise = service.logout();
@@ -150,7 +151,7 @@ describe('AuthService', () => {
                 await promise;
 
                 expect(snackbar.error).not.toHaveBeenCalled();
-                expect(localStorage.getItem(ACCESS_TOKEN_STORAGE_KEY)).toBeNull();
+                expect(storageService.clearAccessToken).toHaveBeenCalled();
                 expect(service.isLoggedIn()).toBe(false);
             });
         });
@@ -159,28 +160,23 @@ describe('AuthService', () => {
             it('should do nothing on request failure', async () => {
                 service = TestBed.inject(AuthService);
 
-                localStorage.setItem(ACCESS_TOKEN_STORAGE_KEY, 'some token');
-
                 const promise = service.refreshToken();
                 const req = httpTesting.expectOne(Endpoints.auth.refresh);
                 req.flush(null, { status: 500, statusText: 'Server Error!' });
 
                 await expect(promise).rejects.toMatchObject({ status: 500 });
-                expect(localStorage.getItem(ACCESS_TOKEN_STORAGE_KEY)).toBe('some token');
+                expect(storageService.clearAccessToken).not.toHaveBeenCalled();
             });
 
-            it('should write access token response to localstorage on success', async () => {
+            it('should set access token on success', async () => {
                 service = TestBed.inject(AuthService);
-
-                localStorage.setItem(ACCESS_TOKEN_STORAGE_KEY, 'some token');
 
                 const promise = service.refreshToken();
                 const req = httpTesting.expectOne(Endpoints.auth.refresh);
                 req.flush({ accessToken: 'new token' });
 
                 await promise;
-
-                expect(localStorage.getItem(ACCESS_TOKEN_STORAGE_KEY)).toBe('new token');
+                expect(storageService.setAccessToken).toHaveBeenCalledWith('new token');
             });
         });
     });

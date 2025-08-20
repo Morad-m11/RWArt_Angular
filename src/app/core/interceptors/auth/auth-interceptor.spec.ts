@@ -4,22 +4,23 @@ import {
     provideHttpClient,
     withInterceptors
 } from '@angular/common/http';
-import { TestBed } from '@angular/core/testing';
-
 import {
     HttpTestingController,
     provideHttpClientTesting
 } from '@angular/common/http/testing';
+import { TestBed } from '@angular/core/testing';
 import { firstValueFrom } from 'rxjs';
 import { provideValue } from 'src/app/shared/provide';
-import { ACCESS_TOKEN_STORAGE_KEY } from '../../constants/access-token';
+import { Endpoints } from '../../constants/api-endpoints';
 import { AuthService } from '../../services/auth/auth.service';
+import { StorageService } from '../../services/storage/storage.service';
 import { authInterceptor } from './auth-interceptor';
 
 describe('authInterceptor', () => {
     let httpClient: HttpClient;
     let httpTesting: HttpTestingController;
-    let authService: AuthService;
+    let authService: jest.Mocked<AuthService>;
+    let storageService: jest.Mocked<StorageService>;
 
     const interceptor: HttpInterceptorFn = (req, next) =>
         TestBed.runInInjectionContext(() => authInterceptor(req, next));
@@ -31,6 +32,9 @@ describe('authInterceptor', () => {
                     refreshToken: jest.fn().mockResolvedValue(undefined),
                     logout: jest.fn()
                 }),
+                provideValue(StorageService, {
+                    getAccessToken: jest.fn().mockReturnValue('test_access_token')
+                }),
                 provideHttpClient(withInterceptors([authInterceptor])),
                 provideHttpClientTesting()
             ]
@@ -38,9 +42,8 @@ describe('authInterceptor', () => {
 
         httpClient = TestBed.inject(HttpClient);
         httpTesting = TestBed.inject(HttpTestingController);
-        authService = TestBed.inject(AuthService);
-
-        localStorage.setItem(ACCESS_TOKEN_STORAGE_KEY, 'test_access_token');
+        authService = TestBed.inject(AuthService) as jest.Mocked<AuthService>;
+        storageService = TestBed.inject(StorageService) as jest.Mocked<StorageService>;
     });
 
     afterEach(() => {
@@ -52,35 +55,67 @@ describe('authInterceptor', () => {
     });
 
     describe('Auth Flow', () => {
-        it('should not attach Authorization header if access token is not present in storage', async () => {
-            localStorage.clear();
+        describe('withCredentials', () => {
+            it('should set credentials on login & refresh URLs', async () => {
+                firstValueFrom(httpClient.get('test'));
+                firstValueFrom(httpClient.get(Endpoints.auth.login));
+                firstValueFrom(httpClient.get(Endpoints.auth.refresh));
 
-            const promise = firstValueFrom(
-                httpClient.get('test', { headers: { custom: 'foo' } })
-            );
-            const req = httpTesting.expectOne('test');
+                httpTesting
+                    .expectOne((req) => req.url === 'test' && !req.withCredentials)
+                    .flush(null);
 
-            expect(req.request.headers.has('Authorization')).toBe(false);
-            expect(req.request.withCredentials).toBe(false);
+                httpTesting
+                    .expectOne(
+                        (req) => req.url === Endpoints.auth.login && req.withCredentials
+                    )
+                    .flush(null);
 
-            req.flush(null);
-            await expect(promise).resolves.toBeNull();
+                httpTesting
+                    .expectOne(
+                        (req) => req.url === Endpoints.auth.refresh && req.withCredentials
+                    )
+                    .flush(null);
+            });
         });
 
-        it('should attach Authorization header with access token from storage', async () => {
-            const promise = firstValueFrom(
-                httpClient.get('test', { headers: { custom: 'foo' } })
-            );
-            const req = httpTesting.expectOne('test');
+        describe('Authorization header', () => {
+            it('should append without modifying original headers', async () => {
+                const promise = firstValueFrom(
+                    httpClient.get('test', {
+                        headers: { custom: 'foo' },
+                        withCredentials: true
+                    })
+                );
 
-            expect(req.request.headers.get('custom')).toBe('foo');
-            expect(req.request.headers.get('Authorization')).toBe(
-                'Bearer test_access_token'
-            );
-            expect(req.request.withCredentials).toBe(true);
+                const req = httpTesting.expectOne((req) => {
+                    return (
+                        req.url === 'test' &&
+                        req.headers.get('custom') === 'foo' &&
+                        req.headers.get('Authorization') === 'Bearer test_access_token'
+                    );
+                });
 
-            req.flush(null);
-            await expect(promise).resolves.toBeNull();
+                req.flush(null);
+
+                await expect(promise).resolves.toBeNull();
+            });
+
+            it('should not attach header if access token is not present', async () => {
+                storageService.getAccessToken.mockReturnValue(null);
+
+                const promise = firstValueFrom(
+                    httpClient.get('test', { headers: { custom: 'foo' } })
+                );
+
+                const req = httpTesting.expectOne(
+                    (req) => !req.headers.has('Authorization')
+                );
+
+                req.flush(null);
+
+                await expect(promise).resolves.toBeNull();
+            });
         });
     });
 
@@ -130,7 +165,7 @@ describe('authInterceptor', () => {
             expect(authService.refreshToken).toHaveBeenCalled();
 
             // set new token & flush async
-            localStorage.setItem(ACCESS_TOKEN_STORAGE_KEY, 'new_access_token');
+            storageService.getAccessToken.mockReturnValue('new_access_token');
             await Promise.resolve();
 
             // expect retried request with new token from storage
@@ -144,7 +179,7 @@ describe('authInterceptor', () => {
         });
 
         it('should call logout() if refreshToken() fails', async () => {
-            (authService.refreshToken as jest.Mock).mockRejectedValue('Failed!');
+            authService.refreshToken.mockRejectedValue('Failed!');
 
             // make initial request
             const promise = firstValueFrom(httpClient.get('test'));

@@ -1,10 +1,10 @@
 import { HttpClient, httpResource } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
-import { ACCESS_TOKEN_STORAGE_KEY } from '../../constants/access-token';
 import { Endpoints } from '../../constants/api-endpoints';
 import { CoreSnackbarMessages } from '../../constants/snackbar-messages';
 import { SnackbarService } from '../snackbar/snackbar.service';
+import { StorageService } from '../storage/storage.service';
 
 export interface UserInfo {
     id: number;
@@ -23,13 +23,14 @@ interface SignupRequestBody {
 })
 export class AuthService {
     private readonly _http = inject(HttpClient);
+    private readonly _storage = inject(StorageService);
     private readonly _snackbar = inject(SnackbarService);
 
     profile = httpResource<UserInfo>(() =>
         this.isLoggedIn() ? Endpoints.user.profile : undefined
     );
 
-    isLoggedIn = signal(!!this._getAccessToken());
+    isLoggedIn = signal(!!this._storage.getAccessToken());
 
     async login(username: string, password: string): Promise<void> {
         const { accessToken } = await firstValueFrom(
@@ -39,7 +40,7 @@ export class AuthService {
             })
         );
 
-        this._setAccessToken(accessToken);
+        this._storage.setAccessToken(accessToken);
         this.isLoggedIn.set(true);
     }
 
@@ -50,7 +51,7 @@ export class AuthService {
             await firstValueFrom(this._http.post(Endpoints.auth.logout, null));
         }
 
-        this._clearAccessToken();
+        this._storage.clearAccessToken();
         this.isLoggedIn.set(false);
     }
 
@@ -73,18 +74,6 @@ export class AuthService {
             this._http.post<{ accessToken: string }>(Endpoints.auth.refresh, null)
         );
 
-        this._setAccessToken(accessToken);
-    }
-
-    private _getAccessToken(): string | null {
-        return localStorage.getItem(ACCESS_TOKEN_STORAGE_KEY);
-    }
-
-    private _setAccessToken(value: string): void {
-        localStorage.setItem(ACCESS_TOKEN_STORAGE_KEY, value);
-    }
-
-    private _clearAccessToken(): void {
-        localStorage.removeItem(ACCESS_TOKEN_STORAGE_KEY);
+        this._storage.setAccessToken(accessToken);
     }
 }
