@@ -156,10 +156,12 @@ describe('authInterceptor', () => {
         it('should call AuthService for a new refresh token, then retry the request with the new access token from storage', async () => {
             // make initial request
             const promise = firstValueFrom(httpClient.get('test'));
-            const req = httpTesting.expectOne('test');
 
             // return 401
-            req.flush('Failed!', { status: 401, statusText: 'Internal Server Error' });
+            httpTesting.expectOne('test').flush('Failed!', {
+                status: 401,
+                statusText: 'Internal Server Error'
+            });
 
             // expect refresh call
             expect(authService.refreshToken).toHaveBeenCalled();
@@ -183,10 +185,11 @@ describe('authInterceptor', () => {
 
             // make initial request
             const promise = firstValueFrom(httpClient.get('test'));
-            const req = httpTesting.expectOne('test');
 
-            // return 401
-            req.flush('Failed!', { status: 401, statusText: 'Internal Server Error' });
+            httpTesting.expectOne('test').flush('Failed!', {
+                status: 401,
+                statusText: 'Internal Server Error'
+            });
 
             // expect refresh call
             expect(authService.refreshToken).toHaveBeenCalled();
@@ -197,6 +200,39 @@ describe('authInterceptor', () => {
             // expect logout call
             expect(authService.logout).toHaveBeenCalledWith({ expired: true });
             await expect(promise).rejects.toBe('Failed!');
+        });
+
+        it('should only refresh only once on simultaneous failures and retry all requests', async () => {
+            // three simulatneous requests
+            firstValueFrom(httpClient.get('test1'));
+            firstValueFrom(httpClient.get('test2'));
+            firstValueFrom(httpClient.get('test3'));
+
+            // reject all three with 401
+            httpTesting.expectOne('test1').flush('Failed!', {
+                status: 401,
+                statusText: 'Internal Server Error'
+            });
+
+            httpTesting.expectOne('test2').flush('Failed!', {
+                status: 401,
+                statusText: 'Internal Server Error'
+            });
+
+            httpTesting.expectOne('test3').flush('Failed!', {
+                status: 401,
+                statusText: 'Internal Server Error'
+            });
+
+            await Promise.resolve();
+
+            // expect a single refresh request
+            expect(authService.refreshToken).toHaveBeenCalledTimes(1);
+
+            // expect all requests to have been retried
+            httpTesting.expectOne('test1');
+            httpTesting.expectOne('test2');
+            httpTesting.expectOne('test3');
         });
     });
 });

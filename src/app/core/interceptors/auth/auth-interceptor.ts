@@ -1,30 +1,35 @@
 import {
     HttpErrorResponse,
+    HttpHandlerFn,
     HttpInterceptorFn,
     HttpRequest,
     HttpStatusCode
 } from '@angular/common/http';
 import { inject } from '@angular/core';
-import { catchError, from, switchMap, tap } from 'rxjs';
+import { catchError, finalize, from, Observable, switchMap, tap } from 'rxjs';
 import { Endpoints } from '../../constants/api-endpoints';
 import { AuthService } from '../../services/auth/auth.service';
 import { StorageService } from '../../services/storage/storage.service';
 
+let refreshRequest$: Observable<unknown> | null = null;
+
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
     const authService = inject(AuthService);
     const storage = inject(StorageService);
+
+    if (refreshRequest$) {
+        return waitForRefreshAndRetry(req, next, storage);
+    }
+
     const authReq = attachAuth(req, storage.getAccessToken());
 
     return next(authReq).pipe(
-        catchError((error) => {
-            if (!shouldRefreshToken(error, req)) {
+        catchError((error: HttpErrorResponse) => {
+            if (!shouldRefreshToken(error, req.url)) {
                 throw error;
             }
 
-            return from(authService.refreshToken()).pipe(
-                switchMap(() => next(attachAuth(req, storage.getAccessToken()))),
-                tap({ error: () => authService.logout({ expired: true }) })
-            );
+            return refreshAndRetry(req, next, authService, storage);
         })
     );
 };
@@ -45,12 +50,41 @@ function attachAuth(
     });
 }
 
-function shouldRefreshToken(error: unknown, req: HttpRequest<unknown>): boolean {
+function shouldRefreshToken(error: unknown, url: string): boolean {
     const is401 =
         error instanceof HttpErrorResponse &&
         error.status === HttpStatusCode.Unauthorized;
 
-    const isLoginRequest = req.url.endsWith(Endpoints.auth.login);
+    const isLoginRequest = url.endsWith(Endpoints.auth.login);
+    const isRefreshRequest = url.endsWith(Endpoints.auth.refresh);
 
-    return is401 && !isLoginRequest;
+    return is401 && !isLoginRequest && !isRefreshRequest;
+}
+
+function waitForRefreshAndRetry(
+    req: HttpRequest<unknown>,
+    next: HttpHandlerFn,
+    storage: StorageService
+) {
+    return refreshRequest$!.pipe(
+        switchMap(() => next(attachAuth(req, storage.getAccessToken())))
+    );
+}
+
+function refreshAndRetry(
+    req: HttpRequest<unknown>,
+    next: HttpHandlerFn,
+    authService: AuthService,
+    storage: StorageService
+) {
+    if (!refreshRequest$) {
+        refreshRequest$ = from(authService.refreshToken()).pipe(
+            tap({ error: () => authService.logout({ expired: true }) }),
+            finalize(() => {
+                refreshRequest$ = null;
+            })
+        );
+    }
+
+    return waitForRefreshAndRetry(req, next, storage);
 }
