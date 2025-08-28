@@ -11,6 +11,11 @@ import {
 } from '@angular/core';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 
+/**
+ * Directive to apply loading state to elements.
+ *
+ * Will temporarily remove the elements content to display a loading spinner
+ */
 @Directive({
     selector: '[appLoading]'
 })

@@ -11,7 +11,7 @@ export const AuthMessages: Record<Routes, Record<number, string>> = {
     },
     login: {
         401: 'Invalid username/password',
-        403: "Your email hasn't been verified yet. We've sent you a new verification link."
+        403: "Your account hasn't been verified yet"
     },
     verification: {
         400: 'Invalid or expired link',

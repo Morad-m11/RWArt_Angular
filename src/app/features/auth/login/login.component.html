@@ -15,7 +15,19 @@
         </mat-form-field>
 
         @if (errorMessage()) {
-            <p class="text-error" role="alert">{{ errorMessage() }}</p>
+            <div class="fx-row fx-align fx-gap-1">
+                <p class="text-error">{{ errorMessage() }}</p>
+
+                @if (showResendVerification()) {
+                    <button
+                        matButton
+                        type="button"
+                        [appLoading]="loadingVerification()"
+                        (click)="resendAccountVerification()">
+                        Resend verification email
+                    </button>
+                }
+            </div>
         }
     </div>
 

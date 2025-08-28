@@ -59,6 +59,12 @@ export class AuthService {
         await firstValueFrom(this._http.post(Endpoints.auth.signup, body));
     }
 
+    async resendVerification(username: string) {
+        await firstValueFrom(
+            this._http.post(Endpoints.auth.resendVerification, { username })
+        );
+    }
+
     async recoverAccount(email: string): Promise<void> {
         await firstValueFrom(this._http.post(Endpoints.auth.forgotPassword, { email }));
     }

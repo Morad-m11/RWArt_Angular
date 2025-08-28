@@ -35,10 +35,13 @@ export class LoginComponent {
 
     loading = signal(false);
     errorMessage = signal('');
+    loadingVerification = signal(false);
+    showResendVerification = signal(false);
 
     async login() {
         this.loading.set(true);
         this.errorMessage.set('');
+        this.showResendVerification.set(false);
 
         const user = this.form.getRawValue();
 
@@ -49,12 +52,31 @@ export class LoginComponent {
             .finally(() => this.loading.set(false));
     }
 
+    async resendAccountVerification() {
+        this.loadingVerification.set(true);
+
+        const username = this.form.getRawValue().username;
+
+        await this._authService
+            .resendVerification(username)
+            .then(() => {
+                this._snackbar.success('Sent verification mail', 3000);
+                this.errorMessage.set('');
+            })
+            .catch((error) => this._setErrorMessage(error))
+            .finally(() => this.loadingVerification.set(false));
+    }
+
     private _handleSuccess(name: string): void {
         this._snackbar.success(`${CoreSnackbarMessages.login.success} ${name}`);
         this._router.navigateByUrl('/');
     }
 
     private _setErrorMessage(error: HttpErrorResponse): void {
+        if (error.status === 403) {
+            this.showResendVerification.set(true);
+        }
+
         this.errorMessage.set(getErrorMessage('login', error.status));
     }
 }
