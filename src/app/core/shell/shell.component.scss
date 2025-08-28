@@ -8,6 +8,15 @@
     box-sizing: border-box;
 }
 
+.home-link {
+    all: unset;
+    cursor: pointer;
+
+    &:hover {
+        filter: brightness(0.8);
+    }
+}
+
 .spacer {
     flex: 1 1 auto;
 }
