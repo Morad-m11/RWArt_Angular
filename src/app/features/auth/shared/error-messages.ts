@@ -1,25 +1,36 @@
-export const LoginSnackbarMessages = {
-    unauthorized: 'Invalid username/password',
-    unverified:
-        "Your email hasn't been verified yet. We've sent you a new verification link.",
-    failed: 'Login failed'
+type Routes = 'global' | 'signup' | 'login' | 'verification' | 'forgotPassword';
+
+const requestFailedMessage = (status: number) => `Request failed (${status})`;
+
+export const AuthMessages: Record<Routes, Record<number, string>> = {
+    global: {
+        429: 'Too many attempts. Please wait a bit before trying again'
+    },
+    signup: {
+        400: 'Invalid email or username'
+    },
+    login: {
+        401: 'Invalid username/password',
+        403: "Your email hasn't been verified yet. We've sent you a new verification link."
+    },
+    verification: {
+        400: 'Invalid or expired link',
+        401: 'Invalid or expired link'
+    },
+    forgotPassword: {
+        400: 'Invalid or expired link'
+    }
 };
 
-export const SignupSnackbarMessages = {
-    failed: 'Signup failed'
-};
+export const getErrorMessage = (
+    route: keyof typeof AuthMessages,
+    status: number
+): string => {
+    const routeMessages = AuthMessages[route];
 
-export const VerificationMessages = {
-    failed: 'Request failed',
-    invalid: 'The provided token is invalid',
-    expired: 'The provided token has expired'
-};
+    if (!routeMessages[status]) {
+        return AuthMessages.global[status] || requestFailedMessage(status);
+    }
 
-export const RecoveryMessages = {
-    failed: 'Request failed'
-};
-
-export const ForgotPasswordMessages = {
-    invalid: 'Invalid or expired link',
-    failed: 'Request failed'
+    return routeMessages[status];
 };

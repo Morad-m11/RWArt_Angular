@@ -1,4 +1,4 @@
-import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
@@ -8,7 +8,7 @@ import { SnackbarService } from 'src/app/core/services/snackbar/snackbar.service
 import { LoadingDirective } from 'src/app/shared/directives/loading/loading.directive';
 import { MaterialModule } from 'src/app/shared/material.module';
 import { FormErrorDirective } from '../shared/directives/form-error/form-error.directive';
-import { LoginSnackbarMessages } from '../shared/error-messages';
+import { getErrorMessage } from '../shared/error-messages';
 
 export interface Credentials {
     username: string;
@@ -45,7 +45,7 @@ export class LoginComponent {
         await this._authService
             .login(user.username, user.password)
             .then(() => this._handleSuccess(user.username))
-            .catch((error) => this._handleError(error))
+            .catch((error) => this._setErrorMessage(error))
             .finally(() => this.loading.set(false));
     }
 
@@ -54,18 +54,7 @@ export class LoginComponent {
         this._router.navigateByUrl('/');
     }
 
-    private _handleError(error: HttpErrorResponse): void {
-        switch (error.status) {
-            case HttpStatusCode.Unauthorized:
-                this.errorMessage.set(LoginSnackbarMessages.unauthorized);
-                break;
-            case HttpStatusCode.Forbidden:
-                this.errorMessage.set(LoginSnackbarMessages.unverified);
-                break;
-            default:
-                this.errorMessage.set(
-                    `${LoginSnackbarMessages.failed} (${error.status})`
-                );
-        }
+    private _setErrorMessage(error: HttpErrorResponse): void {
+        this.errorMessage.set(getErrorMessage('login', error.status));
     }
 }

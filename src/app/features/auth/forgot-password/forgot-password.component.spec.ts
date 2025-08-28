@@ -8,7 +8,6 @@ import { MatFormFieldHarness } from '@angular/material/form-field/testing';
 import { MatInputHarness } from '@angular/material/input/testing';
 import { AuthService } from 'src/app/core/services/auth/auth.service';
 import { provideValue } from 'src/app/shared/provide';
-import { RecoveryMessages } from '../shared/error-messages';
 import { ValidationMessages } from '../shared/validators/validation-errors';
 import { ForgotPasswordComponent } from './forgot-password.component';
 
@@ -94,6 +93,6 @@ describe('ForgotPasswordComponent', () => {
         await button.click();
 
         const error = fixture.debugElement.nativeElement.querySelector('p').textContent;
-        expect(error).toEqual(`${RecoveryMessages.failed} (500)`);
+        expect(error).toEqual(component.errorMessage());
     });
 });

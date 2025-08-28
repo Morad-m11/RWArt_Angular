@@ -6,17 +6,12 @@ import { LoadingDirective } from 'src/app/shared/directives/loading/loading.dire
 import { MaterialModule } from 'src/app/shared/material.module';
 import { ResultCardComponent } from '../shared/components/result-card/result-card.component';
 import { FormErrorDirective } from '../shared/directives/form-error/form-error.directive';
-import { RecoveryMessages } from '../shared/error-messages';
+import { getErrorMessage } from '../shared/error-messages';
 
 @Component({
     selector: 'app-forgot-password',
     standalone: true,
-    imports: [
-        MaterialModule,
-        FormErrorDirective,
-        LoadingDirective,
-        ResultCardComponent
-    ],
+    imports: [MaterialModule, FormErrorDirective, LoadingDirective, ResultCardComponent],
     templateUrl: './forgot-password.component.html',
     styleUrl: './forgot-password.component.scss'
 })
@@ -39,9 +34,11 @@ export class ForgotPasswordComponent {
         await this._authService
             .recoverAccount(this.email.value)
             .then(() => this.success.set(true))
-            .catch((error: HttpErrorResponse) =>
-                this.errorMessage.set(`${RecoveryMessages.failed} (${error.status})`)
-            )
+            .catch((error) => this._setErrorMessage(error))
             .finally(() => this.loading.set(false));
+    }
+
+    private _setErrorMessage(error: HttpErrorResponse): void {
+        this.errorMessage.set(getErrorMessage('forgotPassword', error.status));
     }
 }

@@ -1,9 +1,9 @@
-import { HttpErrorResponse, httpResource, HttpStatusCode } from '@angular/common/http';
+import { HttpErrorResponse, httpResource } from '@angular/common/http';
 import { Component, computed, input } from '@angular/core';
 import { Endpoints } from 'src/app/core/constants/api-endpoints';
 import { MaterialModule } from 'src/app/shared/material.module';
 import { ResultCardComponent } from '../shared/components/result-card/result-card.component';
-import { VerificationMessages } from '../shared/error-messages';
+import { getErrorMessage } from '../shared/error-messages';
 
 @Component({
     selector: 'app-verification',
@@ -26,14 +26,6 @@ export class VerificationComponent {
 
     private _getErrorMessage(error: Error): string {
         const status = (error as HttpErrorResponse).status;
-
-        switch (status) {
-            case HttpStatusCode.BadRequest:
-                return VerificationMessages.invalid;
-            case HttpStatusCode.Unauthorized:
-                return VerificationMessages.expired;
-            default:
-                return `${VerificationMessages.failed} (${status})`;
-        }
+        return getErrorMessage('verification', status);
     }
 }
