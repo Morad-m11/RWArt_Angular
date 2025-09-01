@@ -28,4 +28,10 @@ export class UserService {
             )
         );
     }
+
+    async updateUsername(username: string) {
+        await firstValueFrom(
+            this._http.post(Endpoints.user.updateUsername, { username })
+        );
+    }
 }

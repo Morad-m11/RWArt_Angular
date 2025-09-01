@@ -1,14 +1,17 @@
-import { HttpErrorResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { Router, RouterLink } from '@angular/router';
-import { CoreSnackbarMessages } from 'src/app/core/constants/snackbar-messages';
-import { AuthService } from 'src/app/core/services/auth/auth.service';
+import { firstValueFrom } from 'rxjs';
+import { AuthService, SignInProvider } from 'src/app/core/services/auth/auth.service';
 import { SnackbarService } from 'src/app/core/services/snackbar/snackbar.service';
 import { LoadingDirective } from 'src/app/shared/directives/loading/loading.directive';
 import { MaterialModule } from 'src/app/shared/material.module';
 import { FormErrorDirective } from '../shared/directives/form-error/form-error.directive';
 import { getErrorMessage } from '../shared/error-messages';
+import { GoogleButtonComponent } from './google-button/google-button.component';
+import { UsernamePickerComponent } from './username-picker/username-picker/username-picker.component';
 
 export interface Credentials {
     username: string;
@@ -18,14 +21,21 @@ export interface Credentials {
 @Component({
     selector: 'app-user',
     standalone: true,
-    imports: [MaterialModule, RouterLink, LoadingDirective, FormErrorDirective],
+    imports: [
+        MaterialModule,
+        RouterLink,
+        LoadingDirective,
+        FormErrorDirective,
+        GoogleButtonComponent
+    ],
     templateUrl: './login.component.html',
     styleUrl: './login.component.scss'
 })
 export class LoginComponent {
-    private readonly _authService = inject(AuthService);
     private readonly _fb = inject(FormBuilder);
     private readonly _snackbar = inject(SnackbarService);
+    private readonly _dialog = inject(MatDialog);
+    private readonly _authService = inject(AuthService);
     private readonly _router = inject(Router);
 
     form = this._fb.nonNullable.group({
@@ -47,9 +57,51 @@ export class LoginComponent {
 
         await this._authService
             .login(user.username, user.password)
-            .then(() => this._handleSuccess(user.username))
+            .then(() => this._handleSuccess())
             .catch((error) => this._setErrorMessage(error))
             .finally(() => this.loading.set(false));
+    }
+
+    async handleThirdPartySignIn($event: { provider: SignInProvider; token: string }) {
+        this.loading.set(true);
+        this.errorMessage.set('');
+        this.showResendVerification.set(false);
+
+        await this._authService
+            .thirdPartyLogin($event.provider, $event.token)
+            .then(() => this._handleSuccess())
+            .catch(async (error: HttpErrorResponse) => {
+                if (error.status !== HttpStatusCode.Conflict) {
+                    this._setErrorMessage(error);
+                    return;
+                }
+
+                const username = await this._pickUserName();
+
+                if (!username) {
+                    return;
+                }
+
+                await this._authService
+                    .thirdPartyLogin($event.provider, $event.token, username)
+                    .then(() => this._handleSuccess())
+                    .catch((error: HttpErrorResponse) => {
+                        this._setErrorMessage(error);
+                    });
+            })
+            .finally(() => {
+                this.loading.set(false);
+            });
+    }
+
+    async _pickUserName(): Promise<string | null | undefined> {
+        const dialogRef = this._dialog.open<
+            UsernamePickerComponent,
+            undefined,
+            string | null
+        >(UsernamePickerComponent, { disableClose: true });
+
+        return await firstValueFrom(dialogRef.afterClosed());
     }
 
     async resendAccountVerification() {
@@ -67,13 +119,13 @@ export class LoginComponent {
             .finally(() => this.loadingVerification.set(false));
     }
 
-    private _handleSuccess(name: string): void {
-        this._snackbar.success(`${CoreSnackbarMessages.login.success} ${name}`);
+    private _handleSuccess(): void {
+        this._snackbar.success('Logged in');
         this._router.navigateByUrl('/');
     }
 
     private _setErrorMessage(error: HttpErrorResponse): void {
-        if (error.status === 403) {
+        if (error.status === HttpStatusCode.Forbidden) {
             this.showResendVerification.set(true);
         }
 

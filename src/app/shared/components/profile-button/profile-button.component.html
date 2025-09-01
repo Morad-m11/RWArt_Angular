@@ -4,26 +4,26 @@
     <a matButton routerLink="auth/login">Login</a>
     <a matButton="filled" routerLink="auth/signup">Sign up</a>
 } @else {
-    <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="profile-button">
-        <mat-icon>account_circle</mat-icon>
+    <button
+        class="large-image-button"
+        mat-icon-button
+        [matMenuTriggerFor]="menu"
+        aria-label="profile-button">
+        <img
+            [src]="profile.value().pictureUrl"
+            alt="profile picture"
+            referrerPolicy="no-referrer" />
     </button>
 
     <mat-menu #menu="matMenu">
         <ng-template matMenuContent>
             <mat-card appearance="outlined">
                 <mat-card-header>
-                    <mat-card-title>
-                        {{ profile.value().username | titlecase }}
-                    </mat-card-title>
+                    <mat-card-title>Hello, {{ profile.value().username }}!</mat-card-title>
                 </mat-card-header>
 
                 <mat-card-content>
                     <mat-list>
-                        <mat-list-item>
-                            <span matListItemTitle>ID</span>
-                            <span matListItemLine>{{ profile.value().id }}</span>
-                        </mat-list-item>
-
                         <mat-list-item>
                             <span matListItemTitle>E-Mail</span>
                             <span matListItemLine>{{ profile.value().email }}</span>

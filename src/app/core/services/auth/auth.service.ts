@@ -10,7 +10,10 @@ export interface UserInfo {
     id: number;
     email: string;
     username: string;
+    pictureUrl?: string | null;
 }
+
+export type SignInProvider = 'google';
 
 interface SignupRequestBody {
     email: string;
@@ -34,9 +37,27 @@ export class AuthService {
 
     async login(username: string, password: string): Promise<void> {
         const { accessToken } = await firstValueFrom(
-            this._http.post<{ accessToken: string }>(Endpoints.auth.login, {
+            this._http.post<{ accessToken: string }>(Endpoints.auth.login.local, {
                 username,
                 password
+            })
+        );
+
+        this._storage.setAccessToken(accessToken);
+        this.isLoggedIn.set(true);
+    }
+
+    async thirdPartyLogin(
+        _provider: string,
+        token: string,
+        nameForNewUser?: string
+    ): Promise<void> {
+        const url = Endpoints.auth.login.google;
+
+        const { accessToken } = await firstValueFrom(
+            this._http.post<{ accessToken: string }>(url, {
+                token,
+                username: nameForNewUser
             })
         );
 

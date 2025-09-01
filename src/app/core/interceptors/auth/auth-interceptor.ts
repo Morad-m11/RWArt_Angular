@@ -7,7 +7,6 @@ import {
 } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { catchError, finalize, from, Observable, switchMap, tap } from 'rxjs';
-import { Endpoints } from '../../constants/api-endpoints';
 import { AuthService } from '../../services/auth/auth.service';
 import { StorageService } from '../../services/storage/storage.service';
 
@@ -55,10 +54,9 @@ function shouldRefreshToken(error: unknown, url: string): boolean {
         error instanceof HttpErrorResponse &&
         error.status === HttpStatusCode.Unauthorized;
 
-    const isLoginRequest = url.endsWith(Endpoints.auth.login);
-    const isRefreshRequest = url.endsWith(Endpoints.auth.refresh);
+    const isAuthRequest = url.includes('auth');
 
-    return is401 && !isLoginRequest && !isRefreshRequest;
+    return is401 && !isAuthRequest;
 }
 
 function waitForRefreshAndRetry(

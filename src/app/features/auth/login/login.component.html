@@ -44,6 +44,10 @@
 
     <mat-divider inset />
 
+    <div class="mg-1 fx-col fx-gap-1 fx-align">
+        <app-google-button (signedIn)="handleThirdPartySignIn($event)" />
+    </div>
+
     <nav class="fx-col mg-1" style="width: fit-content">
         <a id="recovery-button" matButton routerLink="/auth/forgot-password">Forgot password?</a>
         <a id="signup-button" matButton routerLink="/auth/signup">Create an account</a>

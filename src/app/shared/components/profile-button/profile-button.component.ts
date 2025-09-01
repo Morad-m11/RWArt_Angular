@@ -1,4 +1,3 @@
-import { TitleCasePipe } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
@@ -10,7 +9,7 @@ import { MaterialModule } from '../../material.module';
 @Component({
     selector: 'app-profile-button',
     standalone: true,
-    imports: [MaterialModule, RouterLink, TitleCasePipe],
+    imports: [MaterialModule, RouterLink],
     templateUrl: './profile-button.component.html',
     styleUrl: './profile-button.component.scss'
 })

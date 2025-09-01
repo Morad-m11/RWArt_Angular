@@ -1,5 +1,6 @@
 import { HarnessLoader, parallel } from '@angular/cdk/testing';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
+import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatButtonHarness } from '@angular/material/button/testing';
 import { MatFormFieldHarness } from '@angular/material/form-field/testing';
@@ -9,6 +10,7 @@ import { AuthService } from 'src/app/core/services/auth/auth.service';
 import { SnackbarService } from 'src/app/core/services/snackbar/snackbar.service';
 import { provideValue } from 'src/app/shared/provide';
 import { DummyComponent } from '../shared/test/dummy.component';
+import { GoogleButtonComponent } from './google-button/google-button.component';
 import { LoginComponent } from './login.component';
 
 describe('LoginComponent', () => {
@@ -35,7 +37,12 @@ describe('LoginComponent', () => {
                     }
                 ])
             ]
-        }).compileComponents();
+        })
+            .overrideComponent(LoginComponent, {
+                remove: { imports: [GoogleButtonComponent] },
+                add: { imports: [GoogleButtonMock] }
+            })
+            .compileComponents();
 
         router = TestBed.inject(Router);
         await router.navigate(['auth', 'login']);
@@ -201,3 +208,6 @@ describe('LoginComponent', () => {
         return [name!, pass!];
     }
 });
+
+@Component({ selector: 'app-google-button' })
+class GoogleButtonMock {}

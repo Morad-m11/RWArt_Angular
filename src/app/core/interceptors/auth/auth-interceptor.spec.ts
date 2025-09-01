@@ -58,7 +58,7 @@ describe('authInterceptor', () => {
         describe('withCredentials', () => {
             it('should set credentials on login & refresh URLs', async () => {
                 firstValueFrom(httpClient.get('test'));
-                firstValueFrom(httpClient.get(Endpoints.auth.login));
+                firstValueFrom(httpClient.get(Endpoints.auth.login.local));
                 firstValueFrom(httpClient.get(Endpoints.auth.refresh));
 
                 httpTesting
@@ -67,7 +67,8 @@ describe('authInterceptor', () => {
 
                 httpTesting
                     .expectOne(
-                        (req) => req.url === Endpoints.auth.login && req.withCredentials
+                        (req) =>
+                            req.url === Endpoints.auth.login.local && req.withCredentials
                     )
                     .flush(null);
 

@@ -1,6 +1,9 @@
 export const Endpoints = {
     auth: {
-        login: 'auth/login',
+        login: {
+            local: 'auth/login',
+            google: 'auth/google'
+        },
         logout: 'auth/logout',
         refresh: 'auth/refresh',
         signup: 'auth/signup',
@@ -11,6 +14,7 @@ export const Endpoints = {
     },
     user: {
         profile: 'user/profile',
+        updateUsername: 'user/update-username',
         checkUnique: 'user/check-unique'
     },
     images: 'image'
