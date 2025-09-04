@@ -1,11 +1,26 @@
-type Routes = 'global' | 'signup' | 'login' | 'verification' | 'forgotPassword';
+import { HttpErrorResponse, HttpHeaders, HttpStatusCode } from '@angular/common/http';
+
+type Routes = 'signup' | 'login' | 'verification' | 'forgotPassword';
 
 const requestFailedMessage = (status: number) => `Request failed (${status})`;
 
+const tooManyRequestsMessage = (headers: HttpHeaders) => {
+    const retryHeader =
+        headers.get('Retry-After-Long') ?? headers.get('Retry-After-Medium');
+
+    if (!retryHeader) {
+        return 'Too many attempts. Please wait a few seconds before trying again';
+    }
+
+    if (+retryHeader > 60) {
+        const minutes = Math.floor(+retryHeader / 60);
+        return `Too many attempts. Please try again in ${minutes} minutes`;
+    }
+
+    return `Too many attempts. Please try again in ${retryHeader} seconds`;
+};
+
 export const AuthMessages: Record<Routes, Record<number, string>> = {
-    global: {
-        429: 'Too many attempts. Please wait a bit before trying again'
-    },
     signup: {
         400: 'Invalid email or username'
     },
@@ -24,12 +39,18 @@ export const AuthMessages: Record<Routes, Record<number, string>> = {
 
 export const getErrorMessage = (
     route: keyof typeof AuthMessages,
-    status: number
+    error: HttpErrorResponse
 ): string => {
+    const status = error.status;
+
+    if (status === HttpStatusCode.TooManyRequests) {
+        return tooManyRequestsMessage(error.headers);
+    }
+
     const routeMessages = AuthMessages[route];
 
     if (!routeMessages[status]) {
-        return AuthMessages.global[status] || requestFailedMessage(status);
+        return requestFailedMessage(status);
     }
 
     return routeMessages[status];

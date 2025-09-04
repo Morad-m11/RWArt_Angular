@@ -75,6 +75,6 @@ export class SignupComponent {
     }
 
     private _setErrorMessage(error: HttpErrorResponse) {
-        this.errorMessage.set(getErrorMessage('signup', error.status));
+        this.errorMessage.set(getErrorMessage('signup', error));
     }
 }

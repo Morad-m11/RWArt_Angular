@@ -39,6 +39,6 @@ export class ForgotPasswordComponent {
     }
 
     private _setErrorMessage(error: HttpErrorResponse): void {
-        this.errorMessage.set(getErrorMessage('forgotPassword', error.status));
+        this.errorMessage.set(getErrorMessage('forgotPassword', error));
     }
 }

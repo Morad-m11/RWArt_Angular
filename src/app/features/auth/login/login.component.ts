@@ -125,10 +125,13 @@ export class LoginComponent {
     }
 
     private _setErrorMessage(error: HttpErrorResponse): void {
-        if (error.status === HttpStatusCode.Forbidden) {
+        const isUnverified = error.status === HttpStatusCode.Forbidden;
+        const message = getErrorMessage('login', error);
+
+        if (isUnverified) {
             this.showResendVerification.set(true);
         }
 
-        this.errorMessage.set(getErrorMessage('login', error.status));
+        this.errorMessage.set(message);
     }
 }

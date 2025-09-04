@@ -22,12 +22,11 @@ export class GoogleButtonComponent implements OnInit {
         });
 
         google.accounts.id.renderButton(document.getElementById('google-signin'), {
+            locale: 'en',
             theme: 'outline',
             shape: 'pill',
             text: 'signin_with'
         });
-
-        // google.accounts.id.prompt();
     }
 
     handleCredentialResponse(response: GoogleSigninResponse) {

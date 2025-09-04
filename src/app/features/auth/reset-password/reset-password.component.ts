@@ -56,6 +56,6 @@ export class ResetPasswordComponent {
     }
 
     private _setErrorMessage(error: HttpErrorResponse): void | PromiseLike<void> {
-        this.errorMessage.set(getErrorMessage('forgotPassword', error.status));
+        this.errorMessage.set(getErrorMessage('forgotPassword', error));
     }
 }

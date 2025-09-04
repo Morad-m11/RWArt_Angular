@@ -25,7 +25,6 @@ export class VerificationComponent {
     }));
 
     private _getErrorMessage(error: Error): string {
-        const status = (error as HttpErrorResponse).status;
-        return getErrorMessage('verification', status);
+        return getErrorMessage('verification', error as HttpErrorResponse);
     }
 }
