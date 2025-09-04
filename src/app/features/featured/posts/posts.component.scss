@@ -1,0 +1,14 @@
+.posts-container {
+    margin: 1rem;
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    overflow-x: auto;
+}
+
+.post-title {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-weight: bold;
+}

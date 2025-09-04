@@ -17,5 +17,7 @@ export const Endpoints = {
         updateUsername: 'user/update-username',
         checkUnique: 'user/check-unique'
     },
-    images: 'image'
+    post: {
+        featured: 'post/featured'
+    }
 };

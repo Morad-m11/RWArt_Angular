@@ -1,40 +1,35 @@
 <div class="fx-col fx-gap-1">
     <h2 style="margin: 0 auto">Featured</h2>
 
-    <div class="fx-center fx-align fx-gap-1">
-        <button mat-icon-button (click)="previous()">
-            <mat-icon>chevron_left</mat-icon>
-        </button>
-
-        <div
-            class="fx-row"
-            role="row"
-            style="width: 300px; height: 500px; background-color: lavender; border-radius: 14px">
-            <div style="display: flex; align-items: flex-end; width: 100%">
-                <div class="mg-1" style="width: 100%; height: 60px; overflow-y: auto">
-                    @if (imageRef.error()) {
-                        <p style="color: red">
-                            Failed to load post. {{ imageRef.error()?.message }}
-                        </p>
-                    } @else {
-                        <p style="color: black; line-height: 1px">
-                            <b>Post ID:</b> {{ imageRef.value()?.id }}
-                        </p>
-                        <p style="color: black"><b>Post Name:</b> {{ imageRef.value()?.title }}</p>
-                    }
-                </div>
+    <div class="posts-container">
+        @if (featuredPosts.isLoading()) {
+            <mat-spinner />
+        } @else if (featuredPosts.error()) {
+            <div class="fx-row fx-align fx-gap-1">
+                <p class="text-error">Failed to fetch posts</p>
+                <button matButton (click)="featuredPosts.reload()">Retry</button>
             </div>
-        </div>
+        } @else {
+            @for (post of featuredPosts.value(); track post.id) {
+                <mat-card appearance="outlined">
+                    <img class="post-img" matCardImage [src]="post.imageUrl" alt="Post Image" />
+                    <div class="post-title">{{ post.title }}</div>
 
-        <button mat-icon-button (click)="next()">
-            <mat-icon>chevron_right</mat-icon>
-        </button>
+                    <mat-card-actions style="display: flex; justify-content: flex-end">
+                        <button matIconButton>
+                            <mat-icon>arrow_upward</mat-icon>
+                        </button>
+
+                        <button matIconButton>
+                            <mat-icon>arrow_downward</mat-icon>
+                        </button>
+                    </mat-card-actions>
+                </mat-card>
+            } @empty {
+                <p>No posts found</p>
+            }
+        }
     </div>
-
-    <button mat-flat-button style="width: fit-content; margin: 20px auto" (click)="randomizePost()">
-        <mat-icon>star</mat-icon>
-        <span>Randomize</span>
-    </button>
 </div>
 
 <mat-card appearance="outlined" style="max-width: 400px; margin: 0 auto">

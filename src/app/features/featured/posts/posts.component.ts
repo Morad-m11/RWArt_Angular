@@ -1,6 +1,14 @@
-import { Component, inject, resource, signal } from '@angular/core';
+import { httpResource } from '@angular/common/http';
+import { Component } from '@angular/core';
+import { Endpoints } from 'src/app/core/constants/api-endpoints';
 import { MaterialModule } from 'src/app/shared/material.module';
-import { ImageService } from '../image-service/image.service';
+
+interface Post {
+    id: string;
+    title: string;
+    author: string;
+    imageUrl: string;
+}
 
 @Component({
     selector: 'app-posts',
@@ -10,24 +18,5 @@ import { ImageService } from '../image-service/image.service';
     styleUrl: './posts.component.scss'
 })
 export default class PostsComponent {
-    private readonly _imageService = inject(ImageService);
-
-    postIndex = signal(1);
-    imageRef = resource({
-        params: this.postIndex,
-        loader: ({ params }) => this._imageService.get(params)
-    });
-
-    previous() {
-        this.postIndex.update((x) => Math.max(0, x - 1));
-    }
-
-    next() {
-        this.postIndex.update((x) => x + 1);
-    }
-
-    randomizePost() {
-        const max = 10;
-        this.postIndex.set(Math.floor(Math.random() * max));
-    }
+    featuredPosts = httpResource<Post[]>(() => Endpoints.post.featured);
 }
