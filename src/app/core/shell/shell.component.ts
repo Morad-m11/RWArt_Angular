@@ -21,7 +21,7 @@ export class ShellComponent {
     private _breakpointObserver = inject(BreakpointObserver);
 
     links: Link[] = [
-        { label: 'Featured Posts', path: 'featured' },
+        { label: 'Posts', path: 'posts' },
         { label: 'Give feedback', path: 'feedback' }
     ];
 

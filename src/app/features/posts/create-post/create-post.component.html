@@ -1,0 +1,25 @@
+<h5>Create post</h5>
+
+<div class="fx-col" style="max-width: 400px">
+    <mat-form-field>
+        <mat-label>Title</mat-label>
+        <mat-icon matPrefix>title</mat-icon>
+        <input matInput [formControl]="form.controls.title" />
+    </mat-form-field>
+
+    <mat-form-field>
+        <mat-label>Description</mat-label>
+        <mat-icon matPrefix>text_snippet</mat-icon>
+        <textarea matInput [formControl]="form.controls.description"></textarea>
+    </mat-form-field>
+
+    <mat-form-field>
+        <mat-label>Image URL</mat-label>
+        <mat-icon matPrefix>link</mat-icon>
+        <input matInput [formControl]="form.controls.imageUrl" />
+    </mat-form-field>
+
+    <div>
+        <button matButton="filled" [disabled]="form.invalid" (click)="submit()">Create</button>
+    </div>
+</div>

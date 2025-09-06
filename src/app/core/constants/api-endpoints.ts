@@ -18,6 +18,7 @@ export const Endpoints = {
         checkUnique: 'user/check-unique'
     },
     post: {
+        create: 'post',
         featured: 'post/featured'
     }
 };

@@ -1,0 +1,43 @@
+<h2 class="fx-center">Featured</h2>
+
+<div class="posts-container">
+    @if (featuredPosts.isLoading()) {
+        <mat-spinner />
+    } @else if (featuredPosts.error()) {
+        <div class="fx-row fx-align fx-gap-1">
+            <p class="text-error">Failed to fetch posts</p>
+            <button matButton (click)="featuredPosts.reload()">Retry</button>
+        </div>
+    } @else {
+        @for (post of featuredPosts.value(); track post.id) {
+            <mat-card class="img-card" appearance="outlined">
+                <img matCardImage [src]="post.imageUrl" alt="Post Image" />
+                <div class="post-title">{{ post.title }}</div>
+
+                <div
+                    class="fx-row"
+                    style="
+                        width: 100%;
+                        justify-content: space-between;
+                        position: absolute;
+                        bottom: 0;
+                        background: rgba(0, 0, 0, 0.4);
+                    ">
+                    <mat-list-item>
+                        <span matListItemTitle>{{ post.title }}</span>
+                        <span matListItemLine>{{ post.description }}</span>
+                        <span matListItemLine>{{ post.author.username }}</span>
+                    </mat-list-item>
+
+                    <div class="fx-align">
+                        <button matIconButton>
+                            <mat-icon>favorite_outlined</mat-icon>
+                        </button>
+                    </div>
+                </div>
+            </mat-card>
+        } @empty {
+            <p>No posts found</p>
+        }
+    }
+</div>
