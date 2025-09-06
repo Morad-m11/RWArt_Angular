@@ -1,0 +1,18 @@
+<div>
+    <input
+        #fileInput
+        type="file"
+        [accept]="acceptedFileTypes"
+        enctype="multipart/form-data"
+        (change)="onFileUpload($event)" />
+
+    <button matButton (click)="clearFile(fileInput)">Clear</button>
+
+    @if (fileSize(); as size) {
+        <p>{{ size }}</p>
+    }
+
+    @if (errorMessage()) {
+        <p class="text-error">{{ errorMessage() }}</p>
+    }
+</div>

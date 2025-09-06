@@ -3,10 +3,10 @@ import { inject, Injectable } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import { Endpoints } from 'src/app/core/constants/api-endpoints';
 
-interface Post {
+export interface Post {
     title: string;
     description: string;
-    imageUrl: string;
+    image: File;
 }
 
 @Injectable({
@@ -16,6 +16,12 @@ export class PostsService {
     private readonly _http = inject(HttpClient);
 
     async create(post: Post) {
-        await firstValueFrom(this._http.post(Endpoints.post.create, post));
+        const formData = new FormData();
+
+        formData.append('title', post.title);
+        formData.append('description', post.description);
+        formData.append('image', post.image);
+
+        await firstValueFrom(this._http.post(Endpoints.post.create, formData));
     }
 }
