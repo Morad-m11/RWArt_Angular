@@ -1,4 +1,5 @@
 import { Component, OnInit, output } from '@angular/core';
+import { GOOGLE_CLIENT_ID } from 'src/app/constants';
 import { SignInProvider } from 'src/app/core/services/auth/auth.service';
 
 declare const google: Google;
@@ -15,8 +16,7 @@ export class GoogleButtonComponent implements OnInit {
 
     ngOnInit(): void {
         google.accounts.id.initialize({
-            client_id:
-                '689533085633-ilr40pa333nhdgtahh3kpil11t0ui9ca.apps.googleusercontent.com',
+            client_id: GOOGLE_CLIENT_ID,
             prompt_parent_id: 'prompt_parent',
             callback: (response) => this.handleCredentialResponse(response)
         });

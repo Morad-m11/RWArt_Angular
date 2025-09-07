@@ -11,18 +11,16 @@
     } @else {
         @for (post of featuredPosts.value(); track post.id) {
             <mat-card class="img-card" appearance="outlined">
-                <img matCardImage [src]="post.imageUrl" alt="Post Image" />
-                <div class="post-title">{{ post.title }}</div>
+                <img
+                    class="post-img"
+                    [ngSrc]="post.imageId"
+                    fill
+                    placeholder
+                    priority
+                    alt="Thumbnail"
+                    (click)="openFullscreenImage(post.imageId)" />
 
-                <div
-                    class="fx-row"
-                    style="
-                        width: 100%;
-                        justify-content: space-between;
-                        position: absolute;
-                        bottom: 0;
-                        background: rgba(0, 0, 0, 0.4);
-                    ">
+                <div class="post-description">
                     <mat-list-item>
                         <span matListItemTitle>{{ post.title }}</span>
                         <span matListItemLine>{{ post.description }}</span>
