@@ -1,0 +1,33 @@
+.posts-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    .post-card {
+        width: 100%;
+        max-width: 1000px;
+        height: 500px;
+        margin: 0 auto;
+        overflow: hidden;
+    }
+
+    .post-img {
+        object-fit: cover;
+        transition: filter 200ms;
+        cursor: pointer;
+
+        &:hover {
+            filter: brightness(1.1);
+        }
+    }
+
+    .post-description {
+        width: 100%;
+        position: absolute;
+        display: flex;
+        bottom: 0;
+        flex-direction: row;
+        justify-content: space-between;
+        background: rgba(0, 0, 0, 0.4);
+    }
+}

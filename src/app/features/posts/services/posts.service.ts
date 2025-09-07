@@ -3,7 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import { Endpoints } from 'src/app/core/constants/api-endpoints';
 
-export interface Post {
+export interface NewPost {
     title: string;
     description: string;
     image: File;
@@ -15,7 +15,7 @@ export interface Post {
 export class PostsService {
     private readonly _http = inject(HttpClient);
 
-    async create(post: Post) {
+    async create(post: NewPost) {
         const formData = new FormData();
 
         formData.append('title', post.title);

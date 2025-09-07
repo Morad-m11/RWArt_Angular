@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { SnackbarService } from 'src/app/core/services/snackbar/snackbar.service';
 import { LoadingDirective } from 'src/app/shared/directives/loading/loading.directive';
 import { MaterialModule } from 'src/app/shared/material.module';
-import { Post, PostsService } from '../services/posts.service';
+import { NewPost, PostsService } from '../services/posts.service';
 import { ImageUploadComponent } from './image-upload/image-upload.component';
 
 @Component({
@@ -35,7 +35,7 @@ export class CreatePostComponent {
     async submit() {
         this.loading.set(true);
 
-        const post = this.form.getRawValue() as Post;
+        const post = this.form.getRawValue() as NewPost;
 
         await this._postService
             .create(post)

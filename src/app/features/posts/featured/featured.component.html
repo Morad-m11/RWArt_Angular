@@ -10,14 +10,14 @@
         </div>
     } @else {
         @for (post of featuredPosts.value(); track post.id) {
-            <mat-card class="img-card" appearance="outlined">
+            <mat-card class="post-card" appearance="outlined">
                 <img
                     class="post-img"
                     [ngSrc]="post.imageId"
                     fill
                     placeholder
                     priority
-                    alt="Thumbnail"
+                    alt="Preview"
                     (click)="openFullscreenImage(post.imageId)" />
 
                 <div class="post-description">

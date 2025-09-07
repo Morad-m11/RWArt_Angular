@@ -7,10 +7,52 @@
     <app-featured />
 </div>
 
-<mat-card appearance="outlined" style="max-width: 400px; margin: 0 auto">
+<h2 class="fx-center">Posts</h2>
+
+<div class="posts-container">
+    @if (posts.isLoading()) {
+        <mat-spinner />
+    } @else if (posts.error()) {
+        <div class="fx-row fx-align fx-gap-1">
+            <p class="text-error">Failed to fetch posts</p>
+            <button matButton (click)="posts.reload()">Retry</button>
+        </div>
+    } @else {
+        @for (post of posts.value(); track post.id) {
+            <mat-card class="post-card" appearance="outlined">
+                <img
+                    class="post-img"
+                    [ngSrc]="post.imageId"
+                    fill
+                    placeholder
+                    priority
+                    alt="Preview"
+                    (click)="openFullscreenImage(post.imageId)" />
+
+                <div class="post-description">
+                    <mat-list-item>
+                        <span matListItemTitle>{{ post.title }}</span>
+                        <span matListItemLine>{{ post.description }}</span>
+                        <span matListItemLine>{{ post.author.username }}</span>
+                    </mat-list-item>
+
+                    <div class="fx-align">
+                        <button matIconButton>
+                            <mat-icon>favorite_outlined</mat-icon>
+                        </button>
+                    </div>
+                </div>
+            </mat-card>
+        } @empty {
+            <p class="text-error">Did not find any posts.</p>
+        }
+    }
+</div>
+
+<!-- <mat-card appearance="outlined" style="max-width: 400px; margin: 0 auto">
     <mat-card-header>
         <mat-card-title>Prompt of the week</mat-card-title>
     </mat-card-header>
 
     <mat-card-content style="margin-top: 20px">Example prompt</mat-card-content>
-</mat-card>
+</mat-card> -->

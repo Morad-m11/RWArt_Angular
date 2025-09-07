@@ -5,17 +5,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Endpoints } from 'src/app/core/constants/api-endpoints';
 import { MaterialModule } from 'src/app/shared/material.module';
 import { ImageviewerDialogComponent } from '../imageviewer-dialog/imageviewer-dialog.component';
-
-interface Post {
-    id: string;
-    author: {
-        username: string;
-    };
-    title: string;
-    description: string;
-    imageId: string;
-    imageUrl: string;
-}
+import { Post } from '../shared/post.interface';
 
 @Component({
     selector: 'app-featured',
