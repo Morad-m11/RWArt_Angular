@@ -1,7 +1,7 @@
 import { Component, computed, effect, output, signal } from '@angular/core';
 import { MaterialModule } from 'src/app/shared/material.module';
 
-const MAX_FILE_SIZE_MB = 20000;
+const MAX_FILE_SIZE_BYTES = 10 * 1e6;
 
 @Component({
     selector: 'app-image-upload',
@@ -11,10 +11,11 @@ const MAX_FILE_SIZE_MB = 20000;
     styleUrl: './image-upload.component.scss'
 })
 export class ImageUploadComponent {
-    readonly acceptedFileTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+    readonly acceptedFileTypes = ['image/jpeg', 'image/png', 'image/webp'];
 
     image = signal<File | null>(null);
     errorMessage = signal('');
+    maxFileSize = signal(this.getFileSizeText(MAX_FILE_SIZE_BYTES));
     fileSize = computed(() =>
         this.image() ? this.getFileSizeText(this.image()!.size) : null
     );
@@ -51,8 +52,7 @@ export class ImageUploadComponent {
             return { valid: false, error: 'Invalid file type' };
         }
 
-        const fileSizeMB = file.size / 1e6;
-        if (fileSizeMB > MAX_FILE_SIZE_MB) {
+        if (file.size > MAX_FILE_SIZE_BYTES) {
             return { valid: false, error: 'File is too large' };
         }
 

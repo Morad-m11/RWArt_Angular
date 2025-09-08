@@ -8,6 +8,8 @@
 
     <button matButton (click)="clearFile(fileInput)">Clear</button>
 
+    <p>Max file size: {{ maxFileSize() }}</p>
+
     @if (fileSize(); as size) {
         <p>{{ size }}</p>
     }
