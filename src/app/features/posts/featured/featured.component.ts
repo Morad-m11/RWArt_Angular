@@ -5,6 +5,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Endpoints } from 'src/app/core/constants/api-endpoints';
 import { MaterialModule } from 'src/app/shared/material.module';
 import { ImageviewerDialogComponent } from '../imageviewer-dialog/imageviewer-dialog.component';
+import { PostsService } from '../services/posts.service';
 import { Post } from '../shared/post.interface';
 
 @Component({
@@ -16,12 +17,16 @@ import { Post } from '../shared/post.interface';
 })
 export class FeaturedComponent {
     private readonly _dialog = inject(MatDialog);
+    private readonly _postService = inject(PostsService);
     private readonly _featuredCount = 3;
 
-    featuredPosts = httpResource<Post[]>(() => ({
-        url: Endpoints.post.featured,
-        params: { count: this._featuredCount }
-    }));
+    featuredPosts = httpResource<Post[]>(
+        () => ({
+            url: Endpoints.post.featured,
+            params: { count: this._featuredCount }
+        }),
+        { defaultValue: [] as Post[] }
+    );
 
     openFullscreenImage(id: string) {
         this._dialog.open(ImageviewerDialogComponent, {
@@ -31,6 +36,16 @@ export class FeaturedComponent {
             maxWidth: '90vw',
             maxHeight: '90vh',
             autoFocus: false
+        });
+    }
+
+    async upvote(postId: string) {
+        await this._postService.upvote(postId);
+
+        this.featuredPosts.update((posts) => {
+            const postIndex = posts.findIndex((post) => post.id === postId);
+            posts[postIndex].upvoted = !posts[postIndex].upvoted;
+            return [...posts];
         });
     }
 }

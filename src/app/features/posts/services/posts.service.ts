@@ -24,4 +24,8 @@ export class PostsService {
 
         await firstValueFrom(this._http.post(Endpoints.post.create, formData));
     }
+
+    async upvote(postId: string) {
+        await firstValueFrom(this._http.post(Endpoints.post.upvote(postId), null));
+    }
 }

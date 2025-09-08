@@ -20,6 +20,7 @@ export const Endpoints = {
     post: {
         list: 'post',
         create: 'post',
-        featured: 'post/featured'
+        featured: 'post/featured',
+        upvote: (id: string) => `post/${id}/upvote`
     }
 };

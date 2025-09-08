@@ -28,8 +28,10 @@
                     </mat-list-item>
 
                     <div class="fx-align">
-                        <button matIconButton>
-                            <mat-icon>favorite_outlined</mat-icon>
+                        <button matIconButton (click)="upvote(post.id)">
+                            <mat-icon>
+                                {{ post.upvoted ? 'favorite' : 'favorite_outlined' }}
+                            </mat-icon>
                         </button>
                     </div>
                 </div>

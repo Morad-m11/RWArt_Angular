@@ -1,6 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, inject } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { CoreSnackbarMessages } from 'src/app/core/constants/snackbar-messages';
 import { SnackbarService } from 'src/app/core/services/snackbar/snackbar.service';
 import { AuthService } from '../../../core/services/auth/auth.service';
@@ -16,17 +16,28 @@ import { MaterialModule } from '../../material.module';
 export class ProfileButtonComponent {
     private readonly _authService = inject(AuthService);
     private readonly _snackbar = inject(SnackbarService);
+    private readonly _router = inject(Router);
 
     profile = this._authService.profile;
 
     async logout() {
         await this._authService
             .logout()
-            .then(() => this._snackbar.success(CoreSnackbarMessages.logout.success))
+            .then(() => this._handleSuccess())
             .catch((error: HttpErrorResponse) => {
                 this._snackbar.error(
                     `${CoreSnackbarMessages.logout.failed} ${error.status}`
                 );
             });
+    }
+
+    private _handleSuccess(): void | PromiseLike<void> {
+        this._snackbar.success(CoreSnackbarMessages.logout.success);
+
+        if (this._router.url.endsWith('/posts')) {
+            window.location.reload();
+        } else {
+            this._router.navigate(['/']);
+        }
     }
 }
