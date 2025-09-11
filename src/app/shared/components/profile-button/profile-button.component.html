@@ -9,7 +9,7 @@
         matIconButton
         [matMenuTriggerFor]="menu"
         aria-label="Profile">
-        @if (profile.value().pictureUrl; as picUrl) {
+        @if (profile.value().picture; as picUrl) {
             <img [src]="picUrl" alt="profile picture" referrerPolicy="no-referrer" />
         } @else {
             <mat-icon>account_circle</mat-icon>

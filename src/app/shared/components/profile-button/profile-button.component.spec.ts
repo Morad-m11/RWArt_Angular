@@ -14,7 +14,7 @@ describe('ProfileButtonComponent', () => {
             imports: [ProfileButtonComponent],
             providers: [
                 provideValue(AuthService, {
-                    profile: { isLoading: () => true } as HttpResourceRef<UserInfo>
+                    me: { isLoading: () => true } as HttpResourceRef<UserInfo>
                 })
             ]
         }).compileComponents();

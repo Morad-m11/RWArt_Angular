@@ -23,13 +23,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
     const authReq = attachAuth(req, storage.getAccessToken());
 
     return next(authReq).pipe(
-        catchError((error: HttpErrorResponse) => {
-            if (!shouldRefreshToken(error, req.url)) {
-                throw error;
-            }
-
-            return refreshAndRetry(req, next, authService, storage);
-        })
+        catchError((error) => refreshAuthOrThrow(req, next, error, authService, storage))
     );
 };
 
@@ -49,23 +43,27 @@ function attachAuth(
     });
 }
 
-function shouldRefreshToken(error: unknown, url: string): boolean {
-    const is401 =
-        error instanceof HttpErrorResponse &&
-        error.status === HttpStatusCode.Unauthorized;
-
-    const isAuthRequest = url.includes('auth');
-
-    return is401 && !isAuthRequest;
-}
-
-function waitForRefreshAndRetry(
+function refreshAuthOrThrow(
     req: HttpRequest<unknown>,
     next: HttpHandlerFn,
+    originalError: unknown,
+    authService: AuthService,
     storage: StorageService
 ) {
-    return refreshRequest$!.pipe(
-        switchMap(() => next(attachAuth(req, storage.getAccessToken())))
+    const hasAccessToken = storage.hasAccessToken();
+    const isAuthRequest = req.url.includes('auth/') && !req.url.endsWith('auth/me');
+    const is401 =
+        originalError instanceof HttpErrorResponse &&
+        originalError.status === HttpStatusCode.Unauthorized;
+
+    if (!hasAccessToken || !is401 || isAuthRequest) {
+        throw originalError;
+    }
+
+    return refreshAndRetry(req, next, authService, storage).pipe(
+        catchError(() => {
+            throw originalError;
+        })
     );
 }
 
@@ -76,7 +74,7 @@ function refreshAndRetry(
     storage: StorageService
 ) {
     if (!refreshRequest$) {
-        refreshRequest$ = from(authService.refreshToken()).pipe(
+        refreshRequest$ = from(authService.refreshAuth()).pipe(
             tap({ error: () => authService.logout({ expired: true }) }),
             finalize(() => {
                 refreshRequest$ = null;
@@ -85,4 +83,14 @@ function refreshAndRetry(
     }
 
     return waitForRefreshAndRetry(req, next, storage);
+}
+
+function waitForRefreshAndRetry(
+    req: HttpRequest<unknown>,
+    next: HttpHandlerFn,
+    storage: StorageService
+) {
+    return refreshRequest$!.pipe(
+        switchMap(() => next(attachAuth(req, storage.getAccessToken())))
+    );
 }

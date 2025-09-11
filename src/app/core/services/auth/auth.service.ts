@@ -1,6 +1,7 @@
-import { HttpClient, httpResource } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, httpResource } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
-import { firstValueFrom } from 'rxjs';
+import { toObservable } from '@angular/core/rxjs-interop';
+import { filter, firstValueFrom } from 'rxjs';
 import { Endpoints } from '../../constants/api-endpoints';
 import { CoreSnackbarMessages } from '../../constants/snackbar-messages';
 import { SnackbarService } from '../snackbar/snackbar.service';
@@ -10,7 +11,7 @@ export interface UserInfo {
     id: number;
     email: string;
     username: string;
-    pictureUrl?: string | null;
+    picture?: string | null;
 }
 
 export type SignInProvider = 'google';
@@ -29,11 +30,34 @@ export class AuthService {
     private readonly _storage = inject(StorageService);
     private readonly _snackbar = inject(SnackbarService);
 
-    profile = httpResource<UserInfo>(() =>
-        this.isLoggedIn() ? Endpoints.user.profile : undefined
+    me = httpResource<UserInfo>(() =>
+        this.isLoggedIn() ? Endpoints.auth.me : undefined
     );
+    me$ = toObservable(this.me.status);
 
-    isLoggedIn = signal(!!this._storage.getAccessToken());
+    isLoggedIn = signal(this._storage.hasAccessToken());
+
+    async waitForAuth(): Promise<void> {
+        const currentStatus = this.me.status();
+
+        if (currentStatus !== 'loading' && currentStatus !== 'reloading') {
+            return;
+        }
+
+        await firstValueFrom(
+            this.me$.pipe(
+                filter((status) => status !== 'loading' && status !== 'reloading')
+            )
+        );
+    }
+
+    async refreshAuth(): Promise<void> {
+        const { accessToken } = await firstValueFrom(
+            this._http.post<{ accessToken: string }>(Endpoints.auth.refresh, null)
+        );
+
+        this._storage.setAccessToken(accessToken);
+    }
 
     async login(username: string, password: string): Promise<void> {
         const { accessToken } = await firstValueFrom(
@@ -69,7 +93,13 @@ export class AuthService {
         if (opts?.expired) {
             this._snackbar.error(CoreSnackbarMessages.expired);
         } else {
-            await firstValueFrom(this._http.post(Endpoints.auth.logout, null));
+            await firstValueFrom(this._http.post(Endpoints.auth.logout, null)).catch(
+                (error: HttpErrorResponse) => {
+                    if (error.status !== 401) {
+                        throw error;
+                    }
+                }
+            );
         }
 
         this._storage.clearAccessToken();
@@ -94,13 +124,5 @@ export class AuthService {
         await firstValueFrom(
             this._http.post(Endpoints.auth.resetPassword, { password: pass, token })
         );
-    }
-
-    async refreshToken(): Promise<void> {
-        const { accessToken } = await firstValueFrom(
-            this._http.post<{ accessToken: string }>(Endpoints.auth.refresh, null)
-        );
-
-        this._storage.setAccessToken(accessToken);
     }
 }

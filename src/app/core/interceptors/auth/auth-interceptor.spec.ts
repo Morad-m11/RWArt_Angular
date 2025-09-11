@@ -29,10 +29,11 @@ describe('authInterceptor', () => {
         TestBed.configureTestingModule({
             providers: [
                 provideValue(AuthService, {
-                    refreshToken: jest.fn().mockResolvedValue(undefined),
+                    refreshAuth: jest.fn().mockResolvedValue(undefined),
                     logout: jest.fn()
                 }),
                 provideValue(StorageService, {
+                    hasAccessToken: jest.fn().mockReturnValue(true),
                     getAccessToken: jest.fn().mockReturnValue('test_access_token')
                 }),
                 provideHttpClient(withInterceptors([authInterceptor])),
@@ -122,118 +123,106 @@ describe('authInterceptor', () => {
 
     describe('Error propagation', () => {
         afterEach(() => {
-            expect(authService.refreshToken).not.toHaveBeenCalled();
+            expect(authService.refreshAuth).not.toHaveBeenCalled();
         });
 
-        it('should propagate if no access token is stored', async () => {
-            const promise = firstValueFrom(httpClient.get('test'));
+        it('should do nothing if no access token is stored', async () => {
+            storageService.hasAccessToken.mockReturnValue(false);
 
-            const req = httpTesting.expectOne('test');
-            req.flush('Failed!', { status: 500, statusText: 'Server Error' });
-
-            await expect(promise).rejects.toMatchObject({ status: 500 });
+            const request = failingRequest('test', 401);
+            await expect(request).rejects.toMatchObject({ status: 401 });
         });
 
-        it('should propagate non-401 errors', async () => {
-            const promise = firstValueFrom(httpClient.get('test'));
+        it('should do nothing on non-401 errors', async () => {
+            const request403 = failingRequest('test', 403);
+            await expect(request403).rejects.toMatchObject({ status: 403 });
 
-            const req = httpTesting.expectOne('test');
-            req.flush('Failed!', { status: 500, statusText: 'Server Error' });
-
-            await expect(promise).rejects.toMatchObject({ status: 500 });
+            const request500 = failingRequest('test', 500);
+            await expect(request500).rejects.toMatchObject({ status: 500 });
         });
 
-        it('should propagate login request errors', async () => {
-            const promise = firstValueFrom(httpClient.get('auth/login'));
-
-            const req = httpTesting.expectOne('auth/login');
-            req.flush('Failed!', { status: 401, statusText: 'Server Error' });
-
+        it('should do nothing on 401 errors to auth routes', async () => {
+            const promise = failingRequest('auth/login', 401);
             await expect(promise).rejects.toMatchObject({ status: 401 });
         });
     });
 
     describe('Refresh Flow on 401', () => {
-        it('should call AuthService for a new refresh token, then retry the request with the new access token from storage', async () => {
-            // make initial request
-            const promise = firstValueFrom(httpClient.get('test'));
+        it('should throw the original error on access refresh failure', async () => {
+            authService.refreshAuth.mockRejectedValue('Failed!');
 
-            // return 401
-            httpTesting.expectOne('test').flush('Failed!', {
-                status: 401,
-                statusText: 'Internal Server Error'
-            });
+            const request = failingRequest('test', 401);
+            await expect(request).rejects.toMatchObject({ status: 401 });
 
-            // expect refresh call
-            expect(authService.refreshToken).toHaveBeenCalled();
-
-            // set new token & flush async
-            storageService.getAccessToken.mockReturnValue('new_access_token');
-            await Promise.resolve();
-
-            // expect retried request with new token from storage
-            const refreshReq = httpTesting.expectOne('test');
-            expect(refreshReq.request.headers.get('Authorization')).toBe(
-                `Bearer new_access_token`
-            );
-            refreshReq.flush('Success!');
-
-            await expect(promise).resolves.toBe('Success!');
+            expect(authService.refreshAuth).toHaveBeenCalled();
         });
 
-        it('should call logout() if refreshToken() fails', async () => {
-            authService.refreshToken.mockRejectedValue('Failed!');
+        it('should logout if the refresh fails', async () => {
+            authService.refreshAuth.mockRejectedValue('Failed!');
 
-            // make initial request
-            const promise = firstValueFrom(httpClient.get('test'));
+            const request = failingRequest('test', 401);
+            await expect(request).rejects.toMatchObject({ status: 401 });
 
-            httpTesting.expectOne('test').flush('Failed!', {
-                status: 401,
-                statusText: 'Internal Server Error'
-            });
-
-            // expect refresh call
-            expect(authService.refreshToken).toHaveBeenCalled();
-
-            // flush async
-            await Promise.resolve();
-
-            // expect logout call
             expect(authService.logout).toHaveBeenCalledWith({ expired: true });
-            await expect(promise).rejects.toBe('Failed!');
         });
 
-        it('should only refresh only once on simultaneous failures and retry all requests', async () => {
-            // three simulatneous requests
-            firstValueFrom(httpClient.get('test1'));
-            firstValueFrom(httpClient.get('test2'));
-            firstValueFrom(httpClient.get('test3'));
+        it('should request a new access token and retry on success', async () => {
+            const initialRequest = failingRequest('test', 401);
 
-            // reject all three with 401
-            httpTesting.expectOne('test1').flush('Failed!', {
-                status: 401,
-                statusText: 'Internal Server Error'
-            });
+            // resolve new token
+            expect(authService.refreshAuth).toHaveBeenCalled();
+            storageService.getAccessToken.mockReturnValue('new_access_token');
 
-            httpTesting.expectOne('test2').flush('Failed!', {
-                status: 401,
-                statusText: 'Internal Server Error'
-            });
+            // flush request
+            await Promise.resolve();
 
-            httpTesting.expectOne('test3').flush('Failed!', {
-                status: 401,
-                statusText: 'Internal Server Error'
-            });
+            // expect retried request with new token
+            httpTesting
+                .expectOne(
+                    (req) =>
+                        req.url === 'test' &&
+                        req.headers.get('Authorization') === 'Bearer new_access_token'
+                )
+                .flush('Success!');
+
+            await expect(initialRequest).resolves.toBe('Success!');
+        });
+
+        it('should only refresh only once on simultaneous failures and retry all requests in order', async () => {
+            request('test1');
+            request('test2');
+            request('test3');
+
+            expectAndFlush('test1', 401);
+            expectAndFlush('test2', 401);
+            expectAndFlush('test3', 401);
 
             await Promise.resolve();
 
             // expect a single refresh request
-            expect(authService.refreshToken).toHaveBeenCalledTimes(1);
+            expect(authService.refreshAuth).toHaveBeenCalledTimes(1);
 
             // expect all requests to have been retried
-            httpTesting.expectOne('test1');
-            httpTesting.expectOne('test2');
-            httpTesting.expectOne('test3');
+            expectAndFlush('test1');
+            expectAndFlush('test2');
+            expectAndFlush('test3');
         });
     });
+
+    /**
+     * Fires and flushes a failing GET request.
+     */
+    function failingRequest(url: string, status: number) {
+        const promise = request(url);
+        expectAndFlush(url, status);
+        return promise;
+    }
+
+    function request(url: string): Promise<unknown> {
+        return firstValueFrom(httpClient.get(url));
+    }
+
+    function expectAndFlush(url: string, status = 200) {
+        httpTesting.expectOne(url).flush('Failed!', { status, statusText: 'idk' });
+    }
 });

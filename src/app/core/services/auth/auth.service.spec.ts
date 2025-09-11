@@ -24,7 +24,7 @@ describe('AuthService', () => {
                     error: jest.fn()
                 }),
                 provideValue(StorageService, {
-                    getAccessToken: jest.fn().mockReturnValue(null),
+                    hasAccessToken: jest.fn().mockReturnValue(false),
                     setAccessToken: jest.fn(),
                     clearAccessToken: jest.fn()
                 }),
@@ -49,7 +49,7 @@ describe('AuthService', () => {
         });
 
         it('should be true if token exists', () => {
-            storageService.getAccessToken.mockReturnValue('some token');
+            storageService.hasAccessToken.mockReturnValue(true);
             service = TestBed.inject(AuthService);
             expect(service.isLoggedIn()).toBe(true);
         });
@@ -64,7 +64,7 @@ describe('AuthService', () => {
             service = TestBed.inject(AuthService);
             TestBed.tick();
 
-            httpTesting.expectNone(Endpoints.user.profile);
+            httpTesting.expectNone(Endpoints.auth.me);
         });
 
         it('should send a request for profile when logged in', async () => {
@@ -72,7 +72,7 @@ describe('AuthService', () => {
             service.isLoggedIn.set(true);
             TestBed.tick();
 
-            httpTesting.expectOne(Endpoints.user.profile);
+            httpTesting.expectOne(Endpoints.auth.me);
         });
     });
 
@@ -86,7 +86,7 @@ describe('AuthService', () => {
                 service = TestBed.inject(AuthService);
 
                 const promise = service.login('user', 'pass');
-                const req = httpTesting.expectOne(Endpoints.auth.login);
+                const req = httpTesting.expectOne(Endpoints.auth.login.local);
 
                 req.flush('Login failed', { status: 401, statusText: 'Unauthorized' });
 
@@ -99,7 +99,7 @@ describe('AuthService', () => {
                 service = TestBed.inject(AuthService);
 
                 const promise = service.login('user', 'pass');
-                const req = httpTesting.expectOne(Endpoints.auth.login);
+                const req = httpTesting.expectOne(Endpoints.auth.login.local);
 
                 req.flush({ accessToken: 'some token' });
                 await promise;
@@ -160,7 +160,7 @@ describe('AuthService', () => {
             it('should do nothing on request failure', async () => {
                 service = TestBed.inject(AuthService);
 
-                const promise = service.refreshToken();
+                const promise = service.refreshAuth();
                 const req = httpTesting.expectOne(Endpoints.auth.refresh);
                 req.flush(null, { status: 500, statusText: 'Server Error!' });
 
@@ -171,7 +171,7 @@ describe('AuthService', () => {
             it('should set access token on success', async () => {
                 service = TestBed.inject(AuthService);
 
-                const promise = service.refreshToken();
+                const promise = service.refreshAuth();
                 const req = httpTesting.expectOne(Endpoints.auth.refresh);
                 req.flush({ accessToken: 'new token' });
 

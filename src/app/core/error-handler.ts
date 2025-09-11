@@ -1,7 +1,11 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { ErrorHandler, inject } from '@angular/core';
+import { ErrorHandler, inject, Provider } from '@angular/core';
 import { CoreSnackbarMessages } from './constants/snackbar-messages';
 import { SnackbarService } from './services/snackbar/snackbar.service';
+
+export const provideGlobalErrorHandler = (): Provider => {
+    return { provide: ErrorHandler, useClass: GlobalErrorHandler };
+};
 
 export class GlobalErrorHandler implements ErrorHandler {
     private readonly _snackbar = inject(SnackbarService);

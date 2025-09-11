@@ -1,5 +1,6 @@
 export const Endpoints = {
     auth: {
+        me: 'auth/me',
         login: {
             local: 'auth/login',
             google: 'auth/google'
@@ -13,7 +14,6 @@ export const Endpoints = {
         resendVerification: 'auth/resend-verification'
     },
     user: {
-        profile: 'user/profile',
         updateUsername: 'user/update-username',
         checkUnique: 'user/check-unique'
     },

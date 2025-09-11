@@ -2,7 +2,8 @@ import { provideCloudinaryLoader } from '@angular/common';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import {
     ApplicationConfig,
-    ErrorHandler,
+    inject,
+    provideAppInitializer,
     provideBrowserGlobalErrorListeners,
     provideZonelessChangeDetection
 } from '@angular/core';
@@ -10,10 +11,11 @@ import { provideRouter, withComponentInputBinding } from '@angular/router';
 import { routes } from './app.routes';
 import { CLOUDINARY_CLIENT_ID } from './constants';
 import { provideMaterialDefaults } from './core/config/material';
-import { GlobalErrorHandler } from './core/error-handler';
+import { provideGlobalErrorHandler } from './core/error-handler';
 import { apiBaseUrlInterceptor } from './core/interceptors/api-base-url/api-base-url.interceptor';
 import { authInterceptor } from './core/interceptors/auth/auth-interceptor';
 import { serverErrorInterceptor } from './core/interceptors/server-error/server-error.interceptor';
+import { AuthService } from './core/services/auth/auth.service';
 
 export const appConfig: ApplicationConfig = {
     providers: [
@@ -27,7 +29,8 @@ export const appConfig: ApplicationConfig = {
                 authInterceptor
             ])
         ),
-        { provide: ErrorHandler, useClass: GlobalErrorHandler },
+        provideGlobalErrorHandler(),
+        provideAppInitializer(() => inject(AuthService).waitForAuth()),
         provideMaterialDefaults(),
         provideCloudinaryLoader(`https://res.cloudinary.com/${CLOUDINARY_CLIENT_ID}`)
     ]
