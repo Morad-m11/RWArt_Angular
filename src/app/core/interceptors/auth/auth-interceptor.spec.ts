@@ -29,11 +29,9 @@ describe('authInterceptor', () => {
         TestBed.configureTestingModule({
             providers: [
                 provideValue(AuthService, {
-                    refreshAuth: jest.fn().mockResolvedValue(undefined),
-                    logout: jest.fn()
+                    handleAuthError: jest.fn().mockResolvedValue(null)
                 }),
                 provideValue(StorageService, {
-                    hasAccessToken: jest.fn().mockReturnValue(true),
                     getAccessToken: jest.fn().mockReturnValue('test_access_token')
                 }),
                 provideHttpClient(withInterceptors([authInterceptor])),
@@ -121,56 +119,41 @@ describe('authInterceptor', () => {
         });
     });
 
-    describe('Error propagation', () => {
-        afterEach(() => {
-            expect(authService.refreshAuth).not.toHaveBeenCalled();
-        });
-
-        it('should do nothing if no access token is stored', async () => {
-            storageService.hasAccessToken.mockReturnValue(false);
-
-            const request = failingRequest('test', 401);
-            await expect(request).rejects.toMatchObject({ status: 401 });
-        });
-
-        it('should do nothing on non-401 errors', async () => {
+    describe('Error handling', () => {
+        it('should not call the auth service on non 401 errors', async () => {
             const request403 = failingRequest('test', 403);
-            await expect(request403).rejects.toMatchObject({ status: 403 });
-
+            const request409 = failingRequest('test', 409);
             const request500 = failingRequest('test', 500);
+
+            await expect(request403).rejects.toMatchObject({ status: 403 });
+            await expect(request409).rejects.toMatchObject({ status: 409 });
             await expect(request500).rejects.toMatchObject({ status: 500 });
+
+            expect(authService.handleAuthError).not.toHaveBeenCalled();
         });
 
-        it('should do nothing on 401 errors to auth routes', async () => {
-            const promise = failingRequest('auth/login', 401);
-            await expect(promise).rejects.toMatchObject({ status: 401 });
-        });
-    });
+        it('should not call the auth service on auth route arrors', async () => {
+            const request401 = failingRequest(Endpoints.auth.refresh, 401);
 
-    describe('Refresh Flow on 401', () => {
-        it('should throw the original error on access refresh failure', async () => {
-            authService.refreshAuth.mockRejectedValue('Failed!');
+            await expect(request401).rejects.toMatchObject({ status: 401 });
 
-            const request = failingRequest('test', 401);
-            await expect(request).rejects.toMatchObject({ status: 401 });
-
-            expect(authService.refreshAuth).toHaveBeenCalled();
+            expect(authService.handleAuthError).not.toHaveBeenCalled();
         });
 
-        it('should logout if the refresh fails', async () => {
-            authService.refreshAuth.mockRejectedValue('Failed!');
+        it('should call the auth service on 401 errors and rethrow the original error on failure', async () => {
+            authService.handleAuthError.mockRejectedValue(new Error('Woopsie'));
 
-            const request = failingRequest('test', 401);
-            await expect(request).rejects.toMatchObject({ status: 401 });
+            const request401 = failingRequest('test', 401);
+            await expect(request401).rejects.toMatchObject({ status: 401 });
 
-            expect(authService.logout).toHaveBeenCalledWith({ expired: true });
+            expect(authService.handleAuthError).toHaveBeenCalled();
         });
 
-        it('should request a new access token and retry on success', async () => {
+        it('should call the auth service on 401 errors and retry the request with a new token on success', async () => {
             const initialRequest = failingRequest('test', 401);
 
             // resolve new token
-            expect(authService.refreshAuth).toHaveBeenCalled();
+            expect(authService.handleAuthError).toHaveBeenCalled();
             storageService.getAccessToken.mockReturnValue('new_access_token');
 
             // flush request
@@ -186,26 +169,6 @@ describe('authInterceptor', () => {
                 .flush('Success!');
 
             await expect(initialRequest).resolves.toBe('Success!');
-        });
-
-        it('should only refresh only once on simultaneous failures and retry all requests in order', async () => {
-            request('test1');
-            request('test2');
-            request('test3');
-
-            expectAndFlush('test1', 401);
-            expectAndFlush('test2', 401);
-            expectAndFlush('test3', 401);
-
-            await Promise.resolve();
-
-            // expect a single refresh request
-            expect(authService.refreshAuth).toHaveBeenCalledTimes(1);
-
-            // expect all requests to have been retried
-            expectAndFlush('test1');
-            expectAndFlush('test2');
-            expectAndFlush('test3');
         });
     });
 

@@ -1,11 +1,18 @@
-import { HttpClient, HttpErrorResponse, httpResource } from '@angular/common/http';
+import {
+    HttpClient,
+    HttpErrorResponse,
+    httpResource,
+    HttpStatusCode
+} from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
-import { filter, firstValueFrom } from 'rxjs';
+import { MatDialog } from '@angular/material/dialog';
+import { filter, finalize, firstValueFrom, Observable, shareReplay, tap } from 'rxjs';
 import { Endpoints } from '../../constants/api-endpoints';
 import { CoreSnackbarMessages } from '../../constants/snackbar-messages';
 import { SnackbarService } from '../snackbar/snackbar.service';
 import { StorageService } from '../storage/storage.service';
+import { LoginPromptDialogComponent } from './login-prompt/login-prompt-dialog/login-prompt-dialog.component';
 
 export interface UserInfo {
     id: number;
@@ -29,6 +36,9 @@ export class AuthService {
     private readonly _http = inject(HttpClient);
     private readonly _storage = inject(StorageService);
     private readonly _snackbar = inject(SnackbarService);
+    private readonly _dialog = inject(MatDialog);
+
+    refreshRequest$: Observable<unknown> | null = null;
 
     me = httpResource<UserInfo>(() =>
         this.isLoggedIn() ? Endpoints.auth.me : undefined
@@ -51,12 +61,34 @@ export class AuthService {
         );
     }
 
-    async refreshAuth(): Promise<void> {
-        const { accessToken } = await firstValueFrom(
-            this._http.post<{ accessToken: string }>(Endpoints.auth.refresh, null)
-        );
+    async refreshAuth(): Promise<unknown> {
+        if (!this.refreshRequest$) {
+            this.refreshRequest$ = this._http
+                .post<{ accessToken: string }>(Endpoints.auth.refresh, null)
+                .pipe(
+                    tap({
+                        next: ({ accessToken }) =>
+                            this._storage.setAccessToken(accessToken),
+                        error: () => this.logout({ expired: true })
+                    }),
+                    shareReplay(1),
+                    finalize(() => (this.refreshRequest$ = null))
+                );
+        }
 
-        this._storage.setAccessToken(accessToken);
+        return firstValueFrom(this.refreshRequest$);
+    }
+
+    async handleAuthError(error: HttpErrorResponse): Promise<unknown> {
+        const isLoggedIn = this.isLoggedIn();
+        const is401 = error.status === HttpStatusCode.Unauthorized;
+
+        if (!isLoggedIn || !is401) {
+            this.promptLogin();
+            throw error;
+        }
+
+        return this.refreshAuth();
     }
 
     async login(username: string, password: string): Promise<void> {
@@ -124,5 +156,9 @@ export class AuthService {
         await firstValueFrom(
             this._http.post(Endpoints.auth.resetPassword, { password: pass, token })
         );
+    }
+
+    promptLogin() {
+        this._dialog.open(LoginPromptDialogComponent);
     }
 }

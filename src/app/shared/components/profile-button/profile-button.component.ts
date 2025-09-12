@@ -30,7 +30,7 @@ export class ProfileButtonComponent {
             });
     }
 
-    private _handleSuccess(): void | PromiseLike<void> {
+    private _handleSuccess(): void {
         window.location.reload();
     }
 }

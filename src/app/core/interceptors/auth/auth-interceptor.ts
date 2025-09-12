@@ -1,36 +1,37 @@
 import {
     HttpErrorResponse,
-    HttpHandlerFn,
     HttpInterceptorFn,
     HttpRequest,
     HttpStatusCode
 } from '@angular/common/http';
 import { inject } from '@angular/core';
-import { catchError, finalize, from, Observable, switchMap, tap } from 'rxjs';
+import { catchError, from, switchMap, throwError } from 'rxjs';
 import { AuthService } from '../../services/auth/auth.service';
 import { StorageService } from '../../services/storage/storage.service';
-
-let refreshRequest$: Observable<unknown> | null = null;
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
     const authService = inject(AuthService);
     const storage = inject(StorageService);
-
-    if (refreshRequest$) {
-        return waitForRefreshAndRetry(req, next, storage);
-    }
-
     const authReq = attachAuth(req, storage.getAccessToken());
 
     return next(authReq).pipe(
-        catchError((error) => refreshAuthOrThrow(req, next, error, authService, storage))
+        catchError((error) => {
+            if (!isHandleableAuthError(error)) {
+                throw error;
+            }
+
+            return from(authService.handleAuthError(error)).pipe(
+                switchMap(() => next(attachAuth(req, storage.getAccessToken()))),
+                catchError(() => throwError(() => error))
+            );
+        })
     );
 };
 
-function attachAuth(
+const attachAuth = (
     req: HttpRequest<unknown>,
     accessToken: string | null
-): HttpRequest<unknown> {
+): HttpRequest<unknown> => {
     const withCreds = req.url.includes('auth/');
 
     const tokenHeaders: Record<string, string> = accessToken
@@ -41,56 +42,20 @@ function attachAuth(
         withCredentials: withCreds,
         setHeaders: tokenHeaders
     });
-}
+};
 
-function refreshAuthOrThrow(
-    req: HttpRequest<unknown>,
-    next: HttpHandlerFn,
-    originalError: unknown,
-    authService: AuthService,
-    storage: StorageService
-) {
-    const hasAccessToken = storage.hasAccessToken();
-    const isAuthRequest = req.url.includes('auth/') && !req.url.endsWith('auth/me');
-    const is401 =
-        originalError instanceof HttpErrorResponse &&
-        originalError.status === HttpStatusCode.Unauthorized;
-
-    if (!hasAccessToken || !is401 || isAuthRequest) {
-        throw originalError;
+const isHandleableAuthError = (error: unknown): boolean => {
+    if (!(error instanceof HttpErrorResponse)) {
+        return false;
     }
 
-    return refreshAndRetry(req, next, authService, storage).pipe(
-        catchError(() => {
-            throw originalError;
-        })
-    );
-}
-
-function refreshAndRetry(
-    req: HttpRequest<unknown>,
-    next: HttpHandlerFn,
-    authService: AuthService,
-    storage: StorageService
-) {
-    if (!refreshRequest$) {
-        refreshRequest$ = from(authService.refreshAuth()).pipe(
-            tap({ error: () => authService.logout({ expired: true }) }),
-            finalize(() => {
-                refreshRequest$ = null;
-            })
-        );
+    if (error.status !== HttpStatusCode.Unauthorized) {
+        return false;
     }
 
-    return waitForRefreshAndRetry(req, next, storage);
-}
+    if (error.url?.includes('auth/') && !error.url?.endsWith('auth/me')) {
+        return false;
+    }
 
-function waitForRefreshAndRetry(
-    req: HttpRequest<unknown>,
-    next: HttpHandlerFn,
-    storage: StorageService
-) {
-    return refreshRequest$!.pipe(
-        switchMap(() => next(attachAuth(req, storage.getAccessToken())))
-    );
-}
+    return true;
+};
