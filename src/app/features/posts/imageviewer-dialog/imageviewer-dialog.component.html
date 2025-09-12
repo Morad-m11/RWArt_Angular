@@ -1,4 +1,7 @@
-<img [ngSrc]="data.imageId" fill style="object-fit: contain" alt="Post Image" />
+<mat-dialog-content>
+    <img class="img" [ngSrc]="data.post.imageId" fill alt="Post Image" />
+    <app-description class="description" [post]="data.post" />
+</mat-dialog-content>
 
 <button matIconButton matDialogClose style="position: absolute; top: 5px; right: 5px">
     <mat-icon>close</mat-icon>

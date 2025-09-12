@@ -8,19 +8,5 @@
         alt="Preview"
         (click)="openFullscreen()" />
 
-    <div class="description">
-        <mat-list-item>
-            <span matListItemTitle>{{ post().title }}</span>
-            <span matListItemLine>{{ post().description }}</span>
-            <span matListItemLine>{{ post().author.username }}</span>
-        </mat-list-item>
-
-        <button matIconButton (click)="upvote()">
-            @if (!post().upvoted) {
-                <mat-icon>favorite_outlined</mat-icon>
-            } @else {
-                <mat-icon class="icon-primary">favorite</mat-icon>
-            }
-        </button>
-    </div>
+    <app-description class="description" [post]="post()" />
 </mat-card>

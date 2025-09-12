@@ -2,15 +2,17 @@ import { NgOptimizedImage } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MaterialModule } from 'src/app/shared/material.module';
+import { DescriptionComponent } from '../description/description/description.component';
+import { Post } from '../shared/post.interface';
 
 export interface ImageViewerDialogData {
-    imageId: string;
+    post: Post;
 }
 
 @Component({
     selector: 'app-imageviewer-dialog',
     standalone: true,
-    imports: [MaterialModule, NgOptimizedImage],
+    imports: [MaterialModule, NgOptimizedImage, DescriptionComponent],
     templateUrl: './imageviewer-dialog.component.html',
     styleUrl: './imageviewer-dialog.component.scss'
 })

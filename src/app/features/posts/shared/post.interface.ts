@@ -8,4 +8,5 @@ export interface Post {
     imageId: string;
     imageUrl: string;
     upvoted: boolean;
+    upvoteCount: number;
 }

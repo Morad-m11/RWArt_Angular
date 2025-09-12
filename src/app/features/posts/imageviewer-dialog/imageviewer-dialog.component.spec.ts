@@ -15,7 +15,16 @@ describe('ImageviewerDialogComponent', () => {
             imports: [ImageviewerDialogComponent],
             providers: [
                 provideValue<ImageViewerDialogData>(MAT_DIALOG_DATA, {
-                    imageId: 'some id'
+                    post: {
+                        id: '1',
+                        author: { username: 'me' },
+                        title: 'title',
+                        description: 'desc',
+                        imageId: '1',
+                        imageUrl: 'url',
+                        upvoted: true,
+                        upvoteCount: 1
+                    }
                 })
             ]
         }).compileComponents();

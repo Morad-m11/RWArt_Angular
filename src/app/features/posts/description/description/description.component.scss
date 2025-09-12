@@ -1,0 +1,41 @@
+@use '@angular/material' as mat;
+
+:host {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 12px 12px 0 0;
+}
+
+.container {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+
+    .description-text {
+        width: 100%;
+        line-height: 1.2em;
+        max-height: 2.4em; // 2 lines
+        overflow: hidden;
+        transition: max-height 0.3s ease;
+
+        // Create ellipsis on last line
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        line-clamp: 2;
+
+        &.expanded {
+            max-height: 6.8em;
+            overflow-y: auto;
+
+            display: block;
+            -webkit-line-clamp: unset;
+            line-clamp: unset;
+        }
+    }
+}
