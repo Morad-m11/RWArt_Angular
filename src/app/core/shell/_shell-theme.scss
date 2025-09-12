@@ -2,15 +2,7 @@
 
 @mixin theme {
     .sidenav-scroll-wrapper {
-        background-color: var(--mat-sys-surface-container-low);
-    }
-
-    .sidenav-content {
-        @media (pointer: fine) {
-            &::-webkit-scrollbar-thumb {
-                background-color: var(--mat-sys-primary-container);
-            }
-        }
+        background: var(--mat-sys-surface-container-low);
     }
 
     @include mat.toolbar-overrides(

@@ -1,9 +1,6 @@
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideRouter } from '@angular/router';
-import { FeaturedComponent } from './featured/featured.component';
 import PostsComponent from './posts.component';
 
 describe('PostsComponent', () => {
@@ -13,17 +10,8 @@ describe('PostsComponent', () => {
     beforeEach(async () => {
         await TestBed.configureTestingModule({
             imports: [PostsComponent],
-            providers: [
-                provideRouter([]),
-                provideHttpClient(),
-                provideHttpClientTesting()
-            ]
-        })
-            .overrideComponent(PostsComponent, {
-                remove: { imports: [FeaturedComponent] },
-                add: { imports: [FeaturedComponentMock] }
-            })
-            .compileComponents();
+            providers: [provideHttpClient(), provideHttpClientTesting()]
+        }).compileComponents();
 
         fixture = TestBed.createComponent(PostsComponent);
         component = fixture.componentInstance;
@@ -34,6 +22,3 @@ describe('PostsComponent', () => {
         expect(component).toBeTruthy();
     });
 });
-
-@Component({ selector: 'app-featured' })
-class FeaturedComponentMock {}

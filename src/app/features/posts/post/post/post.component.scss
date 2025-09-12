@@ -1,20 +1,10 @@
-.posts-container {
-    margin: 1rem;
-    display: flex;
-    justify-content: safe center;
-    gap: 1rem;
+.card {
+    width: inherit;
+    height: inherit;
+    flex-shrink: 0;
+    overflow: hidden;
 
-    overflow-x: auto;
-    border-radius: 1rem;
-
-    .post-card {
-        width: 400px;
-        height: 500px;
-        flex-shrink: 0;
-        overflow: hidden;
-    }
-
-    .post-img {
+    .img {
         object-fit: cover;
         transition: filter 200ms;
         cursor: pointer;
@@ -24,13 +14,14 @@
         }
     }
 
-    .post-description {
+    .description {
         width: 100%;
         position: absolute;
-        display: flex;
         bottom: 0;
+        display: flex;
         flex-direction: row;
         justify-content: space-between;
+        align-items: center;
         background: rgba(0, 0, 0, 0.4);
     }
 }
