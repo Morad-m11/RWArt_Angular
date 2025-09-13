@@ -1,5 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
+import { provideValue } from 'src/app/shared/provide';
 import { setInputs } from 'src/app/shared/test/set-inputs';
+import { PostsService } from '../../services/posts.service';
 import { Post } from '../../shared/post.interface';
 import { DescriptionComponent } from './description.component';
 
@@ -20,7 +23,8 @@ describe('DescriptionComponent', () => {
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            imports: [DescriptionComponent]
+            imports: [DescriptionComponent],
+            providers: [provideValue(PostsService), provideRouter([])]
         }).compileComponents();
 
         fixture = TestBed.createComponent(DescriptionComponent);

@@ -1,23 +1,29 @@
-<div class="container">
+<div class="description-container">
     <div class="fx-row fx-align fx-gap-1">
-        <b>{{ post().title }}</b>
+        <span style="font-weight: 500">{{ post().title }}</span>
 
-        <a matButton [routerLink]="[`/user/${post().author.username}`]">{{
-            post().author.username
-        }}</a>
+        <a matButton [routerLink]="[`/user/${post().author.username}`]">
+            {{ post().author.username }}
+        </a>
+
+        <div style="flex: 1"></div>
 
         <button matIconButton (click)="toggleExpand()">
             <mat-icon>{{ isExpanded() ? 'keyboard_arrow_down' : 'keyboard_arrow_up' }}</mat-icon>
         </button>
     </div>
 
-    <span matListItemLine>{{ post().description }}</span>
+    <span class="description-text" [class.expanded]="isExpanded()">{{ post().description }}</span>
 </div>
 
-<button matIconButton (click)="upvote()">
-    @if (!post().upvoted) {
-        <mat-icon>favorite_outlined</mat-icon>
-    } @else {
-        <mat-icon class="icon-primary">favorite</mat-icon>
-    }
-</button>
+<div class="upvote-container">
+    <button matIconButton (click)="upvote()">
+        @if (!post().upvoted) {
+            <mat-icon>favorite_outlined</mat-icon>
+        } @else {
+            <mat-icon class="icon-primary">favorite</mat-icon>
+        }
+    </button>
+
+    <small>{{ post().upvoteCount }}</small>
+</div>

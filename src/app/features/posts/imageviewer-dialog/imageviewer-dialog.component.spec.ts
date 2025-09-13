@@ -1,6 +1,8 @@
+import { Component, input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { provideValue } from 'src/app/shared/provide';
+import { DescriptionComponent } from '../description/description/description.component';
 import {
     ImageviewerDialogComponent,
     ImageViewerDialogData
@@ -27,7 +29,12 @@ describe('ImageviewerDialogComponent', () => {
                     }
                 })
             ]
-        }).compileComponents();
+        })
+            .overrideComponent(ImageviewerDialogComponent, {
+                remove: { imports: [DescriptionComponent] },
+                add: { imports: [DescriptionComponentMock] }
+            })
+            .compileComponents();
 
         fixture = TestBed.createComponent(ImageviewerDialogComponent);
         component = fixture.componentInstance;
@@ -38,3 +45,8 @@ describe('ImageviewerDialogComponent', () => {
         expect(component).toBeTruthy();
     });
 });
+
+@Component({ selector: 'app-description', template: '' })
+export class DescriptionComponentMock {
+    post = input();
+}

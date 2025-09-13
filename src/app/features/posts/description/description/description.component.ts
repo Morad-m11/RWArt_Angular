@@ -23,7 +23,12 @@ export class DescriptionComponent {
     async upvote() {
         try {
             await this._postService.upvote(this.post().id);
-            this.post.update((post) => ({ ...post, upvoted: !this.post().upvoted }));
+
+            this.post.update((post) => ({
+                ...post,
+                upvoted: !this.post().upvoted,
+                upvoteCount: post.upvoted ? post.upvoteCount - 1 : post.upvoteCount + 1
+            }));
         } catch {
             this._snackbar.error('Failed to upvote', 2000);
         }
