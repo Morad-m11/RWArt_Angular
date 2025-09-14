@@ -19,5 +19,10 @@ export default class PostsComponent {
         params: { limit: 3 }
     }));
 
-    posts = httpResource<Post[]>(() => Endpoints.post.list);
+    posts = httpResource<Post[]>(() => Endpoints.post.base);
+
+    refresh() {
+        this.featuredPosts.reload();
+        this.posts.reload();
+    }
 }

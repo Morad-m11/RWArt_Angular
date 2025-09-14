@@ -46,6 +46,22 @@ $colors: primary, secondary, tertiary, error;
         color: var(--mat-sys-#{$color});
     }
 
+    .button-#{$color} {
+        @include mat.button-overrides(
+            (
+                filled-container-color: var(--mat-sys-#{$color}),
+                filled-label-text-color: var(--mat-sys-on-#{$color}),
+                protected-container-color: var(--mat-sys-#{$color}),
+                protected-label-text-color: var(--mat-sys-on-#{$color}),
+                tonal-container-color: var(--mat-sys-#{$color}),
+                tonal-label-text-color: var(--mat-sys-on-#{$color}),
+                outlined-outline-color: var(--mat-sys-#{$color}),
+                outlined-label-text-color: var(--mat-sys-#{$color}),
+                text-label-text-color: var(--mat-sys-#{$color})
+            )
+        );
+    }
+
     .icon-#{$color} {
         @include mat.icon-overrides(
             (

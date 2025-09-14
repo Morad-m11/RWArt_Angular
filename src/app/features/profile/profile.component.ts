@@ -36,7 +36,7 @@ export default class ProfileComponent {
     profile = httpResource<UserProfile>(() => Endpoints.user.profile(this.username()));
 
     posts = httpResource<Post[]>(() => ({
-        url: Endpoints.post.list,
+        url: Endpoints.post.base,
         params: { author: this.username() }
     }));
 }

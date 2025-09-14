@@ -3,5 +3,16 @@
         <img class="img" [ngSrc]="post().imageId" priority fill placeholder alt="Preview" />
     </button>
 
+    <button matIconButton [matMenuTriggerFor]="menu" class="menu" aria-label="Menu button">
+        <mat-icon>more_vert</mat-icon>
+    </button>
+
+    <mat-menu #menu="matMenu">
+        <button mat-menu-item class="red-item" (click)="delete()">
+            <mat-icon>delete</mat-icon>
+            <span>Delete</span>
+        </button>
+    </mat-menu>
+
     <app-description class="description" [post]="post()" />
 </mat-card>

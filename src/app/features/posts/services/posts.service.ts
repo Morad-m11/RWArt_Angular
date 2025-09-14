@@ -22,10 +22,14 @@ export class PostsService {
         formData.append('description', post.description);
         formData.append('image', post.image);
 
-        await firstValueFrom(this._http.post(Endpoints.post.create, formData));
+        await firstValueFrom(this._http.post(Endpoints.post.base, formData));
     }
 
     async upvote(postId: string) {
         await firstValueFrom(this._http.post(Endpoints.post.upvote(postId), null));
+    }
+
+    async delete(id: string) {
+        await firstValueFrom(this._http.delete(Endpoints.post.edit(id)));
     }
 }

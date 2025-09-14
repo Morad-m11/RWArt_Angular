@@ -8,35 +8,49 @@
 <div class="featured-container">
     @if (featuredPosts.isLoading()) {
         <mat-spinner />
-    } @else if (featuredPosts.error()) {
+    }
+
+    @if (featuredPosts.error()) {
         <div class="fx-row fx-align fx-gap-1">
             <p class="text-error">Failed to fetch posts</p>
             <button matButton (click)="featuredPosts.reload()">Retry</button>
         </div>
-    } @else {
+    }
+
+    @if (featuredPosts.hasValue()) {
         @for (post of featuredPosts.value(); track post.id) {
-            <app-post [post]="post" [width]="400" [height]="500" />
+            <app-post [post]="post" [width]="400" [height]="500" (deleted)="refresh()" />
         } @empty {
-            <p>No posts found</p>
+            <p class="text-primary">No featured posts</p>
         }
     }
 </div>
 
 <h2 class="fx-center">Posts</h2>
 
-<div class="mg-2 fx-col fx-gap-1">
+<div class="mg-2 fx-col fx-align fx-gap-1">
     @if (posts.isLoading()) {
         <mat-spinner />
-    } @else if (posts.error()) {
+    }
+
+    @if (posts.error()) {
         <div class="fx-row fx-align fx-gap-1">
             <p class="text-error">Failed to fetch posts</p>
             <button matButton (click)="posts.reload()">Retry</button>
         </div>
-    } @else {
+    }
+
+    @if (posts.hasValue()) {
         @for (post of posts.value(); track post.id) {
-            <app-post [post]="post" [height]="600" />
+            <app-post class="post" [post]="post" [height]="600" (deleted)="refresh()" />
         } @empty {
-            <p class="text-error">Did not find any posts.</p>
+            <div class="fx-col fx-align">
+                <p class="text-primary">No posts to show</p>
+                <button matButton="tonal" routerLink="create">
+                    <mat-icon>add</mat-icon>
+                    <span>Create the first post</span>
+                </button>
+            </div>
         }
     }
 </div>

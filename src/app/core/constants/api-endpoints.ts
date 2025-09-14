@@ -19,8 +19,8 @@ export const Endpoints = {
         checkUnique: 'user/check-unique'
     },
     post: {
-        list: 'post',
-        create: 'post',
+        base: 'post',
+        edit: (id: string) => `post/${id}`,
         featured: 'post/featured',
         upvote: (id: string) => `post/${id}/upvote`
     }
