@@ -12,20 +12,4 @@
 
     overflow-x: auto;
     border-radius: 1rem;
-
-    > .post {
-        width: 400px;
-        height: 500px;
-    }
-}
-
-.posts-container {
-    margin: 2rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-
-    > .post {
-        height: 600px;
-    }
 }

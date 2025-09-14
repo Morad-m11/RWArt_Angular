@@ -14,6 +14,7 @@ export const Endpoints = {
         resendVerification: 'auth/resend-verification'
     },
     user: {
+        profile: (username: string) => `user/${username}`,
         updateUsername: 'user/update-username',
         checkUnique: 'user/check-unique'
     },

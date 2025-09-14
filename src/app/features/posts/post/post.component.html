@@ -1,0 +1,7 @@
+<mat-card class="card" [style.height]="height()" [style.width]="width()" appearance="outlined">
+    <button (click)="openFullscreen()">
+        <img class="img" [ngSrc]="post().imageId" priority fill placeholder alt="Preview" />
+    </button>
+
+    <app-description class="description" [post]="post()" />
+</mat-card>

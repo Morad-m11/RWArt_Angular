@@ -14,19 +14,19 @@ import { SnackbarService } from '../snackbar/snackbar.service';
 import { StorageService } from '../storage/storage.service';
 import { LoginPromptDialogComponent } from './login-prompt/login-prompt-dialog/login-prompt-dialog.component';
 
-export interface UserInfo {
-    id: number;
-    email: string;
-    username: string;
-    picture?: string | null;
-}
-
 export type SignInProvider = 'google';
 
 interface SignupRequestBody {
     email: string;
     username: string;
     password: string;
+}
+
+export interface AuthUser {
+    id: number;
+    email: string;
+    username: string;
+    picture: string;
 }
 
 @Injectable({
@@ -40,7 +40,7 @@ export class AuthService {
 
     refreshRequest$: Observable<unknown> | null = null;
 
-    me = httpResource<UserInfo>(() =>
+    me = httpResource<AuthUser>(() =>
         this.isLoggedIn() ? Endpoints.auth.me : undefined
     );
     me$ = toObservable(this.me.status);
@@ -158,7 +158,8 @@ export class AuthService {
         );
     }
 
-    promptLogin() {
-        this._dialog.open(LoginPromptDialogComponent);
+    async promptLogin() {
+        const dialogRef = this._dialog.open(LoginPromptDialogComponent);
+        return await firstValueFrom(dialogRef.afterClosed());
     }
 }

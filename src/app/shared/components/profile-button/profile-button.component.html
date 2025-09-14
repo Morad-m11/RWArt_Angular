@@ -33,8 +33,7 @@
                 </mat-card-content>
 
                 <mat-card-actions align="end">
-                    <a matButton routerLink="profile">Profile</a>
-
+                    <a matButton [routerLink]="[`user/${profile.value().username}`]">Profile</a>
                     <button mat-button (click)="logout()">Logout</button>
                 </mat-card-actions>
             </mat-card>

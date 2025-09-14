@@ -6,6 +6,7 @@ import {
     provideHttpClientTesting
 } from '@angular/common/http/testing';
 import { MatDialog } from '@angular/material/dialog';
+import { of } from 'rxjs';
 import { provideValue } from 'src/app/shared/provide';
 import { Endpoints } from '../../constants/api-endpoints';
 import { CoreSnackbarMessages } from '../../constants/snackbar-messages';
@@ -30,7 +31,9 @@ describe('AuthService', () => {
                     clearAccessToken: jest.fn()
                 }),
                 provideValue(MatDialog, {
-                    open: jest.fn()
+                    open: jest.fn().mockReturnValue({
+                        afterClosed: jest.fn().mockReturnValue(of(null))
+                    })
                 }),
                 provideHttpClient(),
                 provideHttpClientTesting()

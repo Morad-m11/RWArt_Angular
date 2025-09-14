@@ -1,10 +1,11 @@
+import { coerceCssPixelValue } from '@angular/cdk/coercion';
 import { NgOptimizedImage } from '@angular/common';
 import { Component, inject, input } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MaterialModule } from 'src/app/shared/material.module';
-import { DescriptionComponent } from '../../description/description/description.component';
-import { ImageviewerDialogComponent } from '../../imageviewer-dialog/imageviewer-dialog.component';
-import { Post } from '../../shared/post.interface';
+import { DescriptionComponent } from '../description/description/description.component';
+import { ImageviewerDialogComponent } from '../imageviewer-dialog/imageviewer-dialog.component';
+import { Post } from '../shared/post.interface';
 
 @Component({
     selector: 'app-post',
@@ -17,6 +18,8 @@ export class PostComponent {
     private readonly _dialog = inject(MatDialog);
 
     post = input.required<Post>();
+    height = input.required({ transform: coerceCssPixelValue });
+    width = input('100%', { transform: coerceCssPixelValue });
 
     openFullscreen() {
         this._dialog.open(ImageviewerDialogComponent, {

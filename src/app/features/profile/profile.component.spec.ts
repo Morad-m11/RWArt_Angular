@@ -1,7 +1,7 @@
-import { HttpResourceRef } from '@angular/common/http';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { AuthService, UserInfo } from 'src/app/core/services/auth/auth.service';
-import { provideValue } from 'src/app/shared/provide';
+import { setInputs } from 'src/app/shared/test/set-inputs';
 import ProfileComponent from './profile.component';
 
 describe('ProfileComponent', () => {
@@ -11,22 +11,12 @@ describe('ProfileComponent', () => {
     beforeEach(async () => {
         await TestBed.configureTestingModule({
             imports: [ProfileComponent],
-            providers: [
-                provideValue(AuthService, {
-                    me: {
-                        value: () => ({
-                            id: 1,
-                            username: 'name',
-                            email: 'email',
-                            picture: 'picture'
-                        })
-                    } as HttpResourceRef<UserInfo>
-                })
-            ]
+            providers: [provideHttpClient(), provideHttpClientTesting()]
         }).compileComponents();
 
         fixture = TestBed.createComponent(ProfileComponent);
         component = fixture.componentInstance;
+        setInputs(fixture, { username: 'name' });
         fixture.detectChanges();
     });
 

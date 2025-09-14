@@ -6,9 +6,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { SnackbarService } from 'src/app/core/services/snackbar/snackbar.service';
 import { provideValue } from 'src/app/shared/provide';
 import { setInputs } from 'src/app/shared/test/set-inputs';
-import { DescriptionComponent } from '../../description/description/description.component';
-import { PostsService } from '../../services/posts.service';
-import { Post } from '../../shared/post.interface';
+import { DescriptionComponent } from '../description/description/description.component';
+import { PostsService } from '../services/posts.service';
+import { Post } from '../shared/post.interface';
 import { PostComponent } from './post.component';
 
 const POST: Post = {
@@ -44,7 +44,7 @@ describe('PostComponent', () => {
 
         fixture = TestBed.createComponent(PostComponent);
         component = fixture.componentInstance;
-        setInputs(fixture, { post: POST });
+        setInputs(fixture, { post: POST, height: 100 });
         fixture.detectChanges();
     });
 

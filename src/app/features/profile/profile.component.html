@@ -1,16 +1,68 @@
-<mat-list>
-    <mat-list-item>
-        <img matListItemAvatar [src]="profile()?.picture" />
-        <span matListItemTitle>{{ profile()?.username }}</span>
-    </mat-list-item>
+@if (profile.isLoading()) {
+    <mat-spinner />
+}
 
-    <mat-list-item>
-        <span matListItemTitle>Email</span>
-        <span matListItemLine>{{ profile()?.email }}</span>
-    </mat-list-item>
+@if (profile.error()) {
+    <div class="fx-row fx-align fx-gap-1">
+        <p class="text-error">Failed to fetch profile.</p>
+        <button matButton (click)="profile.reload()">Retry</button>
+    </div>
+}
 
-    <mat-list-item>
-        <span matListItemTitle>ID</span>
-        <span matListItemLine>{{ profile()?.id }}</span>
-    </mat-list-item>
-</mat-list>
+@if (profile.hasValue()) {
+    @let value = profile.value();
+
+    <mat-list>
+        <mat-list-item>
+            @if (value.picture) {
+                <img matListItemAvatar [src]="value.picture" alt="Profile picture" />
+            } @else {
+                <mat-icon matListItemIcon>account_circle</mat-icon>
+            }
+
+            <span matListItemTitle>{{ value.username }}</span>
+        </mat-list-item>
+
+        @if (value.isSelf) {
+            <mat-list-item>
+                <span matListItemTitle>Email</span>
+                <span matListItemLine>{{ value.email }}</span>
+            </mat-list-item>
+        }
+
+        <mat-list-item>
+            <span matListItemTitle>Joined</span>
+            <span matListItemLine>{{ value.createdAt | date }}</span>
+        </mat-list-item>
+    </mat-list>
+
+    <h4>{{ value.isSelf ? 'Your' : `${value.username}'s` }} posts</h4>
+
+    @if (posts.isLoading()) {
+        <mat-spinner />
+    }
+
+    @if (posts.error()) {
+        <div class="fx-row fx-align fx-gap-1">
+            <p class="text-error">Failed to fetch posts.</p>
+            <button matButton (click)="posts.reload()">Retry</button>
+        </div>
+    }
+
+    @if (posts.hasValue()) {
+        <div style="display: flex; gap: 1rem; flex-wrap: wrap">
+            @for (post of posts.value(); track post.id) {
+                <app-post [post]="post" [width]="300" [height]="400" />
+            } @empty {
+                <div class="fx-col">
+                    <p class="text-error">You don't have any posts yet.</p>
+
+                    <button matButton="tonal" routerLink="/posts/create">
+                        <mat-icon>add</mat-icon>
+                        <span>Create new Post</span>
+                    </button>
+                </div>
+            }
+        </div>
+    }
+}
