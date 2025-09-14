@@ -26,8 +26,8 @@ export class DescriptionComponent {
 
             this.post.update((post) => ({
                 ...post,
-                upvoted: !this.post().upvoted,
-                upvoteCount: post.upvoted ? post.upvoteCount - 1 : post.upvoteCount + 1
+                isUpvoted: !this.post().isUpvoted,
+                upvoteCount: post.isUpvoted ? post.upvoteCount - 1 : post.upvoteCount + 1
             }));
         } catch {
             this._snackbar.error('Failed to upvote', 2000);

@@ -55,7 +55,7 @@ export class PostComponent {
             this._snackbar.success('Deleted post');
         } catch (error) {
             const status = (error as HttpErrorResponse).status;
-            this._snackbar.error(`Could not delete post ${status}`);
+            this._snackbar.error(`Could not delete post (${status})`);
         }
     }
 }

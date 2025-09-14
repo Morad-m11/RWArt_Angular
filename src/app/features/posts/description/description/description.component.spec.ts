@@ -13,8 +13,9 @@ const POST: Post = {
     author: { username: 'me' },
     imageId: '1',
     imageUrl: 'image url',
-    upvoted: false,
-    upvoteCount: 1
+    upvoteCount: 1,
+    isUpvoted: false,
+    isOwner: false
 };
 
 describe('DescriptionComponent', () => {

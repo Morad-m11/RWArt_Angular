@@ -18,7 +18,7 @@
 
 <div class="upvote-container">
     <button matIconButton (click)="upvote()">
-        @if (!post().upvoted) {
+        @if (!post().isUpvoted) {
             <mat-icon>favorite_outlined</mat-icon>
         } @else {
             <mat-icon class="icon-primary">favorite</mat-icon>

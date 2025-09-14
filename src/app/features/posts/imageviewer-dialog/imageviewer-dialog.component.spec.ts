@@ -24,8 +24,9 @@ describe('ImageviewerDialogComponent', () => {
                         description: 'desc',
                         imageId: '1',
                         imageUrl: 'url',
-                        upvoted: true,
-                        upvoteCount: 1
+                        upvoteCount: 1,
+                        isUpvoted: true,
+                        isOwner: false
                     }
                 })
             ]

@@ -5,6 +5,7 @@ export interface Post {
     description: string;
     imageId: string;
     imageUrl: string;
-    upvoted: boolean;
     upvoteCount: number;
+    isUpvoted: boolean;
+    isOwner: boolean;
 }
