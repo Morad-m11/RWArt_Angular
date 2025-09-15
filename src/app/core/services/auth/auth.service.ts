@@ -4,7 +4,7 @@ import {
     httpResource,
     HttpStatusCode
 } from '@angular/common/http';
-import { effect, inject, Injectable, signal } from '@angular/core';
+import { computed, effect, inject, Injectable, signal } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { MatDialog } from '@angular/material/dialog';
 import { filter, finalize, firstValueFrom, Observable, shareReplay, tap } from 'rxjs';
@@ -40,16 +40,17 @@ export class AuthService {
 
     refreshRequest$: Observable<unknown> | null = null;
 
-    me = httpResource<AuthUser>(() =>
+    private _me = httpResource<AuthUser>(() =>
         this.isLoggedIn() ? Endpoints.auth.me : undefined
     );
-    me$ = toObservable(this.me.status);
+    private _me$ = toObservable(this._me.status);
 
     isLoggedIn = signal(this._storage.hasAccessToken());
+    currentUser = computed(() => this._me.value() ?? null);
 
     constructor() {
         effect(() => {
-            if (this.me.error()) {
+            if (this._me.error()) {
                 this.isLoggedIn.set(false);
                 this._storage.clearAccessToken();
             }
@@ -57,14 +58,14 @@ export class AuthService {
     }
 
     async waitForAuth(): Promise<void> {
-        const currentStatus = this.me.status();
+        const currentStatus = this._me.status();
 
         if (currentStatus !== 'loading' && currentStatus !== 'reloading') {
             return;
         }
 
         await firstValueFrom(
-            this.me$.pipe(
+            this._me$.pipe(
                 filter((status) => status !== 'loading' && status !== 'reloading')
             )
         );

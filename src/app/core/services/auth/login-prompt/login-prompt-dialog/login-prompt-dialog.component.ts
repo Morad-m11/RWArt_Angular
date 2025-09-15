@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Component, inject } from '@angular/core';
+import { Router, RouterLink } from '@angular/router';
 import { MaterialModule } from 'src/app/shared/material.module';
 
 @Component({
@@ -9,4 +9,6 @@ import { MaterialModule } from 'src/app/shared/material.module';
     templateUrl: './login-prompt-dialog.component.html',
     styleUrl: './login-prompt-dialog.component.scss'
 })
-export class LoginPromptDialogComponent {}
+export class LoginPromptDialogComponent {
+    routeUrl = inject(Router).url;
+}

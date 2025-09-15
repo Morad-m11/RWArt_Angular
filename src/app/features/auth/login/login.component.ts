@@ -1,5 +1,5 @@
 import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, input, signal } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router, RouterLink } from '@angular/router';
@@ -47,6 +47,8 @@ export class LoginComponent {
     errorMessage = signal('');
     loadingVerification = signal(false);
     showResendVerification = signal(false);
+
+    redirectUrl = input<string | null>(null);
 
     async login() {
         this.loading.set(true);
@@ -121,7 +123,7 @@ export class LoginComponent {
 
     private _handleSuccess(): void {
         this._snackbar.success('Logged in');
-        this._router.navigateByUrl('/');
+        this._router.navigateByUrl(this.redirectUrl() ?? '/');
     }
 
     private _setErrorMessage(error: HttpErrorResponse): void {

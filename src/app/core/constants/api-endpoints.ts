@@ -23,5 +23,6 @@ export const Endpoints = {
         edit: (id: string) => `post/${id}`,
         featured: 'post/featured',
         upvote: (id: string) => `post/${id}/upvote`
-    }
+    },
+    feedback: 'feedback'
 };

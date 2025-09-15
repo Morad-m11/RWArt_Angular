@@ -2,5 +2,11 @@
 
 <mat-dialog-actions>
     <button matButton matDialogClose>Never</button>
-    <button matButton="filled" routerLink="auth/login" matDialogClose>Login</button>
+    <button
+        matButton="filled"
+        routerLink="auth/login"
+        [queryParams]="{ redirect: routeUrl }"
+        matDialogClose>
+        Login
+    </button>
 </mat-dialog-actions>

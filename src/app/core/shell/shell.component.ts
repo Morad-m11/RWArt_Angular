@@ -22,7 +22,7 @@ export class ShellComponent {
 
     links: Link[] = [
         { label: 'Posts', path: 'posts' },
-        { label: 'Give feedback', path: 'feedback' }
+        { label: 'Give Feedback', path: 'feedback' }
     ];
 
     isHandset = toSignal(
