@@ -4,7 +4,7 @@ import {
     httpResource,
     HttpStatusCode
 } from '@angular/common/http';
-import { inject, Injectable, signal } from '@angular/core';
+import { effect, inject, Injectable, signal } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { MatDialog } from '@angular/material/dialog';
 import { filter, finalize, firstValueFrom, Observable, shareReplay, tap } from 'rxjs';
@@ -46,6 +46,15 @@ export class AuthService {
     me$ = toObservable(this.me.status);
 
     isLoggedIn = signal(this._storage.hasAccessToken());
+
+    constructor() {
+        effect(() => {
+            if (this.me.error()) {
+                this.isLoggedIn.set(false);
+                this._storage.clearAccessToken();
+            }
+        });
+    }
 
     async waitForAuth(): Promise<void> {
         const currentStatus = this.me.status();

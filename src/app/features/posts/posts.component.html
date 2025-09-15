@@ -28,21 +28,21 @@
 
 <h2 class="fx-center">Posts</h2>
 
-<div class="mg-2 fx-col fx-align fx-gap-1">
-    @if (posts.isLoading()) {
+<div class="post-list">
+    @if (postResource.isLoading()) {
         <mat-spinner />
     }
 
-    @if (posts.error()) {
+    @if (postResource.error()) {
         <div class="fx-row fx-align fx-gap-1">
             <p class="text-error">Failed to fetch posts</p>
-            <button matButton (click)="posts.reload()">Retry</button>
+            <button matButton (click)="postResource.reload()">Retry</button>
         </div>
     }
 
-    @if (posts.hasValue()) {
-        @for (post of posts.value(); track post.id) {
-            <app-post class="post" [post]="post" [height]="600" (deleted)="refresh()" />
+    @if (postResource.hasValue()) {
+        @for (post of posts(); track post.id) {
+            <app-post [post]="post" [height]="600" (deleted)="refresh()" />
         } @empty {
             <div class="fx-col fx-align">
                 <p class="text-primary">No posts to show</p>
@@ -52,5 +52,13 @@
                 </button>
             </div>
         }
+
+        <button
+            matButton
+            [disabled]="postResource.isLoading()"
+            [appLoading]="postResource.isLoading()"
+            (click)="loadMorePosts()">
+            Load more
+        </button>
     }
 </div>
