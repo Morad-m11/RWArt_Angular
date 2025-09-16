@@ -1,15 +1,10 @@
-@if (profile.isLoading()) {
-    <mat-spinner diameter="24" />
-} @else if (!profile.hasValue() || profile.error()) {
-    <a matButton routerLink="auth/login">Login</a>
-    <a matButton="filled" routerLink="auth/signup">Sign up</a>
-} @else {
+@if (profile(); as profile) {
     <button
         class="large-image-button"
         matIconButton
         [matMenuTriggerFor]="menu"
         aria-label="Profile">
-        @if (profile.value().picture; as picUrl) {
+        @if (profile.picture; as picUrl) {
             <img [src]="picUrl" alt="profile picture" referrerPolicy="no-referrer" />
         } @else {
             <mat-icon>account_circle</mat-icon>
@@ -20,23 +15,26 @@
         <ng-template matMenuContent>
             <mat-card appearance="outlined">
                 <mat-card-header>
-                    <mat-card-title>Hello, {{ profile.value().username }}!</mat-card-title>
+                    <mat-card-title>Hello, {{ profile.username }}!</mat-card-title>
                 </mat-card-header>
 
                 <mat-card-content>
                     <mat-list>
                         <mat-list-item>
                             <span matListItemTitle>E-Mail</span>
-                            <span matListItemLine>{{ profile.value().email }}</span>
+                            <span matListItemLine>{{ profile.email }}</span>
                         </mat-list-item>
                     </mat-list>
                 </mat-card-content>
 
                 <mat-card-actions align="end">
-                    <a matButton [routerLink]="[`user/${profile.value().username}`]">Profile</a>
+                    <a matButton [routerLink]="[`user/${profile.username}`]">Profile</a>
                     <button mat-button (click)="logout()">Logout</button>
                 </mat-card-actions>
             </mat-card>
         </ng-template>
     </mat-menu>
+} @else {
+    <a matButton routerLink="auth/login">Login</a>
+    <a matButton="filled" routerLink="auth/signup">Sign up</a>
 }

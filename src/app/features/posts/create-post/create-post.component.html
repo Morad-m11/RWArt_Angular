@@ -1,33 +1,30 @@
 <h5>Create post</h5>
 
-<div class="fx-col fx-gap-1" style="max-width: 400px">
-    <mat-form-field subscriptSizing="dynamic">
-        <mat-label>Title</mat-label>
-        <mat-icon matPrefix>title</mat-icon>
-        <input matInput [formControl]="form.controls.title" />
-    </mat-form-field>
+<mat-form-field subscriptSizing="dynamic">
+    <mat-label>Title</mat-label>
+    <mat-icon matPrefix>title</mat-icon>
+    <input matInput [formControl]="form.controls.title" />
+</mat-form-field>
 
-    <mat-form-field subscriptSizing="dynamic">
-        <mat-label>Description</mat-label>
-        <mat-icon matPrefix>text_snippet</mat-icon>
-        <textarea matInput [formControl]="form.controls.description"></textarea>
-    </mat-form-field>
+<mat-form-field subscriptSizing="dynamic">
+    <mat-label>Description</mat-label>
+    <mat-icon matPrefix>text_snippet</mat-icon>
+    <textarea matInput [formControl]="form.controls.description"></textarea>
+</mat-form-field>
 
-    <mat-form-field subscriptSizing="dynamic">
-        <mat-label>Image URL</mat-label>
-        <mat-icon matPrefix>link</mat-icon>
-        <input matInput />
-    </mat-form-field>
+<mat-form-field subscriptSizing="dynamic">
+    <mat-label>Image URL</mat-label>
+    <mat-icon matPrefix>link</mat-icon>
+    <input matInput />
+</mat-form-field>
 
-    <app-image-upload (uploaded)="setImageFile($event)" />
+<app-image-upload (uploaded)="setImageControl($event)" />
 
-    <div>
-        <button
-            matButton="filled"
-            [appLoading]="loading()"
-            [disabled]="form.invalid || loading()"
-            (click)="submit()">
-            Create
-        </button>
-    </div>
-</div>
+<button
+    class="fit"
+    matButton="filled"
+    [appLoading]="loading()"
+    [disabled]="form.invalid || loading()"
+    (click)="submit()">
+    Create
+</button>

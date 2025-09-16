@@ -17,7 +17,7 @@ export class ProfileButtonComponent {
     private readonly _authService = inject(AuthService);
     private readonly _snackbar = inject(SnackbarService);
 
-    profile = this._authService.me;
+    profile = this._authService.currentUser;
 
     async logout() {
         await this._authService

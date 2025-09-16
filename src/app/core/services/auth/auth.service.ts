@@ -38,7 +38,7 @@ export class AuthService {
     private readonly _snackbar = inject(SnackbarService);
     private readonly _dialog = inject(MatDialog);
 
-    refreshRequest$: Observable<unknown> | null = null;
+    private _refreshRequest$: Observable<unknown> | null = null;
 
     private _me = httpResource<AuthUser>(() =>
         this.isLoggedIn() ? Endpoints.auth.me : undefined
@@ -72,8 +72,8 @@ export class AuthService {
     }
 
     async refreshAuth(): Promise<unknown> {
-        if (!this.refreshRequest$) {
-            this.refreshRequest$ = this._http
+        if (!this._refreshRequest$) {
+            this._refreshRequest$ = this._http
                 .post<{ accessToken: string }>(Endpoints.auth.refresh, null)
                 .pipe(
                     tap({
@@ -82,11 +82,11 @@ export class AuthService {
                         error: () => this.logout({ expired: true })
                     }),
                     shareReplay(1),
-                    finalize(() => (this.refreshRequest$ = null))
+                    finalize(() => (this._refreshRequest$ = null))
                 );
         }
 
-        return firstValueFrom(this.refreshRequest$);
+        return firstValueFrom(this._refreshRequest$);
     }
 
     async handleAuthError(error: HttpErrorResponse): Promise<unknown> {

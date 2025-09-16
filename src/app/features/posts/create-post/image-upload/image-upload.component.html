@@ -1,20 +1,41 @@
-<div>
-    <input
-        #fileInput
-        type="file"
-        [accept]="acceptedFileTypes"
-        enctype="multipart/form-data"
-        (change)="onFileUpload($event)" />
+<div class="fx-col fx-center fx-align">
+    <div
+        class="drop-zone"
+        [class.drag-over]="isDragging()"
+        (dragover)="onDragOver($event)"
+        (dragleave)="onDragLeave($event)"
+        (drop)="onFileDropped($event, fileInput)">
+        <input
+            #fileInput
+            type="file"
+            hidden
+            enctype="multipart/form-data"
+            [accept]="acceptedFileTypes"
+            (change)="onFileSelected($event)" />
 
-    <button matButton (click)="clearFile(fileInput)">Clear</button>
+        @if (filePreviewUrl(); as imageUrl) {
+            <img class="img" [src]="imageUrl" alt="Uploaded preview" />
+            <button class="delete-btn" matIconButton (click)="removeFile(fileInput)">
+                <mat-icon>delete</mat-icon>
+            </button>
+        } @else if (!isDragging()) {
+            <mat-icon>cloud_upload</mat-icon>
+            <p>Drag an image here, or click to select</p>
+            <p>Max file size: {{ maxFileSize() }}</p>
+            <button class="fit" matButton="tonal" (click)="fileInput.click()">Browse</button>
+        } @else {
+            <p>Drop your file here</p>
+        }
+    </div>
 
-    <p>Max file size: {{ maxFileSize() }}</p>
-
-    @if (fileSize(); as size) {
-        <p>{{ size }}</p>
+    @if (file() && fileSize()) {
+        <p>{{ file()!.name }} - {{ fileSize() }}</p>
     }
 
     @if (errorMessage()) {
-        <p class="text-error">{{ errorMessage() }}</p>
+        <app-icon-text class="mg-1">
+            <mat-icon class="icon-error">error</mat-icon>
+            <span class="text-error">{{ errorMessage() }}</span>
+        </app-icon-text>
     }
 </div>

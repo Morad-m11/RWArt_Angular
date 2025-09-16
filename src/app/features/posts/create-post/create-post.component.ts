@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -28,26 +29,24 @@ export class CreatePostComponent {
 
     loading = signal(false);
 
-    setImageFile(file: File | null) {
+    setImageControl(file: File | null) {
         this.form.controls.image.setValue(file);
     }
 
     async submit() {
-        this.loading.set(true);
+        try {
+            this.loading.set(true);
 
-        const post = this.form.getRawValue() as NewPost;
+            const post = this.form.getRawValue() as NewPost;
+            await this._postService.create(post);
 
-        await this._postService
-            .create(post)
-            .then(() => this._handleSuccess())
-            .catch((error) => {
-                this._snackbar.error(`Failed to create post (${error.status})`);
-            })
-            .finally(() => this.loading.set(false));
-    }
-
-    private _handleSuccess(): void {
-        this._snackbar.success('Created post');
-        this._router.navigate(['posts']);
+            this._snackbar.success('Created post');
+            this._router.navigate(['posts']);
+        } catch (error) {
+            const status = (error as HttpErrorResponse).status;
+            this._snackbar.error(`Failed to create post (${status})`);
+        } finally {
+            this.loading.set(false);
+        }
     }
 }

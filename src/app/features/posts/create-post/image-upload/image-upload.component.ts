@@ -1,4 +1,6 @@
-import { Component, computed, effect, output, signal } from '@angular/core';
+import { Component, computed, signal } from '@angular/core';
+import { outputFromObservable, toObservable } from '@angular/core/rxjs-interop';
+import { IconTextComponent } from 'src/app/shared/components/icon-text/icon-text.component';
 import { MaterialModule } from 'src/app/shared/material.module';
 
 const MAX_FILE_SIZE_BYTES = 10 * 1e6;
@@ -6,44 +8,68 @@ const MAX_FILE_SIZE_BYTES = 10 * 1e6;
 @Component({
     selector: 'app-image-upload',
     standalone: true,
-    imports: [MaterialModule],
+    imports: [MaterialModule, IconTextComponent],
     templateUrl: './image-upload.component.html',
     styleUrl: './image-upload.component.scss'
 })
 export class ImageUploadComponent {
     readonly acceptedFileTypes = ['image/jpeg', 'image/png', 'image/webp'];
 
-    image = signal<File | null>(null);
-    errorMessage = signal('');
-    maxFileSize = signal(this.getFileSizeText(MAX_FILE_SIZE_BYTES));
+    file = signal<File | null>(null);
     fileSize = computed(() =>
-        this.image() ? this.getFileSizeText(this.image()!.size) : null
+        this.file() ? this.getFileSizeText(this.file()!.size) : null
     );
+    filePreviewUrl = computed(() =>
+        this.file() ? URL.createObjectURL(this.file()!) : null
+    );
+    maxFileSize = signal(this.getFileSizeText(MAX_FILE_SIZE_BYTES));
+    errorMessage = signal('');
+    isDragging = signal(false);
 
-    uploaded = output<File | null>();
+    uploaded = outputFromObservable<File | null>(toObservable(this.file));
 
-    constructor() {
-        effect(() => {
-            this.uploaded.emit(this.image());
-        });
+    onDragOver($event: DragEvent) {
+        $event.preventDefault();
+        this.isDragging.set(true);
     }
 
-    onFileUpload($event: Event) {
-        const input = $event.target as HTMLInputElement;
+    onDragLeave($event: DragEvent) {
+        $event.preventDefault();
+        this.isDragging.set(false);
+    }
+
+    onFileDropped(event: DragEvent, input: HTMLInputElement) {
+        event.preventDefault();
+        this.isDragging.set(false);
+
+        const files = event.dataTransfer?.files;
+        const file = files?.item(0) ?? null;
+
+        this.validateAndUpload(file, input);
+    }
+
+    onFileSelected(event: Event) {
+        const input = event.target as HTMLInputElement;
         const file = input.files?.item(0) ?? null;
 
-        const result = this.validateImageFile(file);
+        this.validateAndUpload(file, input);
+    }
+
+    validateAndUpload(file: File | null, input: HTMLInputElement) {
+        this.errorMessage.set('');
+
+        const result = this.validateFile(file);
 
         if (!result.valid) {
-            this.clearFile(input);
+            this.removeFile(input);
             this.errorMessage.set(result.error);
             return;
         }
 
-        this.image.set(file);
+        this.file.set(file);
     }
 
-    validateImageFile(file: File | null): { valid: boolean; error: string } {
+    validateFile(file: File | null): { valid: boolean; error: string } {
         if (!file) {
             return { valid: false, error: 'Invalid file' };
         }
@@ -71,8 +97,8 @@ export class ImageUploadComponent {
         return `${(bytes / 1e6).toFixed(1)} MB`;
     }
 
-    clearFile(input: HTMLInputElement) {
+    removeFile(input: HTMLInputElement) {
         input.value = '';
-        this.image.set(null);
+        this.file.set(null);
     }
 }

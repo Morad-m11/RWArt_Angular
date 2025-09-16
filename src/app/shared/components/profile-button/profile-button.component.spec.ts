@@ -1,7 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { HttpResourceRef } from '@angular/common/http';
-import { AuthService, UserInfo } from 'src/app/core/services/auth/auth.service';
+import { signal } from '@angular/core';
+import { provideRouter } from '@angular/router';
+import { AuthService } from 'src/app/core/services/auth/auth.service';
 import { provideValue } from '../../provide';
 import { ProfileButtonComponent } from './profile-button.component';
 
@@ -13,9 +14,8 @@ describe('ProfileButtonComponent', () => {
         await TestBed.configureTestingModule({
             imports: [ProfileButtonComponent],
             providers: [
-                provideValue(AuthService, {
-                    me: { isLoading: () => true } as HttpResourceRef<UserInfo>
-                })
+                provideValue(AuthService, { currentUser: signal(null) }),
+                provideRouter([])
             ]
         }).compileComponents();
 
