@@ -1,41 +1,43 @@
-@use '@angular/material' as mat;
-
 :host {
     width: 100%;
+    box-sizing: border-box;
+
     display: flex;
     justify-content: space-between;
     align-items: center;
+
     background: rgba(0, 0, 0, 0.4);
     border-radius: 12px 12px 0 0;
 }
 
 .description-container {
-    padding: 10px;
+    min-width: 0;
+    max-height: 5em;
+    padding: 0.5rem;
+    transition: max-height 0.3s ease;
+
+    word-break: break-word;
+    scrollbar-gutter: stable;
+
     display: flex;
     flex-direction: column;
-    width: 100%;
+    flex: 1;
 
-    .description-text {
-        width: 100%;
-        line-height: 1.2em;
-        max-height: 2.4em;
-        overflow: hidden;
-        transition: max-height 0.3s ease;
+    &:not(.expanded) {
+        .description-title,
+        .description-text {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    }
 
-        // truncate lines
-        display: -webkit-box;
-        -webkit-box-orient: vertical;
-        -webkit-line-clamp: 2;
-        line-clamp: 2;
+    &.expanded {
+        max-height: 10em;
 
-        &.expanded {
-            height: 6.8em;
-            max-height: 6.8em;
+        .description-text {
+            margin-top: 5px;
             overflow-y: auto;
-
-            display: block;
-            -webkit-line-clamp: unset;
-            line-clamp: unset;
         }
     }
 }

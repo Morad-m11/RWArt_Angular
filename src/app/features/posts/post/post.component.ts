@@ -1,5 +1,5 @@
 import { coerceCssPixelValue } from '@angular/cdk/coercion';
-import { NgOptimizedImage } from '@angular/common';
+import { NgOptimizedImage, TitleCasePipe } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, inject, input, output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
@@ -15,7 +15,7 @@ import { Post } from '../shared/post.interface';
 @Component({
     selector: 'app-post',
     standalone: true,
-    imports: [MaterialModule, NgOptimizedImage, DescriptionComponent],
+    imports: [MaterialModule, NgOptimizedImage, DescriptionComponent, TitleCasePipe],
     templateUrl: './post.component.html',
     styleUrl: './post.component.scss'
 })

@@ -1,22 +1,20 @@
-<div class="description-container">
+<div class="description-container" [class.expanded]="isExpanded()">
     <div class="fx-row fx-align fx-gap-1">
-        <span style="font-weight: 500">{{ post().title }}</span>
+        <b class="description-title">{{ post().title }}</b>
 
         <a matButton [routerLink]="[`/user/${post().author.username}`]">
             {{ post().author.username }}
         </a>
-
-        <div style="flex: 1"></div>
 
         <button matIconButton (click)="toggleExpand()">
             <mat-icon>{{ isExpanded() ? 'keyboard_arrow_down' : 'keyboard_arrow_up' }}</mat-icon>
         </button>
     </div>
 
-    <span class="description-text" [class.expanded]="isExpanded()">{{ post().description }}</span>
+    <span class="description-text">{{ post().description }}</span>
 </div>
 
-<div class="upvote-container">
+<div class="fx-col fx-align">
     <button matIconButton (click)="upvote()">
         @if (!post().isUpvoted) {
             <mat-icon>favorite_outlined</mat-icon>

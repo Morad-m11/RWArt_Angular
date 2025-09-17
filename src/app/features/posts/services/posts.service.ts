@@ -7,6 +7,7 @@ export interface NewPost {
     title: string;
     description: string;
     image: File;
+    tags: string[];
 }
 
 @Injectable({
@@ -21,6 +22,7 @@ export class PostsService {
         formData.append('title', post.title);
         formData.append('description', post.description);
         formData.append('image', post.image);
+        formData.append('tags', post.tags.join(','));
 
         await firstValueFrom(this._http.post(Endpoints.post.base, formData));
     }

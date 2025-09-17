@@ -9,6 +9,7 @@ import { MaterialModule } from 'src/app/shared/material.module';
 interface Link {
     label: string;
     path: string;
+    icon: string;
 }
 
 @Component({
@@ -21,8 +22,8 @@ export class ShellComponent {
     private _breakpointObserver = inject(BreakpointObserver);
 
     links: Link[] = [
-        { label: 'Posts', path: 'posts' },
-        { label: 'Give Feedback', path: 'feedback' }
+        { label: 'Posts', path: 'posts', icon: 'filter' },
+        { label: 'Feedback', path: 'feedback', icon: 'chat' }
     ];
 
     isHandset = toSignal(

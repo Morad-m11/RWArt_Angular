@@ -16,5 +16,15 @@
         </mat-menu>
     }
 
-    <app-description class="description" [post]="post()" />
+    <div class="description">
+        @if (post().tags.length > 0) {
+            <div class="chip-container" role="row">
+                @for (tag of post().tags; track tag) {
+                    <span class="chip">{{ tag | titlecase }}</span>
+                }
+            </div>
+        }
+
+        <app-description [post]="post()" />
+    </div>
 </mat-card>

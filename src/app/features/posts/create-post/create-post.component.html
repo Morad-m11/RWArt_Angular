@@ -1,4 +1,4 @@
-<h5>Create post</h5>
+<h5 style="margin: 1rem 0">Create post</h5>
 
 <mat-form-field subscriptSizing="dynamic">
     <mat-label>Title</mat-label>
@@ -12,13 +12,36 @@
     <textarea matInput [formControl]="form.controls.description"></textarea>
 </mat-form-field>
 
-<mat-form-field subscriptSizing="dynamic">
-    <mat-label>Image URL</mat-label>
-    <mat-icon matPrefix>link</mat-icon>
-    <input matInput />
-</mat-form-field>
-
 <app-image-upload (uploaded)="setImageControl($event)" />
+
+<div class="fx-col fx-gap-05">
+    <mat-chip-listbox multiple (change)="onTagSelect($event.value)">
+        <p>Tags:</p>
+        <mat-chip-option value="art">Art</mat-chip-option>
+        <mat-chip-option value="meme">Meme</mat-chip-option>
+        <mat-chip-option value="other">Other</mat-chip-option>
+    </mat-chip-listbox>
+
+    @if (selectedTags().includes('other')) {
+        <mat-form-field subscriptSizing="dynamic" style="width: 100%">
+            <mat-label>Custom Tags (up to 3)</mat-label>
+            <mat-chip-grid #chipGrid aria-label="Add tags">
+                @for (tag of customTags(); track tag) {
+                    <mat-chip-row (removed)="removeCustomTag(tag)">
+                        {{ tag }}
+                        <button matChipRemove [ariaLabel]="`remove ${tag}`">
+                            <mat-icon>cancel</mat-icon>
+                        </button>
+                    </mat-chip-row>
+                }
+                <input
+                    placeholder="New Tag..."
+                    [matChipInputFor]="chipGrid"
+                    (matChipInputTokenEnd)="addCustomTag($event)" />
+            </mat-chip-grid>
+        </mat-form-field>
+    }
+</div>
 
 <button
     class="fit"

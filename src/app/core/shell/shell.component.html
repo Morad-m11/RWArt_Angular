@@ -9,7 +9,10 @@
 
         <mat-nav-list>
             @for (link of links; track link.path) {
-                <a mat-list-item [routerLink]="link.path">{{ link.label }}</a>
+                <a mat-list-item [routerLink]="link.path">
+                    <span>{{ link.label }}</span>
+                    <mat-icon matListItemIcon>{{ link.icon }}</mat-icon>
+                </a>
             }
         </mat-nav-list>
     </mat-sidenav>
@@ -20,9 +23,9 @@
                 <button
                     type="button"
                     matIconButton
-                    aria-label="Toggle sidenav"
+                    aria-label="Sidenav toggle"
                     (click)="drawer.toggle()">
-                    <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+                    <mat-icon>menu</mat-icon>
                 </button>
             }
 

@@ -3,6 +3,7 @@ export interface Post {
     author: { username: string };
     title: string;
     description: string;
+    tags: string[];
     imageId: string;
     imageUrl: string;
     upvoteCount: number;

@@ -17,6 +17,7 @@ const POST: Post = {
     description: 'description',
     author: { username: 'me' },
     imageId: '1',
+    tags: [],
     imageUrl: 'image url',
     upvoteCount: 1,
     isUpvoted: false,
