@@ -1,4 +1,3 @@
-import { provideCloudinaryLoader } from '@angular/common';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import {
     ApplicationConfig,
@@ -9,7 +8,7 @@ import {
 } from '@angular/core';
 import { provideRouter, withComponentInputBinding } from '@angular/router';
 import { routes } from './app.routes';
-import { CLOUDINARY_CLIENT_ID } from './constants';
+import { provideImageLoader } from './core/config/image-loader';
 import { provideMaterialDefaults } from './core/config/material';
 import { provideGlobalErrorHandler } from './core/error-handler';
 import { apiBaseUrlInterceptor } from './core/interceptors/api-base-url/api-base-url.interceptor';
@@ -32,6 +31,6 @@ export const appConfig: ApplicationConfig = {
         provideGlobalErrorHandler(),
         provideAppInitializer(() => inject(AuthService).waitForAuth()),
         provideMaterialDefaults(),
-        provideCloudinaryLoader(`https://res.cloudinary.com/${CLOUDINARY_CLIENT_ID}`)
+        provideImageLoader()
     ]
 };
