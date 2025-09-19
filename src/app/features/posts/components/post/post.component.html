@@ -2,14 +2,9 @@
     <button (click)="openFullscreen()">
         <img #img class="img" [ngSrc]="post().imageId" priority fill placeholder alt="Preview" />
     </button>
-
-    <button class="menu" matIconButton aria-label="Share button" (click)="shareLink()">
-        <mat-icon>share</mat-icon>
-    </button>
-
-    <!-- <button matIconButton [matMenuTriggerFor]="menu" class="menu" aria-label="Menu button">
+    <button matIconButton [matMenuTriggerFor]="menu" class="menu" aria-label="Menu button">
         <mat-icon>more_vert</mat-icon>
-    </button> -->
+    </button>
 
     <div class="post-bottom">
         @if (post().tags.length > 0) {
@@ -20,11 +15,11 @@
             </div>
         }
 
-        <app-description [post]="post()" />
+        <app-description [post]="post()" (upvoted)="upvote()" />
     </div>
 </mat-card>
 
-<!-- <mat-menu #menu="matMenu">
+<mat-menu #menu="matMenu">
     @if (this.post().isOwner) {
         <button mat-menu-item class="red-item" (click)="delete()">
             <mat-icon>delete</mat-icon>
@@ -32,15 +27,20 @@
         </button>
     }
 
-    <button mat-menu-item [matMenuTriggerFor]="shareMenu">
+    <button class="menu" mat-menu-item (click)="shareLink()">
         <mat-icon>share</mat-icon>
         <span>Share</span>
     </button>
 
-    <button mat-menu-item (click)="download(img.src)">
+    <!-- <button mat-menu-item [matMenuTriggerFor]="shareMenu">
+        <mat-icon>share</mat-icon>
+        <span>Share</span>
+    </button> -->
+
+    <!-- <button mat-menu-item (click)="download(img.src)">
         <mat-icon>download</mat-icon>
         <span>Download</span>
-    </button>
+    </button> -->
 </mat-menu>
 
 <mat-menu #shareMenu="matMenu">
@@ -53,4 +53,4 @@
         <mat-icon>link</mat-icon>
         <span>Link</span>
     </button>
-</mat-menu> -->
+</mat-menu>

@@ -3,6 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { IMAGE_LOADER } from '@angular/common';
 import { Component, input } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { Subject } from 'rxjs';
 import { SnackbarService } from 'src/app/core/services/snackbar/snackbar.service';
 import { provideValue } from 'src/app/shared/provide';
 import { setInputs } from 'src/app/shared/test/set-inputs';
@@ -31,7 +32,7 @@ describe('PostComponent', () => {
         await TestBed.configureTestingModule({
             imports: [PostComponent],
             providers: [
-                provideValue(PostsService),
+                provideValue(PostsService, { upvoted$: new Subject() }),
                 provideValue(SnackbarService),
                 provideValue(MatDialog),
                 provideValue(IMAGE_LOADER, () => null)

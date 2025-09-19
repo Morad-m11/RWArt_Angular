@@ -39,4 +39,8 @@ export default class ProfileComponent {
         url: Endpoints.post.base,
         params: { author: this.username() }
     }));
+
+    reloadPosts() {
+        this.posts.reload();
+    }
 }

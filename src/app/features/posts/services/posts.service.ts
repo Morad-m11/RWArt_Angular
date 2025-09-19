@@ -1,6 +1,6 @@
 import { HttpBackend, HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom, Subject } from 'rxjs';
 import { Endpoints } from 'src/app/core/constants/api-endpoints';
 
 export interface NewPost {
@@ -18,9 +18,7 @@ export class PostsService {
     private readonly _http = inject(HttpClient);
     private readonly _rawHttp = new HttpClient(this._httpBackend);
 
-    async get(postId: string) {
-        return await this._http.get(Endpoints.post.id(postId));
-    }
+    upvoted$ = new Subject<{ postId: string }>();
 
     async create(post: NewPost) {
         const formData = new FormData();
@@ -35,6 +33,7 @@ export class PostsService {
 
     async upvote(postId: string) {
         await firstValueFrom(this._http.post(Endpoints.post.upvote(postId), null));
+        this.upvoted$.next({ postId });
     }
 
     async delete(id: string) {

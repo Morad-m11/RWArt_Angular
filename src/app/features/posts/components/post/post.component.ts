@@ -1,9 +1,10 @@
 import { coerceCssPixelValue } from '@angular/cdk/coercion';
 import { NgOptimizedImage, TitleCasePipe } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, inject, input, output } from '@angular/core';
+import { Component, inject, input, model, output } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatDialog } from '@angular/material/dialog';
-import { firstValueFrom } from 'rxjs';
+import { filter, firstValueFrom } from 'rxjs';
 import { SnackbarService } from 'src/app/core/services/snackbar/snackbar.service';
 import { MaterialModule } from 'src/app/shared/material.module';
 import { PostsService } from '../../services/posts.service';
@@ -24,11 +25,20 @@ export class PostComponent {
     private readonly _snackbar = inject(SnackbarService);
     private readonly _dialog = inject(MatDialog);
 
-    post = input.required<Post>();
+    post = model.required<Post>();
     height = input.required({ transform: coerceCssPixelValue });
     width = input('100%', { transform: coerceCssPixelValue });
 
     deleted = output();
+
+    constructor() {
+        this._postService.upvoted$
+            .pipe(
+                takeUntilDestroyed(),
+                filter(({ postId }) => postId === this.post().id)
+            )
+            .subscribe(() => this.syncUpvoteState());
+    }
 
     openFullscreen() {
         this._dialog.open(ImageviewerDialogComponent, {
@@ -39,6 +49,22 @@ export class PostComponent {
             maxHeight: '90vh',
             autoFocus: false
         });
+    }
+
+    async upvote() {
+        try {
+            await this._postService.upvote(this.post().id);
+        } catch {
+            this._snackbar.error('Failed to upvote', 2000);
+        }
+    }
+
+    private syncUpvoteState() {
+        this.post.update((post) => ({
+            ...post,
+            isUpvoted: !this.post().isUpvoted,
+            upvoteCount: post.isUpvoted ? post.upvoteCount - 1 : post.upvoteCount + 1
+        }));
     }
 
     async shareLink() {

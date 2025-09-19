@@ -15,7 +15,7 @@
 </div>
 
 <div class="fx-col fx-align">
-    <button matIconButton (click)="upvote()">
+    <button matIconButton (click)="upvoted.emit()">
         @if (!post().isUpvoted) {
             <mat-icon>favorite_outlined</mat-icon>
         } @else {

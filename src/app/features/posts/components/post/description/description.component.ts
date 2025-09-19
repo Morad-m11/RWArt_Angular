@@ -1,8 +1,6 @@
-import { Component, inject, model, signal } from '@angular/core';
+import { Component, input, output, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { SnackbarService } from 'src/app/core/services/snackbar/snackbar.service';
 import { MaterialModule } from 'src/app/shared/material.module';
-import { PostsService } from '../../../services/posts.service';
 import { Post } from '../../../shared/post.interface';
 
 @Component({
@@ -13,26 +11,10 @@ import { Post } from '../../../shared/post.interface';
     styleUrl: './description.component.scss'
 })
 export class DescriptionComponent {
-    private readonly _postService = inject(PostsService);
-    private readonly _snackbar = inject(SnackbarService);
-
-    post = model.required<Post>();
+    post = input.required<Post>();
+    upvoted = output();
 
     isExpanded = signal(false);
-
-    async upvote() {
-        try {
-            await this._postService.upvote(this.post().id);
-
-            this.post.update((post) => ({
-                ...post,
-                isUpvoted: !this.post().isUpvoted,
-                upvoteCount: post.isUpvoted ? post.upvoteCount - 1 : post.upvoteCount + 1
-            }));
-        } catch {
-            this._snackbar.error('Failed to upvote', 2000);
-        }
-    }
 
     toggleExpand() {
         this.isExpanded.update((x) => !x);

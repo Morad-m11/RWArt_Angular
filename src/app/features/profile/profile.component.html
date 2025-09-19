@@ -52,7 +52,7 @@
     @if (posts.hasValue()) {
         <div style="display: flex; gap: 1rem; flex-wrap: wrap">
             @for (post of posts.value(); track post.id) {
-                <app-post [post]="post" [width]="300" [height]="400" />
+                <app-post [post]="post" [width]="300" [height]="400" (deleted)="reloadPosts()" />
             } @empty {
                 <div class="fx-col">
                     <p class="text-error">You don't have any posts yet.</p>
