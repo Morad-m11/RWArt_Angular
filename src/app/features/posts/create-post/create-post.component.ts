@@ -22,9 +22,15 @@ export class CreatePostComponent {
     private readonly _snackbar = inject(SnackbarService);
     private readonly _postService = inject(PostsService);
 
+    readonly titleMaxLength = 100;
+    readonly descriptionMaxLength = 200;
+
     form = this._fb.nonNullable.group({
-        title: ['', Validators.required],
-        description: ['', Validators.required],
+        title: ['', [Validators.required, Validators.maxLength(this.titleMaxLength)]],
+        description: [
+            '',
+            [Validators.required, Validators.maxLength(this.descriptionMaxLength)]
+        ],
         image: [null as File | null, Validators.required],
         tags: [[] as string[]]
     });
