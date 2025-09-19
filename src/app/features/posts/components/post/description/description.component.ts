@@ -2,8 +2,8 @@ import { Component, inject, model, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { SnackbarService } from 'src/app/core/services/snackbar/snackbar.service';
 import { MaterialModule } from 'src/app/shared/material.module';
-import { PostsService } from '../../services/posts.service';
-import { Post } from '../../shared/post.interface';
+import { PostsService } from '../../../services/posts.service';
+import { Post } from '../../../shared/post.interface';
 
 @Component({
     selector: 'app-description',

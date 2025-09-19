@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpBackend, HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import { Endpoints } from 'src/app/core/constants/api-endpoints';
@@ -14,7 +14,13 @@ export interface NewPost {
     providedIn: 'root'
 })
 export class PostsService {
+    private readonly _httpBackend = inject(HttpBackend);
     private readonly _http = inject(HttpClient);
+    private readonly _rawHttp = new HttpClient(this._httpBackend);
+
+    async get(postId: string) {
+        return await this._http.get(Endpoints.post.id(postId));
+    }
 
     async create(post: NewPost) {
         const formData = new FormData();
@@ -32,6 +38,10 @@ export class PostsService {
     }
 
     async delete(id: string) {
-        await firstValueFrom(this._http.delete(Endpoints.post.edit(id)));
+        await firstValueFrom(this._http.delete(Endpoints.post.id(id)));
+    }
+
+    async fetchImageBlob(url: string): Promise<Blob> {
+        return await firstValueFrom(this._rawHttp.get(url, { responseType: 'blob' }));
     }
 }

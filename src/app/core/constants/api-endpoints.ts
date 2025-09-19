@@ -20,7 +20,7 @@ export const Endpoints = {
     },
     post: {
         base: 'post',
-        edit: (id: string) => `post/${id}`,
+        id: (id: string) => `post/${id}`,
         featured: 'post/featured',
         upvote: (id: string) => `post/${id}/upvote`
     },

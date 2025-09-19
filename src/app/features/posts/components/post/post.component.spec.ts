@@ -6,9 +6,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { SnackbarService } from 'src/app/core/services/snackbar/snackbar.service';
 import { provideValue } from 'src/app/shared/provide';
 import { setInputs } from 'src/app/shared/test/set-inputs';
-import { DescriptionComponent } from '../description/description/description.component';
-import { PostsService } from '../services/posts.service';
-import { Post } from '../shared/post.interface';
+import { PostsService } from '../../services/posts.service';
+import { Post } from '../../shared/post.interface';
+import { DescriptionComponent } from './description/description.component';
 import { PostComponent } from './post.component';
 
 const POST: Post = {
@@ -18,7 +18,6 @@ const POST: Post = {
     author: { username: 'me' },
     imageId: '1',
     tags: [],
-    imageUrl: 'image url',
     upvoteCount: 1,
     isUpvoted: false,
     isOwner: false

@@ -8,16 +8,12 @@
 <div class="featured-container">
     @if (featuredPosts.isLoading()) {
         <mat-spinner />
-    }
-
-    @if (featuredPosts.error()) {
-        <div class="fx-row fx-align fx-gap-1">
+    } @else if (featuredPosts.error()) {
+        <app-icon-text>
             <p class="text-error">Failed to fetch posts</p>
             <button matButton (click)="featuredPosts.reload()">Retry</button>
-        </div>
-    }
-
-    @if (featuredPosts.hasValue()) {
+        </app-icon-text>
+    } @else {
         @for (post of featuredPosts.value(); track post.id) {
             <app-post [post]="post" [width]="400" [height]="500" (deleted)="refresh()" />
         } @empty {
@@ -31,16 +27,12 @@
 <div class="post-list">
     @if (postResource.isLoading()) {
         <mat-spinner />
-    }
-
-    @if (postResource.error()) {
-        <div class="fx-row fx-align fx-gap-1">
+    } @else if (postResource.error()) {
+        <app-icon-text>
             <p class="text-error">Failed to fetch posts</p>
             <button matButton (click)="postResource.reload()">Retry</button>
-        </div>
-    }
-
-    @if (postResource.hasValue()) {
+        </app-icon-text>
+    } @else {
         @for (post of posts(); track post.id) {
             <app-post [post]="post" [height]="600" (deleted)="refresh()" />
         } @empty {

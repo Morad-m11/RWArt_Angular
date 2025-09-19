@@ -1,0 +1,17 @@
+<div class="fx-col fx-gap-1">
+    <a class="fit" matButton routerLink="/posts">
+        <mat-icon>chevron_left</mat-icon>
+        <span>All posts</span>
+    </a>
+
+    @if (post.isLoading()) {
+        <mat-spinner />
+    } @else if (post.error()) {
+        <app-icon-text>
+            <mat-icon>error_outline</mat-icon>
+            <h5>Failed to fetch post.</h5>
+        </app-icon-text>
+    } @else if (post.hasValue()) {
+        <app-post class="post" [post]="post.value()" [height]="600" />
+    }
+</div>

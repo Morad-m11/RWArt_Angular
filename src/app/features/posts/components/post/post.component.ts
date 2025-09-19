@@ -6,11 +6,11 @@ import { MatDialog } from '@angular/material/dialog';
 import { firstValueFrom } from 'rxjs';
 import { SnackbarService } from 'src/app/core/services/snackbar/snackbar.service';
 import { MaterialModule } from 'src/app/shared/material.module';
+import { PostsService } from '../../services/posts.service';
+import { Post } from '../../shared/post.interface';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
-import { DescriptionComponent } from '../description/description/description.component';
 import { ImageviewerDialogComponent } from '../imageviewer-dialog/imageviewer-dialog.component';
-import { PostsService } from '../services/posts.service';
-import { Post } from '../shared/post.interface';
+import { DescriptionComponent } from './description/description.component';
 
 @Component({
     selector: 'app-post',
@@ -41,6 +41,30 @@ export class PostComponent {
         });
     }
 
+    async shareLink() {
+        await this._evokeShareAPI({ url: `posts/${this.post().id}` });
+        return;
+    }
+
+    async shareImg(url: string) {
+        try {
+            const blob = await this._postService.fetchImageBlob(url);
+            const file = new File([blob], this.post().title);
+            await this._evokeShareAPI({ file });
+        } catch {
+            this._snackbar.error(`Failed to share image from ${url}`);
+        }
+    }
+
+    async download(url: string) {
+        try {
+            const blob = await this._postService.fetchImageBlob(url);
+            this._downloadBlob(blob);
+        } catch {
+            this._snackbar.error(`Failed to fetch image from ${url}`);
+        }
+    }
+
     async delete() {
         const dialogRef = this._dialog.open(ConfirmDialogComponent);
         const confirmed = await firstValueFrom(dialogRef.afterClosed());
@@ -56,6 +80,42 @@ export class PostComponent {
         } catch (error) {
             const status = (error as HttpErrorResponse).status;
             this._snackbar.error(`Could not delete post (${status})`);
+        }
+    }
+
+    private _downloadBlob(blob: Blob) {
+        // create temporary link
+        const link = document.createElement('a');
+        const objectUrl = URL.createObjectURL(blob);
+        link.href = objectUrl;
+        link.download = this.post().title;
+
+        // Trigger download
+        document.body.appendChild(link);
+        link.click();
+
+        // Clean up
+        document.body.removeChild(link);
+        URL.revokeObjectURL(objectUrl);
+    }
+
+    private async _evokeShareAPI(data: { url?: string; file?: File }) {
+        try {
+            const shareData: ShareData = {
+                title: 'Post Nr. 1',
+                text: 'My pretty post',
+                url: data.url,
+                files: data.file && [data.file]
+            };
+
+            if (!navigator.canShare(shareData)) {
+                this._snackbar.error("Can't share on your system");
+            }
+
+            await navigator.share(shareData);
+        } catch (error) {
+            console.error(error);
+            this._snackbar.error(`Sharing failed. ${error}`);
         }
     }
 }

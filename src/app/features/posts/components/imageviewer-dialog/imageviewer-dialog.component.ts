@@ -2,8 +2,8 @@ import { NgOptimizedImage } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MaterialModule } from 'src/app/shared/material.module';
-import { DescriptionComponent } from '../description/description/description.component';
-import { Post } from '../shared/post.interface';
+import { Post } from '../../shared/post.interface';
+import { DescriptionComponent } from '../post/description/description.component';
 
 export interface ImageViewerDialogData {
     post: Post;

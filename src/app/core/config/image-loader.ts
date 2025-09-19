@@ -6,20 +6,17 @@ import {
 import { isDevMode, Provider } from '@angular/core';
 import { CLOUDINARY_CLIENT_ID } from 'src/app/constants';
 
-const provideImageLoaderMock = () => {
-    return ({ width }: ImageLoaderConfig) => {
-        return `https://picsum.photos/${width}/${width}`;
+const provideImageLoaderMock = (path: string): Provider[] => {
+    const loaderFn = ({ width }: ImageLoaderConfig) => {
+        const params = width ? `/${width}/${width}` : '';
+        return `${path}/${params}`;
     };
+
+    return [{ provide: IMAGE_LOADER, useValue: loaderFn }];
 };
 
-export const provideImageLoader = (): Provider => {
-    return {
-        provide: IMAGE_LOADER,
-        useFactory: () =>
-            isDevMode()
-                ? provideImageLoaderMock()
-                : provideCloudinaryLoader(
-                      `https://res.cloudinary.com/${CLOUDINARY_CLIENT_ID}`
-                  )
-    };
+export const provideImageLoader = (): Provider[] => {
+    return isDevMode()
+        ? provideImageLoaderMock('https://picsum.photos/id/237')
+        : provideCloudinaryLoader(`https://res.cloudinary.com/${CLOUDINARY_CLIENT_ID}`);
 };

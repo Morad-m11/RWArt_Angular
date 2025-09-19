@@ -2,8 +2,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { provideValue } from 'src/app/shared/provide';
 import { setInputs } from 'src/app/shared/test/set-inputs';
-import { PostsService } from '../../services/posts.service';
-import { Post } from '../../shared/post.interface';
+import { PostsService } from '../../../services/posts.service';
+import { Post } from '../../../shared/post.interface';
 import { DescriptionComponent } from './description.component';
 
 const POST: Post = {

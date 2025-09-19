@@ -2,23 +2,29 @@ import { httpResource } from '@angular/common/http';
 import { Component, linkedSignal, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Endpoints } from 'src/app/core/constants/api-endpoints';
+import { IconTextComponent } from 'src/app/shared/components/icon-text/icon-text.component';
 import { LoadingDirective } from 'src/app/shared/directives/loading/loading.directive';
 import { MaterialModule } from 'src/app/shared/material.module';
-import { PostComponent } from './post/post.component';
+import { PostComponent } from './components/post/post.component';
 import { Post } from './shared/post.interface';
 
 @Component({
     selector: 'app-posts',
     standalone: true,
-    imports: [MaterialModule, RouterLink, PostComponent, LoadingDirective],
+    imports: [
+        MaterialModule,
+        RouterLink,
+        PostComponent,
+        LoadingDirective,
+        IconTextComponent
+    ],
     templateUrl: './posts.component.html',
     styleUrl: './posts.component.scss'
 })
-export default class PostsComponent {
+export class PostsComponent {
     private readonly _featuredLimit = 3;
     private readonly _postsLimit = 10;
-
-    private _offset = signal(0);
+    private readonly _offset = signal(0);
 
     featuredPosts = httpResource<Post[]>(() => ({
         url: Endpoints.post.featured,
@@ -28,10 +34,7 @@ export default class PostsComponent {
     postResource = httpResource<Post[]>(
         () => ({
             url: Endpoints.post.base,
-            params: {
-                limit: this._postsLimit,
-                offset: this._offset()
-            }
+            params: { limit: this._postsLimit, offset: this._offset() }
         }),
         { defaultValue: [] }
     );
