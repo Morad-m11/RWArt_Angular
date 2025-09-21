@@ -10,6 +10,7 @@
         {
             "files": "*.html",
             "options": {
+                "bracketSameLine": false,
                 "htmlWhitespaceSensitivity": "ignore",
                 "printWidth": 100,
                 "parser": "angular"

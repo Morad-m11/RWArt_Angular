@@ -1,0 +1,35 @@
+<div class="fx-col fx-gap-1">
+    <div class="search-container" role="search">
+        <mat-icon>search</mat-icon>
+        <input
+            class="input"
+            type="search"
+            placeholder="Search for posts..."
+            [formControl]="searchControl"
+        />
+    </div>
+
+    <div class="fx-row fx-gap-05">
+        @for (filter of filters; track filter.name) {
+            <button
+                matButton="tonal"
+                [matMenuTriggerFor]="menu"
+                [matMenuTriggerData]="{ parent: filter.name, items: filter.items }"
+            >
+                <mat-icon>{{ filter.icon }}</mat-icon>
+                <span>{{ selected()[filter.name] || filter.name }}</span>
+                <mat-icon iconPositionEnd>expand_more</mat-icon>
+            </button>
+        }
+    </div>
+</div>
+
+<mat-menu #menu="matMenu">
+    <ng-template matMenuContent let-parent="parent" let-items="items">
+        @for (item of items; track item) {
+            <button mat-menu-item [value]="item" (click)="selectFilter(parent, item)">
+                {{ item }}
+            </button>
+        }
+    </ng-template>
+</mat-menu>

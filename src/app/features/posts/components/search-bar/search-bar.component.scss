@@ -1,0 +1,29 @@
+@use '@angular/material' as mat;
+
+.search-container {
+    padding: 0.8rem;
+    display: flex;
+    align-items: center;
+
+    background: var(--mat-sys-surface-container-highest);
+    border-radius: var(--mat-sys-corner-full);
+    transition: background 100ms;
+
+    &:hover {
+        filter: brightness(1.2);
+    }
+
+    &:focus-within {
+        background: var(--mat-sys-surface-container-high);
+    }
+
+    .input {
+        width: 100%;
+        padding: 0 1rem;
+        font-size: 1.2em;
+        color: var(--mat-sys-on-surface-container);
+        background: none;
+        outline: none;
+        border: none;
+    }
+}
