@@ -140,15 +140,6 @@ describe('authInterceptor', () => {
             expect(authService.handleAuthError).not.toHaveBeenCalled();
         });
 
-        it('should call the auth service on 401 errors and rethrow the original error on failure', async () => {
-            authService.handleAuthError.mockRejectedValue(new Error('Woopsie'));
-
-            const request401 = failingRequest('test', 401);
-            await expect(request401).rejects.toMatchObject({ status: 401 });
-
-            expect(authService.handleAuthError).toHaveBeenCalled();
-        });
-
         it('should call the auth service on 401 errors and retry the request with a new token on success', async () => {
             const initialRequest = failingRequest('test', 401);
 

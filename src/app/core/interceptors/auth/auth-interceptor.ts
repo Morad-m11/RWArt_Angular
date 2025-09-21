@@ -5,7 +5,7 @@ import {
     HttpStatusCode
 } from '@angular/common/http';
 import { inject } from '@angular/core';
-import { catchError, from, switchMap, throwError } from 'rxjs';
+import { catchError, from, switchMap } from 'rxjs';
 import { AuthService } from '../../services/auth/auth.service';
 import { StorageService } from '../../services/storage/storage.service';
 
@@ -21,8 +21,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
             }
 
             return from(authService.handleAuthError(error)).pipe(
-                switchMap(() => next(attachAuth(req, storage.getAccessToken()))),
-                catchError(() => throwError(() => error))
+                switchMap(() => next(attachAuth(req, storage.getAccessToken())))
             );
         })
     );

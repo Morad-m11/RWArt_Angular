@@ -1,18 +1,28 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, inject, signal } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { FormBuilder, FormsModule, Validators } from '@angular/forms';
-import { MatChipInputEvent } from '@angular/material/chips';
+import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { firstValueFrom } from 'rxjs';
 import { SnackbarService } from 'src/app/core/services/snackbar/snackbar.service';
+import { IconTextComponent } from 'src/app/shared/components/icon-text/icon-text.component';
 import { LoadingDirective } from 'src/app/shared/directives/loading/loading.directive';
 import { MaterialModule } from 'src/app/shared/material.module';
-import { NewPost, PostsService } from '../services/posts.service';
+import { NewPost, NewPostTag, PostsService } from '../services/posts.service';
 import { ImageUploadComponent } from './image-upload/image-upload.component';
+import { TagsDialogComponent } from './tags-dialog/tags-dialog.component';
 
 @Component({
     selector: 'app-create-post',
     standalone: true,
-    imports: [MaterialModule, FormsModule, ImageUploadComponent, LoadingDirective],
+    imports: [
+        MaterialModule,
+        FormsModule,
+        ImageUploadComponent,
+        LoadingDirective,
+        IconTextComponent
+    ],
     templateUrl: './create-post.component.html',
     styleUrl: './create-post.component.scss'
 })
@@ -21,6 +31,7 @@ export class CreatePostComponent {
     private readonly _router = inject(Router);
     private readonly _snackbar = inject(SnackbarService);
     private readonly _postService = inject(PostsService);
+    private readonly _dialog = inject(MatDialog);
 
     readonly titleMaxLength = 100;
     readonly descriptionMaxLength = 200;
@@ -32,56 +43,36 @@ export class CreatePostComponent {
             [Validators.required, Validators.maxLength(this.descriptionMaxLength)]
         ],
         image: [null as File | null, Validators.required],
-        tags: [[] as string[]]
+        tags: [[] as NewPostTag[]]
     });
 
-    selectedTags = signal<string[]>([]);
-    customTags = signal<string[]>([]);
+    tags = toSignal(this.form.controls.tags.valueChanges, { initialValue: [] });
+
     loading = signal(false);
 
     setImageControl(file: File | null) {
         this.form.controls.image.setValue(file);
     }
 
-    onTagSelect(tags: string[]) {
-        this.selectedTags.set(tags);
-    }
+    async selectTags() {
+        const dialogRef = this._dialog.open(TagsDialogComponent, {
+            data: { selectedTags: this.form.controls.tags.value }
+        });
 
-    addCustomTag(event: MatChipInputEvent) {
-        if (this.customTags().length >= 3) {
+        const tags = await firstValueFrom<NewPostTag[] | undefined>(
+            dialogRef.afterClosed()
+        );
+
+        if (!tags) {
             return;
         }
 
-        const value = event.value.trim();
+        const filteredTags = tags.filter((x) => x.name !== null);
 
-        if (value) {
-            this.customTags.update((x) => [...x, value]);
-        }
-
-        event.chipInput.clear();
-    }
-
-    removeCustomTag(tag: string) {
-        this.customTags.update((value) => {
-            const index = value.indexOf(tag);
-
-            if (index < 0) {
-                return value;
-            }
-
-            value.splice(index, 1);
-            return [...value];
-        });
+        this.form.controls.tags.setValue(filteredTags);
     }
 
     async submit() {
-        const otherTagsSelected = this.selectedTags().includes('other');
-
-        this.form.controls.tags.setValue([
-            ...this.selectedTags().filter((x) => x !== 'other'),
-            ...(otherTagsSelected ? this.customTags() : [])
-        ]);
-
         try {
             this.loading.set(true);
 

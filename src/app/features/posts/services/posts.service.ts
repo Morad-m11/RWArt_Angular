@@ -7,8 +7,15 @@ export interface NewPost {
     title: string;
     description: string;
     image: File;
-    tags: string[];
+    tags: NewPostTag[];
 }
+
+export interface NewPostTag {
+    category: TagCategory;
+    name: string;
+}
+
+export type TagCategory = 'type' | 'character' | 'style';
 
 @Injectable({
     providedIn: 'root'
@@ -26,7 +33,7 @@ export class PostsService {
         formData.append('title', post.title);
         formData.append('description', post.description);
         formData.append('image', post.image);
-        formData.append('tags', post.tags.join(','));
+        formData.append('tags', JSON.stringify(post.tags));
 
         await firstValueFrom(this._http.post(Endpoints.post.base, formData));
     }

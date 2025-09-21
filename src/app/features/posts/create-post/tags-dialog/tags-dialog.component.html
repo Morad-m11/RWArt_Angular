@@ -1,0 +1,57 @@
+<h2 matDialogTitle>Pick some tags for your post</h2>
+
+<mat-dialog-content [formGroup]="form">
+    <p>Tags will help make your posts more easily discoverable</p>
+
+    <div class="fx-col pad-1">
+        <mat-form-field>
+            <mat-label>Type</mat-label>
+            <mat-select [formControl]="form.controls.type">
+                <mat-option value="Artwork">Artwork</mat-option>
+                <mat-option value="Meme">Meme</mat-option>
+                <mat-option value="Animation">Animation</mat-option>
+            </mat-select>
+            <button
+                matIconButton
+                matSuffix
+                (click)="$event.stopPropagation(); form.controls.type.setValue(null)">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Character</mat-label>
+            <mat-select [formControl]="form.controls.character">
+                <mat-option value="Slugcat">Slugcat</mat-option>
+                <mat-option value="Creature">Creature</mat-option>
+                <mat-option value="Iterator">Iterator</mat-option>
+            </mat-select>
+            <button
+                matIconButton
+                matSuffix
+                (click)="$event.stopPropagation(); form.controls.character.setValue(null)">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Style</mat-label>
+            <mat-select [formControl]="form.controls.style">
+                <mat-option value="Digital">Digital</mat-option>
+                <mat-option value="Sketch">Sketch</mat-option>
+                <mat-option value="3D">3D</mat-option>
+            </mat-select>
+            <button
+                matIconButton
+                matSuffix
+                (click)="$event.stopPropagation(); form.controls.style.setValue(null)">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-form-field>
+    </div>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+    <button matButton matDialogClose>Cancel</button>
+    <button matButton="filled" [matDialogClose]="tagList()">Pick</button>
+</mat-dialog-actions>

@@ -10,7 +10,7 @@
         @if (post().tags.length > 0) {
             <div class="chip-container" role="row">
                 @for (tag of post().tags; track tag) {
-                    <span class="chip">{{ tag | titlecase }}</span>
+                    <span class="chip">{{ tag.name | titlecase }}</span>
                 }
             </div>
         }

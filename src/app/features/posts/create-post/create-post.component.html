@@ -1,5 +1,7 @@
 <h5 style="margin: 1rem 0">Create post</h5>
 
+<app-image-upload (uploaded)="setImageControl($event)" />
+
 <mat-form-field subscriptSizing="dynamic">
     <mat-label>Title</mat-label>
     <mat-icon matPrefix>title</mat-icon>
@@ -14,35 +16,23 @@
     <mat-hint>{{`${desc.value.length}/${descriptionMaxLength}`}}</mat-hint>
 </mat-form-field>
 
-<app-image-upload (uploaded)="setImageControl($event)" />
+@if (tags().length) {
+    <div class="fx-row fx-gap-05">
+        @for (tag of tags(); track tag.name) {
+            <mat-chip>{{ tag.name }}</mat-chip>
+        }
+    </div>
+}
 
-<div class="fx-col fx-gap-05">
-    <mat-chip-listbox multiple (change)="onTagSelect($event.value)">
-        <p>Tags:</p>
-        <mat-chip-option value="art">Art</mat-chip-option>
-        <mat-chip-option value="meme">Meme</mat-chip-option>
-        <mat-chip-option value="other">Other</mat-chip-option>
-    </mat-chip-listbox>
+<div class="fx-row fx-gap-1">
+    <app-icon-text>
+        <button matButton="tonal" (click)="selectTags()">
+            <mat-icon>add</mat-icon>
+            <span>Add tags</span>
+        </button>
 
-    @if (selectedTags().includes('other')) {
-        <mat-form-field subscriptSizing="dynamic" style="width: 100%">
-            <mat-label>Custom Tags (up to 3)</mat-label>
-            <mat-chip-grid #chipGrid aria-label="Add tags">
-                @for (tag of customTags(); track tag) {
-                    <mat-chip-row (removed)="removeCustomTag(tag)">
-                        {{ tag }}
-                        <button matChipRemove [ariaLabel]="`remove ${tag}`">
-                            <mat-icon>cancel</mat-icon>
-                        </button>
-                    </mat-chip-row>
-                }
-                <input
-                    placeholder="New Tag..."
-                    [matChipInputFor]="chipGrid"
-                    (matChipInputTokenEnd)="addCustomTag($event)" />
-            </mat-chip-grid>
-        </mat-form-field>
-    }
+        <small class="text-secondary">Tags will help other users find your content</small>
+    </app-icon-text>
 </div>
 
 <button

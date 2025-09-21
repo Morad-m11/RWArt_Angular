@@ -10,7 +10,7 @@
         {
             "files": "*.html",
             "options": {
-                "htmlWhitespaceSensitivity": "css",
+                "htmlWhitespaceSensitivity": "ignore",
                 "printWidth": 100,
                 "parser": "angular"
             }

@@ -3,9 +3,15 @@ export interface Post {
     author: { username: string };
     title: string;
     description: string;
-    tags: string[];
+    tags: Tag[];
     imageId: string;
     upvoteCount: number;
     isUpvoted: boolean;
     isOwner: boolean;
+}
+
+export interface Tag {
+    id: number;
+    name: string;
+    category?: string;
 }
