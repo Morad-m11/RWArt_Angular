@@ -4,10 +4,10 @@ import { FormBuilder } from '@angular/forms';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { map } from 'rxjs';
 import { MaterialModule } from 'src/app/shared/material.module';
-import { NewPostTag, TagCategory } from '../../services/posts.service';
+import { Tag, TagCategory } from '../../shared/post.interface';
 
 export interface TagsDialogData {
-    selectedTags: NewPostTag[];
+    selectedTags: Tag[];
 }
 
 @Component({

@@ -1,3 +1,10 @@
+export type TagCategory = 'type' | 'character' | 'style';
+
+export interface Tag {
+    category: TagCategory;
+    name: string;
+}
+
 export interface Post {
     id: string;
     author: { username: string };
@@ -10,8 +17,6 @@ export interface Post {
     isOwner: boolean;
 }
 
-export interface Tag {
-    id: number;
-    name: string;
-    category?: string;
-}
+export type CreatePost = Pick<Post, 'title' | 'description' | 'tags'> & {
+    image: File;
+};

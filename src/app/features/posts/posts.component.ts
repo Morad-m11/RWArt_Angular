@@ -1,13 +1,13 @@
 import { httpResource } from '@angular/common/http';
-import { Component, computed, effect, linkedSignal, signal } from '@angular/core';
+import { Component, computed, linkedSignal, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Endpoints } from 'src/app/core/constants/api-endpoints';
 import { IconTextComponent } from 'src/app/shared/components/icon-text/icon-text.component';
 import { LoadingDirective } from 'src/app/shared/directives/loading/loading.directive';
 import { MaterialModule } from 'src/app/shared/material.module';
+import { FilterChangeEvent, FilterComponent } from './components/filter/filter.component';
 import { PostComponent } from './components/post/post.component';
-import { SearchBarComponent } from './components/search-bar/search-bar.component';
-import { Post } from './shared/post.interface';
+import { Post, Tag } from './shared/post.interface';
 
 @Component({
     selector: 'app-posts',
@@ -18,7 +18,7 @@ import { Post } from './shared/post.interface';
         PostComponent,
         LoadingDirective,
         IconTextComponent,
-        SearchBarComponent
+        FilterComponent
     ],
     templateUrl: './posts.component.html',
     styleUrl: './posts.component.scss'
@@ -27,6 +27,8 @@ export class PostsComponent {
     private readonly _featuredLimit = 3;
     private readonly _postsLimit = 10;
     private readonly _offset = signal(0);
+
+    filters = signal<{ search?: string; tags?: Tag[] }>({});
 
     featuredPosts = httpResource<Post[]>(() => ({
         url: Endpoints.post.featured,
@@ -37,9 +39,10 @@ export class PostsComponent {
         () => ({
             url: Endpoints.post.base,
             params: {
-                search: this.searchTerm(),
                 limit: this._postsLimit,
-                offset: this._offset()
+                offset: this._offset(),
+                search: this.filters().search ?? '',
+                tags: JSON.stringify(this.filters().tags ?? [])
             }
         }),
         { defaultValue: [] }
@@ -64,21 +67,13 @@ export class PostsComponent {
         }
     });
 
-    searchTerm = signal('');
-
-    constructor() {
-        effect(() => {
-            console.warn(this.postResource.headers());
-        });
-    }
-
     refresh() {
         this.featuredPosts.reload();
         this.postResource.reload();
     }
 
-    filterPosts(search: string) {
-        this.searchTerm.set(search);
+    filterPosts(filters: FilterChangeEvent) {
+        this.filters.set(filters);
     }
 
     loadMorePosts() {

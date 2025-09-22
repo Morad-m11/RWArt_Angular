@@ -9,7 +9,8 @@ import { SnackbarService } from 'src/app/core/services/snackbar/snackbar.service
 import { IconTextComponent } from 'src/app/shared/components/icon-text/icon-text.component';
 import { LoadingDirective } from 'src/app/shared/directives/loading/loading.directive';
 import { MaterialModule } from 'src/app/shared/material.module';
-import { NewPost, NewPostTag, PostsService } from '../services/posts.service';
+import { PostsService } from '../services/posts.service';
+import { CreatePost, Tag } from '../shared/post.interface';
 import { ImageUploadComponent } from './image-upload/image-upload.component';
 import { TagsDialogComponent } from './tags-dialog/tags-dialog.component';
 
@@ -43,7 +44,7 @@ export class CreatePostComponent {
             [Validators.required, Validators.maxLength(this.descriptionMaxLength)]
         ],
         image: [null as File | null, Validators.required],
-        tags: [[] as NewPostTag[]]
+        tags: [[] as Tag[]]
     });
 
     tags = toSignal(this.form.controls.tags.valueChanges, { initialValue: [] });
@@ -59,9 +60,7 @@ export class CreatePostComponent {
             data: { selectedTags: this.form.controls.tags.value }
         });
 
-        const tags = await firstValueFrom<NewPostTag[] | undefined>(
-            dialogRef.afterClosed()
-        );
+        const tags = await firstValueFrom<Tag[] | undefined>(dialogRef.afterClosed());
 
         if (!tags) {
             return;
@@ -76,7 +75,7 @@ export class CreatePostComponent {
         try {
             this.loading.set(true);
 
-            const post = this.form.getRawValue() as NewPost;
+            const post = this.form.getRawValue() as CreatePost;
             await this._postService.create({ ...post });
 
             this._snackbar.success('Created post');

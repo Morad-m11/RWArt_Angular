@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { IMAGE_LOADER } from '@angular/common';
-import { Component, input } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
 import { SnackbarService } from 'src/app/core/services/snackbar/snackbar.service';
@@ -46,7 +46,7 @@ describe('PostComponent', () => {
 
         fixture = TestBed.createComponent(PostComponent);
         component = fixture.componentInstance;
-        setInputs(fixture, { post: POST, height: 100 });
+        setInputs(fixture, { post: { ...POST }, height: '100' });
         fixture.detectChanges();
     });
 
@@ -55,7 +55,5 @@ describe('PostComponent', () => {
     });
 });
 
-@Component({ template: 'app-description' })
-class DescriptionComponentMock {
-    post = input.required<Post>();
-}
+@Component({ template: 'app-description', schemas: [CUSTOM_ELEMENTS_SCHEMA] })
+class DescriptionComponentMock {}

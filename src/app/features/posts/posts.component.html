@@ -15,7 +15,7 @@
         </app-icon-text>
     } @else {
         @for (post of featuredPosts.value(); track post.id) {
-            <app-post [post]="post" [width]="400" [height]="500" (deleted)="refresh()" />
+            <app-post [post]="post" [width]="300" [height]="400" (deleted)="refresh()" />
         } @empty {
             <p class="text-primary">No featured posts</p>
         }
@@ -25,7 +25,7 @@
 <div style="margin: 0 auto; max-width: 800px">
     <h2 class="fx-center">Posts</h2>
 
-    <app-search-bar (searched)="filterPosts($event)" />
+    <app-filter (filtered)="filterPosts($event)" />
 
     <p>{{ totalPostCount() }} post/s found</p>
 
