@@ -39,10 +39,7 @@ export class CreatePostComponent {
 
     form = this._fb.nonNullable.group({
         title: ['', [Validators.required, Validators.maxLength(this.titleMaxLength)]],
-        description: [
-            '',
-            [Validators.required, Validators.maxLength(this.descriptionMaxLength)]
-        ],
+        description: ['', [Validators.maxLength(this.descriptionMaxLength)]],
         image: [null as File | null, Validators.required],
         tags: [[] as Tag[]]
     });
