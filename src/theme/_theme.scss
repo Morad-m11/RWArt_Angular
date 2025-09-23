@@ -1,7 +1,6 @@
 @use '@angular/material' as mat;
 @use './colors' as theme;
 @use './typography';
-@use '../app/core/shell/shell-theme' as layout;
 
 html {
     color-scheme: light dark;
@@ -16,8 +15,6 @@ html {
             density: 0
         )
     );
-
-    @include layout.theme;
 }
 
 .snackbar-success {

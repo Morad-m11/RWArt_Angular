@@ -1,65 +1,12 @@
-<button class="create-btn" matButton="tonal" routerLink="create">
+<button class="create-btn" matButton="filled" routerLink="create">
     <mat-icon>add</mat-icon>
     <span>Create Post</span>
 </button>
 
-<h2 class="fx-center">Featured</h2>
+<h2 class="fx-center" style="margin: 0 0 20px">Featured</h2>
 
-<div class="featured-container">
-    @if (featuredPosts.isLoading()) {
-        <mat-spinner />
-    } @else if (featuredPosts.error()) {
-        <app-icon-text>
-            <p class="text-error">Failed to fetch posts</p>
-            <button matButton (click)="featuredPosts.reload()">Retry</button>
-        </app-icon-text>
-    } @else {
-        @for (post of featuredPosts.value(); track post.id) {
-            <app-post [post]="post" [width]="300" [height]="400" (deleted)="refresh()" />
-        } @empty {
-            <p class="text-primary">No featured posts</p>
-        }
-    }
-</div>
+<app-featured limit="3" />
 
-<div style="margin: 0 auto; max-width: 800px">
-    <h2 class="fx-center">Posts</h2>
+<h2 class="fx-center">Posts</h2>
 
-    <app-filter (filtered)="filterPosts($event)" />
-
-    <p>{{ totalPostCount() }} post/s found</p>
-
-    <div class="fx-col fx-gap-2">
-        @if (postResource.isLoading()) {
-            <mat-spinner />
-        } @else if (postResource.error()) {
-            <app-icon-text>
-                <p class="text-error">Failed to fetch posts</p>
-                <button matButton (click)="postResource.reload()">Retry</button>
-            </app-icon-text>
-        } @else {
-            @for (post of posts(); track post.id) {
-                <app-post [post]="post" [height]="600" (deleted)="refresh()" />
-            } @empty {
-                <div class="fx-col fx-align">
-                    <p class="text-primary">No posts to show</p>
-                    <button matButton="tonal" routerLink="create">
-                        <mat-icon>add</mat-icon>
-                        <span>Create the first post</span>
-                    </button>
-                </div>
-            }
-
-            @if (posts().length < totalPostCount()) {
-                <button
-                    matButton
-                    [disabled]="postResource.isLoading()"
-                    [appLoading]="postResource.isLoading()"
-                    (click)="loadMorePosts()"
-                >
-                    Load more
-                </button>
-            }
-        }
-    </div>
-</div>
+<app-post-list limit="10" />

@@ -1,0 +1,46 @@
+<mat-card>
+    <mat-card-content class="featured-container">
+        @if (posts.isLoading()) {
+            <mat-spinner />
+        } @else if (posts.error()) {
+            <app-icon-text>
+                <p class="text-error">Failed to fetch posts.</p>
+                <button matButton (click)="posts.reload()">Retry</button>
+            </app-icon-text>
+        } @else {
+            @if (isHandset()) {
+                <div class="fx-row fx-center fx-align fx-gap-1">
+                    <button matMiniFab [disabled]="postIndex() === 0" (click)="prev()">
+                        <mat-icon>chevron_left</mat-icon>
+                    </button>
+
+                    <app-post
+                        [post]="posts.value()[postIndex()]"
+                        [width]="postWidth"
+                        [height]="postHeight"
+                        (deleted)="refresh()"
+                    />
+
+                    <button
+                        matMiniFab
+                        [disabled]="postIndex() === posts.value().length - 1"
+                        (click)="next()"
+                    >
+                        <mat-icon>chevron_right</mat-icon>
+                    </button>
+                </div>
+            } @else {
+                @for (post of posts.value(); track post.id) {
+                    <app-post
+                        [post]="post"
+                        [width]="postWidth"
+                        [height]="postHeight"
+                        (deleted)="refresh()"
+                    />
+                } @empty {
+                    <p class="text-primary">No featured posts</p>
+                }
+            }
+        }
+    </mat-card-content>
+</mat-card>

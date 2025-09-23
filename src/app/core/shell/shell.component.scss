@@ -11,16 +11,9 @@
     flex: 1 1 auto;
 }
 
-.sidenav {
-    width: fit-content;
-    padding: 0 8px;
-    box-sizing: border-box;
-}
-
-.sidenav-scroll-wrapper {
+.scroll-wrapper {
     padding: 16px;
     box-sizing: border-box;
     height: calc(100dvh - 64px - 16px);
-    border-radius: 16px;
     overflow: auto;
 }

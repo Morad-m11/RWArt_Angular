@@ -1,45 +1,26 @@
-<mat-sidenav-container>
-    <mat-sidenav
-        #drawer
-        class="sidenav"
-        [attr.role]="isHandset() ? 'dialog' : 'navigation'"
-        [mode]="isHandset() ? 'over' : 'side'"
-        [opened]="isHandset() === false">
-        <mat-toolbar>Menu</mat-toolbar>
+<mat-toolbar>
+    <a class="home-link" routerLink="/">RW Art Gallery</a>
 
-        <mat-nav-list>
-            @for (link of links; track link.path) {
-                <a mat-list-item [routerLink]="link.path">
-                    <span>{{ link.label }}</span>
-                    <mat-icon matListItemIcon>{{ link.icon }}</mat-icon>
-                </a>
-            }
-        </mat-nav-list>
-    </mat-sidenav>
+    <span class="spacer"></span>
 
-    <mat-sidenav-content>
-        <mat-toolbar>
-            @if (isHandset()) {
-                <button
-                    type="button"
-                    matIconButton
-                    aria-label="Sidenav toggle"
-                    (click)="drawer.toggle()">
-                    <mat-icon>menu</mat-icon>
-                </button>
-            }
+    <div class="fx-row fx-gap-1">
+        @if (isHandset()) {
+            <button matIconButton aria-label="Feedback button" routerLink="/feedback">
+                <mat-icon>chat</mat-icon>
+            </button>
+        } @else {
+            <button matButton routerLink="/feedback">
+                <mat-icon>chat</mat-icon>
+                <span>Feedback</span>
+            </button>
+        }
 
-            <a class="home-link" routerLink="/">Rain World Exhibition</a>
+        @defer {
+            <app-profile-button />
+        }
+    </div>
+</mat-toolbar>
 
-            <span class="spacer"></span>
-
-            @defer {
-                <app-profile-button />
-            }
-        </mat-toolbar>
-
-        <div class="sidenav-scroll-wrapper">
-            <ng-content />
-        </div>
-    </mat-sidenav-content>
-</mat-sidenav-container>
+<div class="scroll-wrapper">
+    <ng-content />
+</div>

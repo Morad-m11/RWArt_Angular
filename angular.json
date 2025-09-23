@@ -26,15 +26,18 @@
                                 "input": "public"
                             }
                         ],
-                        "styles": ["src/styles.scss", "src/theme/_theme.scss"]
+                        "styles": [
+                            "src/styles.scss",
+                            "src/theme/_theme.scss"
+                        ]
                     },
                     "configurations": {
                         "production": {
                             "budgets": [
                                 {
                                     "type": "initial",
-                                    "maximumWarning": "500kB",
-                                    "maximumError": "1MB"
+                                    "maximumWarning": "2MB",
+                                    "maximumError": "3MB"
                                 },
                                 {
                                     "type": "anyComponentStyle",
@@ -76,14 +79,19 @@
                 "lint": {
                     "builder": "@angular-eslint/builder:lint",
                     "options": {
-                        "lintFilePatterns": ["src/**/*.ts", "src/**/*.html"]
+                        "lintFilePatterns": [
+                            "src/**/*.ts",
+                            "src/**/*.html"
+                        ]
                     }
                 }
             }
         }
     },
     "cli": {
-        "schematicCollections": ["angular-eslint"],
+        "schematicCollections": [
+            "angular-eslint"
+        ],
         "analytics": false
     }
 }

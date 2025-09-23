@@ -15,7 +15,8 @@
                 <button
                     matButton="tonal"
                     routerLink="/auth/login"
-                    [queryParams]="{ redirect: 'feedback' }">
+                    [queryParams]="{ redirect: 'feedback' }"
+                >
                     Login
                 </button>
             }
@@ -61,7 +62,8 @@
                 cdkTextareaAutosize
                 cdkAutosizeMinRows="5"
                 cdkAutosizeMaxRows="10"
-                [formControl]="form.controls.message"></textarea>
+                [formControl]="form.controls.message"
+            ></textarea>
         </mat-form-field>
 
         @if (errorMessage(); as error) {
@@ -72,7 +74,8 @@
             class="fit"
             matButton="filled"
             [disabled]="form.invalid || loading()"
-            [appLoading]="loading()">
+            [appLoading]="loading()"
+        >
             Send
         </button>
     </form>

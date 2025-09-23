@@ -1,6 +1,6 @@
 <mat-card class="card" [style.height]="height()" [style.width]="width()" appearance="outlined">
-    <button (click)="openFullscreen()">
-        <img #img class="img" [ngSrc]="post().imageId" priority fill placeholder alt="Preview" />
+    <button class="img-btn" (click)="openFullscreen()">
+        <img #img class="img" [ngSrc]="post().imageId" width="400" height="500" alt="Preview" />
     </button>
     <button matIconButton [matMenuTriggerFor]="menu" class="menu" aria-label="Menu button">
         <mat-icon>more_vert</mat-icon>

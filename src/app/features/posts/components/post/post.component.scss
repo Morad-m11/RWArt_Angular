@@ -13,6 +13,13 @@
     flex-shrink: 0;
     overflow: hidden;
 
+    .img-btn {
+        padding: 0;
+        background-color: transparent;
+        border: none;
+        outline: none;
+    }
+
     .img {
         object-fit: cover;
         transition: filter 200ms;

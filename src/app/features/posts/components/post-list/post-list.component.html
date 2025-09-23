@@ -1,0 +1,38 @@
+<div class="container">
+    <app-filter (filtered)="filterPosts($event)" />
+    <p>{{ totalPostCount() }} post/s found</p>
+
+    <div class="fx-col fx-gap-2">
+        @if (postResource.isLoading()) {
+            <mat-spinner />
+        }
+
+        @if (postResource.error()) {
+            <app-icon-text>
+                <p class="text-error">Failed to fetch posts</p>
+                <button matButton (click)="postResource.reload()">Retry</button>
+            </app-icon-text>
+        }
+
+        @if (postResource.hasValue()) {
+            @for (post of posts(); track post.id) {
+                <app-post [post]="post" [height]="600" (deleted)="refresh()" />
+            } @empty {
+                <p class="fx-center text-primary">
+                    Did not find any posts. Try clearing active filters
+                </p>
+            }
+
+            @if (posts().length < totalPostCount()) {
+                <button
+                    matButton
+                    [disabled]="postResource.isLoading()"
+                    [appLoading]="postResource.isLoading()"
+                    (click)="loadMorePosts()"
+                >
+                    Load more
+                </button>
+            }
+        }
+    </div>
+</div>

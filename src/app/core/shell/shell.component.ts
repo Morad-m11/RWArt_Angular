@@ -19,12 +19,7 @@ interface Link {
     imports: [MaterialModule, RouterLink, ProfileButtonComponent, ProfileButtonComponent]
 })
 export class ShellComponent {
-    private _breakpointObserver = inject(BreakpointObserver);
-
-    links: Link[] = [
-        { label: 'Posts', path: 'posts', icon: 'filter' },
-        { label: 'Feedback', path: 'feedback', icon: 'chat' }
-    ];
+    private readonly _breakpointObserver = inject(BreakpointObserver);
 
     isHandset = toSignal(
         this._breakpointObserver

@@ -3,7 +3,8 @@
         class="large-image-button"
         matIconButton
         [matMenuTriggerFor]="menu"
-        aria-label="Profile">
+        aria-label="Profile"
+    >
         @if (profile.picture; as picUrl) {
             <img [src]="picUrl" alt="profile picture" referrerPolicy="no-referrer" />
         } @else {
@@ -35,6 +36,6 @@
         </ng-template>
     </mat-menu>
 } @else {
-    <a matButton routerLink="auth/login">Login</a>
-    <a matButton="filled" routerLink="auth/signup">Sign up</a>
+    <a matButton="filled" routerLink="auth/login">Login</a>
+    <!-- <a matButton="filled" routerLink="auth/signup">Sign up</a> -->
 }

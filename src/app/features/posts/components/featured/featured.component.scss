@@ -1,0 +1,10 @@
+@use '@angular/material' as mat;
+
+.featured-container {
+    display: flex;
+    justify-content: safe center;
+    gap: 1rem;
+
+    overflow-x: auto;
+    border-radius: 1rem;
+}
