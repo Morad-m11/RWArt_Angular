@@ -59,10 +59,14 @@
             @for (post of posts.value(); track post.id) {
                 <app-post [post]="post" [width]="300" [height]="400" (deleted)="reloadPosts()" />
             } @empty {
-                <button matButton="tonal" routerLink="/posts/create">
-                    <mat-icon>add</mat-icon>
-                    <span>Create your first Post</span>
-                </button>
+                @if (value.isSelf) {
+                    <button matButton="tonal" routerLink="/posts/create">
+                        <mat-icon>add</mat-icon>
+                        <span>Create your first Post</span>
+                    </button>
+                } @else {
+                    <span>Nothing to see here.</span>
+                }
             }
         </div>
     }

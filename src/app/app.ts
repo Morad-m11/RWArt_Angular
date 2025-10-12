@@ -14,7 +14,8 @@ export const RAIN_WORLD = {
         { name: 'Spearmaster', icon: 'spearmaster' },
         { name: 'Artificer', icon: 'artificer' },
         { name: 'Rivulet', icon: 'rivulet' },
-        { name: 'Saint', icon: 'saint' }
+        { name: 'Saint', icon: 'saint' },
+        { name: 'Watcher', icon: 'watcher' }
     ],
     Iterators: [
         { name: 'Looks to the moon', icon: 'moon' },
