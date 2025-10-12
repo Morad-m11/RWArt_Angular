@@ -8,6 +8,7 @@ import { computed, effect, inject, Injectable, signal } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { MatDialog } from '@angular/material/dialog';
 import { filter, finalize, firstValueFrom, Observable, shareReplay, tap } from 'rxjs';
+import { UserService } from 'src/app/shared/services/user/user.service';
 import { Endpoints } from '../../constants/api-endpoints';
 import { CoreSnackbarMessages } from '../../constants/snackbar-messages';
 import { SnackbarService } from '../snackbar/snackbar.service';
@@ -36,13 +37,20 @@ export class AuthService {
     private readonly _http = inject(HttpClient);
     private readonly _storage = inject(StorageService);
     private readonly _snackbar = inject(SnackbarService);
+    private readonly _userService = inject(UserService);
     private readonly _dialog = inject(MatDialog);
 
     private _refreshRequest$: Observable<unknown> | null = null;
 
-    private _me = httpResource<AuthUser>(() =>
-        this.isLoggedIn() ? Endpoints.auth.me : undefined
-    );
+    private _me = httpResource<AuthUser>(() => {
+        this._userService.updated();
+
+        if (!this.isLoggedIn()) {
+            return;
+        }
+
+        return Endpoints.auth.me;
+    });
     private _me$ = toObservable(this._me.status);
 
     isLoggedIn = signal(this._storage.hasAccessToken());

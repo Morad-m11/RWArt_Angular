@@ -1,15 +1,16 @@
-@use '@angular/material' as mat;
+.pic-container {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding-left: 10px;
 
-.list-item-username {
-    @include mat.list-overrides(
-        (
-            list-item-leading-avatar-color: transparent,
-            list-item-label-text-size: var(--mat-sys-title-large-size),
-            list-item-supporting-text-size: var(--mat-sys-body-medium-size)
-        )
-    );
-}
+    img {
+        border-radius: 50%;
+        height: 60px;
+        width: 60px;
 
-.profile-pic {
-    cursor: pointer;
+        &.editable {
+            cursor: pointer;
+        }
+    }
 }

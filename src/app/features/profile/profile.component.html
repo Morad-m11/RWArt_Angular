@@ -3,52 +3,31 @@
 }
 
 @if (profile.error()) {
-    <div class="fx-row fx-align fx-gap-1">
-        <p class="text-error">Failed to fetch profile.</p>
-        <button matButton (click)="profile.reload()">Retry</button>
+    <div class="fit mg-center">
+        <h6>{{ errorMessage() }}</h6>
     </div>
 }
 
 @if (profile.hasValue()) {
     @let value = profile.value();
 
-    <mat-list>
-        <mat-list-item class="list-item-username">
+    <div class="pic-container">
+        @if (value.isSelf) {
             <img
-                class="profile-pic"
-                matTooltip="Click to edit"
-                matListItemAvatar
-                [matMenuTriggerFor]="menu"
+                class="editable"
                 [src]="`assets/${value.picture}.svg`"
                 alt="Profile picture"
+                matTooltip="Click to edit"
+                [matMenuTriggerFor]="menu"
             />
+            <button matButton (click)="pickUsername()">{{ value.username }}</button>
+        } @else {
+            <img [src]="`assets/${value.picture}.svg`" alt="Profile picture" />
+            <span>{{ value.username }}</span>
+        }
+    </div>
 
-            <mat-menu #menu>
-                @for (picture of rainWorld | keyvalue; track $index) {
-                    <button
-                        mat-menu-item
-                        [matMenuTriggerFor]="subMenu"
-                        [matMenuTriggerData]="{ list: picture.value }"
-                    >
-                        {{ picture.key }}
-                    </button>
-                }
-            </mat-menu>
-
-            <mat-menu #subMenu>
-                <ng-template matMenuContent let-list="list">
-                    @for (element of list; track element) {
-                        <button mat-menu-item (click)="pickProfilePicture(element.icon)">
-                            <mat-icon [svgIcon]="element.icon" />
-                            <span>{{ element.name }}</span>
-                        </button>
-                    }
-                </ng-template>
-            </mat-menu>
-
-            <span matListItemTitle>{{ value.username }}</span>
-        </mat-list-item>
-
+    <mat-list>
         @if (value.isSelf) {
             <mat-list-item>
                 <span matListItemTitle>Email</span>
@@ -80,15 +59,34 @@
             @for (post of posts.value(); track post.id) {
                 <app-post [post]="post" [width]="300" [height]="400" (deleted)="reloadPosts()" />
             } @empty {
-                <div class="fx-col">
-                    <p class="text-error">You don't have any posts yet.</p>
-
-                    <button matButton="tonal" routerLink="/posts/create">
-                        <mat-icon>add</mat-icon>
-                        <span>Create new Post</span>
-                    </button>
-                </div>
+                <button matButton="tonal" routerLink="/posts/create">
+                    <mat-icon>add</mat-icon>
+                    <span>Create your first Post</span>
+                </button>
             }
         </div>
     }
 }
+
+<mat-menu #menu>
+    @for (picture of rainWorld | keyvalue; track $index) {
+        <button
+            mat-menu-item
+            [matMenuTriggerFor]="subMenu"
+            [matMenuTriggerData]="{ list: picture.value }"
+        >
+            {{ picture.key }}
+        </button>
+    }
+</mat-menu>
+
+<mat-menu #subMenu>
+    <ng-template matMenuContent let-list="list">
+        @for (element of list; track element) {
+            <button mat-menu-item (click)="pickProfilePicture(element.icon)">
+                <mat-icon [svgIcon]="element.icon" />
+                <span>{{ element.name }}</span>
+            </button>
+        }
+    </ng-template>
+</mat-menu>

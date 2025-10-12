@@ -6,12 +6,6 @@ import { map } from 'rxjs/operators';
 import { ProfileButtonComponent } from 'src/app/shared/components/profile-button/profile-button.component';
 import { MaterialModule } from 'src/app/shared/material.module';
 
-interface Link {
-    label: string;
-    path: string;
-    icon: string;
-}
-
 @Component({
     selector: 'app-auth-shell',
     templateUrl: './shell.component.html',

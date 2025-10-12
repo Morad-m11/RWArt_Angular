@@ -14,8 +14,8 @@ export const Endpoints = {
         resendVerification: 'auth/resend-verification'
     },
     user: {
+        id: (id: number) => `user/${id}`,
         profile: (username: string) => `user/${username}`,
-        updateUsername: 'user/update-username',
         checkUnique: 'user/check-unique'
     },
     post: {
