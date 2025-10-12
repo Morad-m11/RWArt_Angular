@@ -1,0 +1,15 @@
+@use '@angular/material' as mat;
+
+.list-item-username {
+    @include mat.list-overrides(
+        (
+            list-item-leading-avatar-color: transparent,
+            list-item-label-text-size: var(--mat-sys-title-large-size),
+            list-item-supporting-text-size: var(--mat-sys-body-medium-size)
+        )
+    );
+}
+
+.profile-pic {
+    cursor: pointer;
+}

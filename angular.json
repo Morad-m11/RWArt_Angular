@@ -23,13 +23,12 @@
                         "assets": [
                             {
                                 "glob": "**/*",
-                                "input": "public"
-                            }
+                                "input": "public",
+                                "output": "public"
+                            },
+                            "src/assets"
                         ],
-                        "styles": [
-                            "src/styles.scss",
-                            "src/theme/_theme.scss"
-                        ]
+                        "styles": ["src/styles.scss", "src/theme/_theme.scss"]
                     },
                     "configurations": {
                         "production": {
@@ -79,19 +78,14 @@
                 "lint": {
                     "builder": "@angular-eslint/builder:lint",
                     "options": {
-                        "lintFilePatterns": [
-                            "src/**/*.ts",
-                            "src/**/*.html"
-                        ]
+                        "lintFilePatterns": ["src/**/*.ts", "src/**/*.html"]
                     }
                 }
             }
         }
     },
     "cli": {
-        "schematicCollections": [
-            "angular-eslint"
-        ],
+        "schematicCollections": ["angular-eslint"],
         "analytics": false
     }
 }

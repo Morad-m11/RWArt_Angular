@@ -9,7 +9,7 @@ interface Filter {
     category: TagCategory;
     name: string;
     icon: string;
-    items: string[];
+    items: { name: string; icon: string }[];
 }
 
 export interface FilterChangeEvent {
@@ -22,19 +22,31 @@ const FILTERS: Filter[] = [
         category: 'type',
         name: 'Type',
         icon: 'type_specimen',
-        items: ['Artwork', 'Meme', 'Animation']
+        items: [
+            { name: 'Artwork', icon: 'brush' },
+            { name: 'Meme', icon: 'celebration' },
+            { name: 'Animation', icon: 'animation' }
+        ]
     },
     {
         category: 'character',
         name: 'Character',
-        icon: 'flutter_dash',
-        items: ['Slugcat', 'Creature', 'Iterator']
+        icon: 'pest_control_rodent',
+        items: [
+            { name: 'Slugcat', icon: 'survivor' },
+            { name: 'Creature', icon: 'pink-lizard' },
+            { name: 'Iterator', icon: 'moon' }
+        ]
     },
     {
         category: 'style',
         name: 'Style',
         icon: 'palette',
-        items: ['Digital', 'Sketch', '3D']
+        items: [
+            { name: 'Digital', icon: 'tablet' },
+            { name: 'Sketch', icon: 'draw' },
+            { name: '3D', icon: 'view_in_ar' }
+        ]
     }
 ];
 

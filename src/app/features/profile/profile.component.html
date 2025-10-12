@@ -13,12 +13,38 @@
     @let value = profile.value();
 
     <mat-list>
-        <mat-list-item>
-            @if (value.picture) {
-                <img matListItemAvatar [src]="value.picture" alt="Profile picture" />
-            } @else {
-                <mat-icon matListItemIcon>account_circle</mat-icon>
-            }
+        <mat-list-item class="list-item-username">
+            <img
+                class="profile-pic"
+                matTooltip="Click to edit"
+                matListItemAvatar
+                [matMenuTriggerFor]="menu"
+                [src]="`assets/${value.picture}.svg`"
+                alt="Profile picture"
+            />
+
+            <mat-menu #menu>
+                @for (picture of rainWorld | keyvalue; track $index) {
+                    <button
+                        mat-menu-item
+                        [matMenuTriggerFor]="subMenu"
+                        [matMenuTriggerData]="{ list: picture.value }"
+                    >
+                        {{ picture.key }}
+                    </button>
+                }
+            </mat-menu>
+
+            <mat-menu #subMenu>
+                <ng-template matMenuContent let-list="list">
+                    @for (element of list; track element) {
+                        <button mat-menu-item (click)="pickProfilePicture(element.icon)">
+                            <mat-icon [svgIcon]="element.icon" />
+                            <span>{{ element.name }}</span>
+                        </button>
+                    }
+                </ng-template>
+            </mat-menu>
 
             <span matListItemTitle>{{ value.username }}</span>
         </mat-list-item>

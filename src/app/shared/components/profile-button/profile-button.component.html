@@ -1,15 +1,7 @@
 @if (profile(); as profile) {
-    <button
-        class="large-image-button"
-        matIconButton
-        [matMenuTriggerFor]="menu"
-        aria-label="Profile"
-    >
-        @if (profile.picture; as picUrl) {
-            <img [src]="picUrl" alt="profile picture" referrerPolicy="no-referrer" />
-        } @else {
-            <mat-icon>account_circle</mat-icon>
-        }
+    <button matButton [matMenuTriggerFor]="menu" aria-label="Profile button">
+        <mat-icon [svgIcon]="profile.picture" />
+        <span>{{ profile.username }}</span>
     </button>
 
     <mat-menu #menu="matMenu">
