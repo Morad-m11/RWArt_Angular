@@ -7,7 +7,7 @@
                 <p class="text-error">Failed to fetch posts.</p>
                 <button matButton (click)="posts.reload()">Retry</button>
             </app-icon-text>
-        } @else {
+        } @else if (posts.hasValue() && posts.value.length) {
             @if (isHandset()) {
                 <div class="fx-row fx-center fx-align fx-gap-1">
                     <button matMiniFab [disabled]="postIndex() === 0" (click)="prev()">
