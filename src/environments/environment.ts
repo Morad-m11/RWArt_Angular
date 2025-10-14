@@ -1,3 +1,4 @@
 export const environment = {
-    baseUrl: 'http://localhost:3000'
+    production: false,
+    baseUrl: 'https://art-shelter-backend.onrender.com'
 };

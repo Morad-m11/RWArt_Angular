@@ -1,5 +1,5 @@
 import { HttpInterceptorFn } from '@angular/common/http';
-import { environment } from 'src/environments/environment.development';
+import { environment } from 'src/environments/environment';
 
 export const apiBaseUrlInterceptor: HttpInterceptorFn = (req, next) => {
     if (req.url.startsWith('assets/')) {
