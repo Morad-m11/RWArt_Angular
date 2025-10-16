@@ -3,7 +3,6 @@ import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { RouterOutlet } from '@angular/router';
 import { ShellComponent } from './core/shell/shell.component';
-import { MaterialModule } from './shared/material.module';
 
 export const RAIN_WORLD = {
     Slugcats: [
@@ -26,7 +25,7 @@ export const RAIN_WORLD = {
 
 @Component({
     selector: 'app-root',
-    imports: [MaterialModule, ShellComponent, RouterOutlet],
+    imports: [RouterOutlet, ShellComponent],
     templateUrl: './app.html',
     styleUrl: './app.scss'
 })

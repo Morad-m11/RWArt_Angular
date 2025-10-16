@@ -1,7 +1,14 @@
 import { Component, computed, signal } from '@angular/core';
 import { outputFromObservable, toObservable } from '@angular/core/rxjs-interop';
 import { FormControl } from '@angular/forms';
-import { combineLatest, debounceTime, distinctUntilChanged, map, startWith } from 'rxjs';
+import {
+    combineLatest,
+    debounceTime,
+    distinctUntilChanged,
+    map,
+    skip,
+    startWith
+} from 'rxjs';
 import { MaterialModule } from 'src/app/shared/material.module';
 import { Tag, TagCategory } from '../../shared/post.interface';
 
@@ -80,6 +87,7 @@ export class FilterComponent {
 
     filtered = outputFromObservable<FilterChangeEvent>(
         combineLatest([this.searchChange, this.tagSelectionChange]).pipe(
+            skip(1),
             debounceTime(500),
             distinctUntilChanged(stringifyEquals),
             map(([search, tags]) => ({ search, tags }))

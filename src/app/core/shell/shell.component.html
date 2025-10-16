@@ -10,7 +10,7 @@
 
     <div class="fx-row fx-gap-1 fx-align">
         @if (isHandset()) {
-            <button matIconButton aria-label="Feedback button" routerLink="/feedback">
+            <button matIconButton routerLink="/feedback" matTooltip="Feedback">
                 <mat-icon>chat</mat-icon>
             </button>
         } @else {
@@ -20,9 +20,12 @@
             </button>
         }
 
-        @defer {
-            <app-profile-button />
-        }
+        <app-profile-button />
+
+        <button matButton="filled" routerLink="/posts/create">
+            <mat-icon>add</mat-icon>
+            <span>Submit</span>
+        </button>
     </div>
 </mat-toolbar>
 

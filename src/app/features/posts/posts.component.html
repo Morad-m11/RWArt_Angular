@@ -1,10 +1,35 @@
-<button class="create-btn" matButton="filled" routerLink="create">
-    <mat-icon>add</mat-icon>
-    <span>Create Post</span>
-</button>
+<mat-tab-group
+    mat-stretch-tabs="false"
+    mat-align-tabs="center"
+    fitInkBarToContent
+    dynamicHeight
+    animationDuration="300"
+>
+    <mat-tab>
+        <ng-template matTabLabel>
+            <app-icon-text>
+                <mat-icon>web_stories</mat-icon>
+                <span>Featured</span>
+            </app-icon-text>
+        </ng-template>
 
-<h2 class="fx-center" style="margin: 0 0 20px">Featured</h2>
-<app-featured limit="3" />
+        <app-featured limit="3" postHeight="450" postWidth="350" />
+    </mat-tab>
 
-<h2 class="fx-center">Posts</h2>
-<app-post-list limit="10" />
+    <mat-tab>
+        <ng-template matTabLabel>
+            <app-icon-text>
+                <mat-icon>collections</mat-icon>
+                <span>Posts</span>
+            </app-icon-text>
+        </ng-template>
+
+        @defer (on viewport) {
+            <app-post-list limit="10" />
+        } @placeholder {
+            <div style="height: 600px"></div>
+        } @error {
+            <p class="text-error">Failed to load posts.</p>
+        }
+    </mat-tab>
+</mat-tab-group>

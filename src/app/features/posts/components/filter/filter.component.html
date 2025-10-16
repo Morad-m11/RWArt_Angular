@@ -1,4 +1,4 @@
-<div class="fx-col fx-gap-1">
+<div class="mg-1 fx-col fx-gap-1">
     <div class="search-container" role="search">
         <mat-icon>search</mat-icon>
         <input class="input" placeholder="Search for posts..." [formControl]="searchControl" />
@@ -12,7 +12,7 @@
         <div class="fx-row fx-gap-05 fx-wrap">
             @for (filter of filters; track filter.name) {
                 <button
-                    [matButton]="selected()[filter.category] ? 'filled' : 'tonal'"
+                    [matButton]="selected()[filter.category] ? 'tonal' : 'outlined'"
                     [matMenuTriggerFor]="menu"
                     [matMenuTriggerData]="{ category: filter.category, items: filter.items }"
                 >

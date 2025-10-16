@@ -1,4 +1,4 @@
-<mat-card>
+<mat-card class="container" appearance="outlined">
     <mat-card-content class="featured-container">
         @if (posts.isLoading()) {
             <mat-spinner />
@@ -7,7 +7,7 @@
                 <p class="text-error">Failed to fetch posts.</p>
                 <button matButton (click)="posts.reload()">Retry</button>
             </app-icon-text>
-        } @else if (posts.hasValue() && posts.value.length) {
+        } @else if (posts.hasValue() && posts.value().length) {
             @if (isHandset()) {
                 <div class="fx-row fx-center fx-align fx-gap-1">
                     <button matMiniFab [disabled]="postIndex() === 0" (click)="prev()">
@@ -16,8 +16,8 @@
 
                     <app-post
                         [post]="posts.value()[postIndex()]"
-                        [width]="postWidth"
-                        [height]="postHeight"
+                        [width]="postWidth()"
+                        [height]="postHeight()"
                         (deleted)="refresh()"
                     />
 
@@ -33,14 +33,14 @@
                 @for (post of posts.value(); track post.id) {
                     <app-post
                         [post]="post"
-                        [width]="postWidth"
-                        [height]="postHeight"
+                        [width]="postWidth()"
+                        [height]="postHeight()"
                         (deleted)="refresh()"
                     />
-                } @empty {
-                    <p class="text-primary">No featured posts</p>
                 }
             }
+        } @else {
+            <p class="fx-center fx-align text-primary">Nothing to see here.</p>
         }
     </mat-card-content>
 </mat-card>

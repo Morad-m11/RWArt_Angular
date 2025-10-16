@@ -8,7 +8,7 @@ import { ProfileButtonComponent } from 'src/app/shared/components/profile-button
 import { MaterialModule } from 'src/app/shared/material.module';
 
 @Component({
-    selector: 'app-auth-shell',
+    selector: 'app-shell',
     templateUrl: './shell.component.html',
     styleUrl: './shell.component.scss',
     imports: [
