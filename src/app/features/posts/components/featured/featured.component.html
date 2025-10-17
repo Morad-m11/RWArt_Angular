@@ -24,7 +24,7 @@
                         <mat-icon>chevron_right</mat-icon>
                     </button>
                 } @else {
-                    @for (post of posts.value().slice(2); track post.id) {
+                    @for (post of posts.value(); track post.id) {
                         <app-post [post]="post" (deleted)="refresh()" />
                     }
                 }
