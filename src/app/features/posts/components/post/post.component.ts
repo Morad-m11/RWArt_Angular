@@ -67,15 +67,17 @@ export class PostComponent {
     }
 
     async shareLink() {
-        await this._evokeShareAPI({ url: `posts/${this.post().id}` });
-        return;
+        await this._evokeShareAPI({
+            title: this.post().title,
+            url: `${window.location.origin}/posts/${this.post().id}`
+        });
     }
 
     async shareImg(url: string) {
         try {
             const blob = await this._postService.fetchImageBlob(url);
             const file = new File([blob], this.post().title);
-            await this._evokeShareAPI({ file });
+            await this._evokeShareAPI({ title: this.post().title, url, file });
         } catch {
             this._snackbar.error(`Failed to share image from ${url}`);
         }
@@ -124,21 +126,29 @@ export class PostComponent {
         URL.revokeObjectURL(objectUrl);
     }
 
-    private async _evokeShareAPI(data: { url?: string; file?: File }) {
+    private async _evokeShareAPI(data: { title: string; url: string; file?: File }) {
         try {
             const shareData: ShareData = {
-                title: 'Post Nr. 1',
-                text: 'My pretty post',
+                title: data.title,
                 url: data.url,
                 files: data.file && [data.file]
             };
 
-            if (!navigator.canShare(shareData)) {
-                this._snackbar.error("Can't share on your system");
+            const canShare =
+                typeof navigator.canShare === 'function' && navigator.canShare(shareData);
+
+            if (!canShare) {
+                await navigator.clipboard.writeText(data.url);
+                this._snackbar.success('Copied to Clipboard!');
+                return;
             }
 
             await navigator.share(shareData);
         } catch (error) {
+            if ((error as Error).name === 'AbortError') {
+                return;
+            }
+
             console.error(error);
             this._snackbar.error(`Sharing failed. ${error}`);
         }
