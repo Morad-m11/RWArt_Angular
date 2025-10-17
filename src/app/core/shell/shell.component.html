@@ -8,24 +8,30 @@
 
     <span class="spacer"></span>
 
-    <div class="fx-row fx-gap-1 fx-align">
+    <div class="fx-row fx-align" [ngClass]="isHandset() ? 'fx-gap-05' : 'fx-gap-1'">
         @if (isHandset()) {
-            <button matIconButton routerLink="/feedback" matTooltip="Feedback">
+            <a matIconButton routerLink="/feedback" aria-label="Feedback">
                 <mat-icon>chat</mat-icon>
-            </button>
+            </a>
+
+            <app-profile-button small />
+
+            <a matMiniFab routerLink="/posts/create" aria-label="Create Post">
+                <mat-icon>add</mat-icon>
+            </a>
         } @else {
-            <button matButton routerLink="/feedback">
+            <a matButton routerLink="/feedback">
                 <mat-icon>chat</mat-icon>
                 <span>Feedback</span>
-            </button>
+            </a>
+
+            <app-profile-button />
+
+            <a matButton="filled" routerLink="/posts/create">
+                <mat-icon>add</mat-icon>
+                <span>Submit</span>
+            </a>
         }
-
-        <app-profile-button />
-
-        <button matButton="filled" routerLink="/posts/create">
-            <mat-icon>add</mat-icon>
-            <span>Submit</span>
-        </button>
     </div>
 </mat-toolbar>
 

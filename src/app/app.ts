@@ -3,25 +3,7 @@ import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { RouterOutlet } from '@angular/router';
 import { ShellComponent } from './core/shell/shell.component';
-
-export const RAIN_WORLD = {
-    Slugcats: [
-        { name: 'Survivor', icon: 'survivor' },
-        { name: 'Monk', icon: 'monk' },
-        { name: 'Hunter', icon: 'hunter' },
-        { name: 'Gourmand', icon: 'gourmand' },
-        { name: 'Spearmaster', icon: 'spearmaster' },
-        { name: 'Artificer', icon: 'artificer' },
-        { name: 'Rivulet', icon: 'rivulet' },
-        { name: 'Saint', icon: 'saint' },
-        { name: 'Watcher', icon: 'watcher' }
-    ],
-    Iterators: [
-        { name: 'Looks to the moon', icon: 'moon' },
-        { name: 'Five Pebbles', icon: 'pebbles' }
-    ],
-    Creatures: [{ name: 'Pink Lizard', icon: 'pink-lizard' }]
-};
+import { RAIN_WORLD } from './shared/rainworld';
 
 @Component({
     selector: 'app-root',

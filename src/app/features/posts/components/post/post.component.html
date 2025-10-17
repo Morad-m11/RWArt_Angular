@@ -1,23 +1,29 @@
-<mat-card class="card" [style.height]="height()" [style.width]="width()" appearance="outlined">
-    <button class="img-btn" (click)="openFullscreen()">
-        <img #img class="img" [ngSrc]="post().imageId" width="400" height="500" alt="Preview" />
-    </button>
-    <button matIconButton [matMenuTriggerFor]="menu" class="menu" aria-label="Menu button">
-        <mat-icon>more_vert</mat-icon>
-    </button>
+<button class="img-btn" (click)="openFullscreen()">
+    <img
+        #img
+        class="img"
+        [ngSrc]="post().imageId"
+        [width]="imageLoadWidth"
+        [height]="imageLoadHeight"
+        alt="Image {{ post().imageId }}"
+    />
+</button>
 
-    <div class="post-bottom">
-        @if (post().tags.length > 0) {
-            <div class="chip-container" role="row">
-                @for (tag of post().tags; track tag) {
-                    <span class="chip">{{ tag.name | titlecase }}</span>
-                }
-            </div>
-        }
+<button class="menu" matIconButton [matMenuTriggerFor]="menu" aria-label="Menu button">
+    <mat-icon>more_vert</mat-icon>
+</button>
 
-        <app-description [post]="post()" (upvoted)="upvote()" />
-    </div>
-</mat-card>
+<div class="post-bottom">
+    @if (post().tags.length > 0) {
+        <div class="chip-container" role="row">
+            @for (tag of post().tags; track tag) {
+                <span class="chip">{{ tag.name | titlecase }}</span>
+            }
+        </div>
+    }
+
+    <app-description [post]="post()" (upvoted)="upvote()" />
+</div>
 
 <mat-menu #menu="matMenu">
     @if (this.post().isOwner) {
@@ -27,30 +33,8 @@
         </button>
     }
 
-    <button class="menu" mat-menu-item (click)="shareLink()">
-        <mat-icon>share</mat-icon>
-        <span>Share</span>
-    </button>
-
-    <!-- <button mat-menu-item [matMenuTriggerFor]="shareMenu">
-        <mat-icon>share</mat-icon>
-        <span>Share</span>
-    </button> -->
-
-    <!-- <button mat-menu-item (click)="download(img.src)">
-        <mat-icon>download</mat-icon>
-        <span>Download</span>
-    </button> -->
-</mat-menu>
-
-<mat-menu #shareMenu="matMenu">
-    <button mat-menu-item (click)="shareImg(img.src)">
-        <mat-icon>image</mat-icon>
-        <span>Image</span>
-    </button>
-
     <button mat-menu-item (click)="shareLink()">
-        <mat-icon>link</mat-icon>
-        <span>Link</span>
+        <mat-icon>share</mat-icon>
+        <span>Share</span>
     </button>
 </mat-menu>

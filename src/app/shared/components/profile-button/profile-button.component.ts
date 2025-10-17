@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, inject } from '@angular/core';
+import { booleanAttribute, Component, inject, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { CoreSnackbarMessages } from 'src/app/core/constants/snackbar-messages';
 import { SnackbarService } from 'src/app/core/services/snackbar/snackbar.service';
@@ -16,6 +16,8 @@ import { MaterialModule } from '../../material.module';
 export class ProfileButtonComponent {
     private readonly _authService = inject(AuthService);
     private readonly _snackbar = inject(SnackbarService);
+
+    small = input(false, { transform: booleanAttribute });
 
     profile = this._authService.currentUser;
 

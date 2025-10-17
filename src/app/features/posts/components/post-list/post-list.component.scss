@@ -1,4 +1,14 @@
 .container {
-    margin: 0 auto;
-    max-width: 800px;
+    margin: 1rem auto;
+    width: 1000px;
+    max-width: 100%;
+}
+
+.filter {
+    margin-bottom: 1rem;
+}
+
+.post {
+    max-height: 600px;
+    aspect-ratio: 1/1;
 }

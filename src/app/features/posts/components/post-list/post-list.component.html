@@ -1,8 +1,9 @@
 <div class="container">
-    <app-filter (filtered)="filterPosts($event)" />
-    <p>{{ totalPostCount() }} post/s found</p>
+    <div class="filter">
+        <app-filter (filtered)="filterPosts($event)" />
+    </div>
 
-    <div class="fx-col fx-gap-2">
+    <mat-card class="pad-1 fx-col fx-gap-2" appearance="outlined">
         @if (postResource.isLoading()) {
             <mat-spinner />
         }
@@ -16,11 +17,9 @@
 
         @if (postResource.hasValue()) {
             @for (post of posts(); track post.id) {
-                <app-post [post]="post" [height]="600" (deleted)="refresh()" />
+                <app-post class="post" [post]="post" (deleted)="refresh()" />
             } @empty {
-                <p class="fx-center text-primary">
-                    Did not find any posts. Try clearing active filters
-                </p>
+                <p class="fx-center text-primary">Could not find any posts.</p>
             }
 
             @if (posts().length < totalPostCount()) {
@@ -34,5 +33,5 @@
                 </button>
             }
         }
-    </div>
+    </mat-card>
 </div>

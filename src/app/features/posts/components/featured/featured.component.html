@@ -14,12 +14,7 @@
                         <mat-icon>chevron_left</mat-icon>
                     </button>
 
-                    <app-post
-                        [post]="posts.value()[postIndex()]"
-                        [width]="postWidth()"
-                        [height]="postHeight()"
-                        (deleted)="refresh()"
-                    />
+                    <app-post [post]="posts.value()[postIndex()]" (deleted)="refresh()" />
 
                     <button
                         matMiniFab
@@ -31,12 +26,7 @@
                 </div>
             } @else {
                 @for (post of posts.value(); track post.id) {
-                    <app-post
-                        [post]="post"
-                        [width]="postWidth()"
-                        [height]="postHeight()"
-                        (deleted)="refresh()"
-                    />
+                    <app-post [post]="post" (deleted)="refresh()" />
                 }
             }
         } @else {

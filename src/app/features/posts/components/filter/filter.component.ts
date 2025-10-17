@@ -10,52 +10,13 @@ import {
     startWith
 } from 'rxjs';
 import { MaterialModule } from 'src/app/shared/material.module';
+import { FILTERS } from 'src/app/shared/rainworld';
 import { Tag, TagCategory } from '../../shared/post.interface';
-
-interface Filter {
-    category: TagCategory;
-    name: string;
-    icon: string;
-    items: { name: string; icon: string }[];
-}
 
 export interface FilterChangeEvent {
     search: string;
     tags: Tag[];
 }
-
-const FILTERS: Filter[] = [
-    {
-        category: 'type',
-        name: 'Type',
-        icon: 'type_specimen',
-        items: [
-            { name: 'Artwork', icon: 'brush' },
-            { name: 'Meme', icon: 'celebration' },
-            { name: 'Animation', icon: 'animation' }
-        ]
-    },
-    {
-        category: 'character',
-        name: 'Character',
-        icon: 'pest_control_rodent',
-        items: [
-            { name: 'Slugcat', icon: 'survivor' },
-            { name: 'Creature', icon: 'pink-lizard' },
-            { name: 'Iterator', icon: 'moon' }
-        ]
-    },
-    {
-        category: 'style',
-        name: 'Style',
-        icon: 'palette',
-        items: [
-            { name: 'Digital', icon: 'tablet' },
-            { name: 'Sketch', icon: 'draw' },
-            { name: '3D', icon: 'view_in_ar' }
-        ]
-    }
-];
 
 @Component({
     selector: 'app-filter',

@@ -55,9 +55,9 @@
     }
 
     @if (posts.hasValue()) {
-        <div style="display: flex; gap: 1rem; flex-wrap: wrap">
+        <div class="post-list">
             @for (post of posts.value(); track post.id) {
-                <app-post [post]="post" [width]="300" [height]="400" (deleted)="reloadPosts()" />
+                <app-post [post]="post" (deleted)="reloadPosts()" />
             } @empty {
                 @if (value.isSelf) {
                     <button matButton="tonal" routerLink="/posts/create">

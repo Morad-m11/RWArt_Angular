@@ -28,5 +28,11 @@
         </ng-template>
     </mat-menu>
 } @else {
-    <a matButton="outlined" routerLink="auth/login">Login</a>
+    @if (small()) {
+        <a matIconButton routerLink="auth/login" aria-label="Login">
+            <mat-icon>account_circle</mat-icon>
+        </a>
+    } @else {
+        <a matButton="outlined" routerLink="auth/login">Login</a>
+    }
 }

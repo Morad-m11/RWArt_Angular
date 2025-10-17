@@ -63,7 +63,7 @@ export class CreatePostComponent {
             return;
         }
 
-        const filteredTags = tags.filter((x) => x.name !== null);
+        const filteredTags = tags.filter((x) => x.name);
 
         this.form.controls.tags.setValue(filteredTags);
     }

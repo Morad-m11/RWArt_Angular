@@ -1,4 +1,3 @@
-import { coerceNumberProperty } from '@angular/cdk/coercion';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { CommonModule } from '@angular/common';
 import { httpResource } from '@angular/common/http';
@@ -22,8 +21,6 @@ export class FeaturedComponent {
     private readonly _breakpointObserver = inject(BreakpointObserver);
 
     limit = input(3, { transform: numberAttribute });
-    postWidth = input.required({ transform: coerceNumberProperty });
-    postHeight = input.required({ transform: coerceNumberProperty });
 
     postIndex = signal(0);
 

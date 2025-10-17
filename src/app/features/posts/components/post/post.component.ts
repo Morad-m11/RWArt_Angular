@@ -1,7 +1,6 @@
-import { coerceCssPixelValue } from '@angular/cdk/coercion';
 import { NgOptimizedImage, TitleCasePipe } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, inject, input, model, output } from '@angular/core';
+import { Component, inject, model, output } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatDialog } from '@angular/material/dialog';
 import { filter, firstValueFrom } from 'rxjs';
@@ -25,10 +24,10 @@ export class PostComponent {
     private readonly _snackbar = inject(SnackbarService);
     private readonly _dialog = inject(MatDialog);
 
-    post = model.required<Post>();
-    height = input.required({ transform: coerceCssPixelValue });
-    width = input('100%', { transform: coerceCssPixelValue });
+    readonly imageLoadWidth = 400;
+    readonly imageLoadHeight = 500;
 
+    post = model.required<Post>();
     deleted = output();
 
     constructor() {

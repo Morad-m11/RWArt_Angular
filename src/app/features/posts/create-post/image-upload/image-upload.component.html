@@ -1,30 +1,32 @@
-<div class="fx-col fx-center fx-align">
+<div class="container">
     <div
         class="drop-zone"
         [class.drag-over]="isDragging()"
         (dragover)="onDragOver($event)"
         (dragleave)="onDragLeave($event)"
-        (drop)="onFileDropped($event, fileInput)">
+        (drop)="onFileDropped($event, fileInput)"
+    >
         <input
             #fileInput
             type="file"
             hidden
             enctype="multipart/form-data"
             [accept]="acceptedFileTypes"
-            (change)="onFileSelected($event)" />
+            (change)="onFileSelected($event)"
+        />
 
-        @if (filePreviewUrl(); as imageUrl) {
-            <img class="img" [src]="imageUrl" alt="Uploaded preview" />
+        @if (isDragging()) {
+            <p>Drop your file here</p>
+        } @else if (filePreviewUrl()) {
+            <img class="img" [src]="filePreviewUrl()" alt="Uploaded preview" />
             <button class="delete-btn" matIconButton (click)="removeFile(fileInput)">
                 <mat-icon>delete</mat-icon>
             </button>
-        } @else if (!isDragging()) {
+        } @else {
             <mat-icon>cloud_upload</mat-icon>
             <p>Drag an image here, or click to select</p>
             <p>Max file size: {{ maxFileSize() }}</p>
             <button class="fit" matButton="tonal" (click)="fileInput.click()">Browse</button>
-        } @else {
-            <p>Drop your file here</p>
         }
     </div>
 

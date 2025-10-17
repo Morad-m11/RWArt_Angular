@@ -1,4 +1,5 @@
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { NgClass } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { RouterLink } from '@angular/router';
@@ -16,7 +17,8 @@ import { MaterialModule } from 'src/app/shared/material.module';
         RouterLink,
         ProfileButtonComponent,
         ProfileButtonComponent,
-        IconTextComponent
+        IconTextComponent,
+        NgClass
     ]
 })
 export class ShellComponent {
@@ -24,7 +26,7 @@ export class ShellComponent {
 
     isHandset = toSignal(
         this._breakpointObserver
-            .observe(Breakpoints.Handset)
+            .observe(Breakpoints.XSmall)
             .pipe(map((result) => result.matches))
     );
 }

@@ -1,53 +1,27 @@
-<h2 matDialogTitle>Pick some tags for your post</h2>
+<h2 matDialogTitle>Pick your tags</h2>
 
 <mat-dialog-content [formGroup]="form">
-    <p>Tags will help make your posts more easily discoverable</p>
-
-    <div class="fx-col pad-1">
-        <mat-form-field>
-            <mat-label>Type</mat-label>
-            <mat-select [formControl]="form.controls.type">
-                <mat-option value="Artwork">Artwork</mat-option>
-                <mat-option value="Meme">Meme</mat-option>
-                <mat-option value="Animation">Animation</mat-option>
-            </mat-select>
-            <button
-                matIconButton
-                matSuffix
-                (click)="$event.stopPropagation(); form.controls.type.setValue(null)">
-                <mat-icon>close</mat-icon>
-            </button>
-        </mat-form-field>
-
-        <mat-form-field>
-            <mat-label>Character</mat-label>
-            <mat-select [formControl]="form.controls.character">
-                <mat-option value="Slugcat">Slugcat</mat-option>
-                <mat-option value="Creature">Creature</mat-option>
-                <mat-option value="Iterator">Iterator</mat-option>
-            </mat-select>
-            <button
-                matIconButton
-                matSuffix
-                (click)="$event.stopPropagation(); form.controls.character.setValue(null)">
-                <mat-icon>close</mat-icon>
-            </button>
-        </mat-form-field>
-
-        <mat-form-field>
-            <mat-label>Style</mat-label>
-            <mat-select [formControl]="form.controls.style">
-                <mat-option value="Digital">Digital</mat-option>
-                <mat-option value="Sketch">Sketch</mat-option>
-                <mat-option value="3D">3D</mat-option>
-            </mat-select>
-            <button
-                matIconButton
-                matSuffix
-                (click)="$event.stopPropagation(); form.controls.style.setValue(null)">
-                <mat-icon>close</mat-icon>
-            </button>
-        </mat-form-field>
+    <div class="fx-col fx-gap-1">
+        @for (tag of tags; track tag.name) {
+            <div>
+                <b class="text-primary">{{ tag.category | titlecase }}</b>
+                <mat-chip-listbox
+                    class="mat-mdc-chip-set-stacked"
+                    [formControl]="form.controls[tag.category]"
+                >
+                    @for (item of tag.items; track $index) {
+                        <mat-chip-option>
+                            @if (tag.category === 'character') {
+                                <mat-icon matChipAvatar [svgIcon]="item.icon" />
+                            } @else {
+                                <mat-icon matChipAvatar>{{ item.icon }}</mat-icon>
+                            }
+                            <span>{{ item.name }}</span>
+                        </mat-chip-option>
+                    }
+                </mat-chip-listbox>
+            </div>
+        }
     </div>
 </mat-dialog-content>
 

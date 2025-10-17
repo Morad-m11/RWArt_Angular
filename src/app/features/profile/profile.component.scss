@@ -14,3 +14,14 @@
         }
     }
 }
+
+.post-list {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+
+    > app-post {
+        width: 250px;
+        height: 350px;
+    }
+}
