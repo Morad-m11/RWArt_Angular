@@ -8,8 +8,8 @@
                 <button matButton (click)="posts.reload()">Retry</button>
             </app-icon-text>
         } @else if (posts.hasValue() && posts.value().length) {
-            @if (isHandset()) {
-                <div class="fx-row fx-center fx-align fx-gap-1">
+            <div class="fx-row fx-center fx-align fx-gap-1">
+                @if (isHandset()) {
                     <button matMiniFab [disabled]="postIndex() === 0" (click)="prev()">
                         <mat-icon>chevron_left</mat-icon>
                     </button>
@@ -23,12 +23,12 @@
                     >
                         <mat-icon>chevron_right</mat-icon>
                     </button>
-                </div>
-            } @else {
-                @for (post of posts.value(); track post.id) {
-                    <app-post [post]="post" (deleted)="refresh()" />
+                } @else {
+                    @for (post of posts.value().slice(2); track post.id) {
+                        <app-post [post]="post" (deleted)="refresh()" />
+                    }
                 }
-            }
+            </div>
         } @else {
             <p class="fx-center fx-align text-primary">Nothing to see here.</p>
         }
