@@ -1,5 +1,7 @@
 import { Routes } from '@angular/router';
 import FeedbackComponent from './features/feedback/feedback.component';
+import { PrivacyPolicyComponent } from './features/legal/privacy/privacy.component';
+import { TosComponent } from './features/legal/tos/tos.component';
 import postRoutes from './features/posts/post.routes';
 import { usernameResolver } from './features/profile/resolver/profile.resolver';
 import { NotFoundComponent } from './shared/components/not-found/not-found/not-found.component';
@@ -26,6 +28,14 @@ export const routes: Routes = [
     {
         path: 'feedback',
         component: FeedbackComponent
+    },
+    {
+        path: 'privacy',
+        component: PrivacyPolicyComponent
+    },
+    {
+        path: 'terms',
+        component: TosComponent
     },
     {
         path: '**',
