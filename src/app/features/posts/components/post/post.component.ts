@@ -42,6 +42,7 @@ export class PostComponent {
     openFullscreen() {
         this._dialog.open(ImageviewerDialogComponent, {
             data: { post: this.post() },
+            hasBackdrop: true,
             width: '90vw',
             height: '90vh',
             maxWidth: '90vw',

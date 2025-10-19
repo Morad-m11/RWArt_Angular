@@ -3,7 +3,7 @@
         <app-filter (filtered)="filterPosts($event)" />
     </div>
 
-    <mat-card class="pad-1 fx-col fx-gap-2" appearance="outlined">
+    <mat-card class="pad-1 fx-col fx-align fx-gap-2" appearance="outlined">
         @if (postResource.isLoading()) {
             <mat-spinner />
         }

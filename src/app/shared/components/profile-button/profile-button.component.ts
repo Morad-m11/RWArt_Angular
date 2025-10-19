@@ -1,5 +1,6 @@
+import { OverlayModule } from '@angular/cdk/overlay';
 import { HttpErrorResponse } from '@angular/common/http';
-import { booleanAttribute, Component, inject, input } from '@angular/core';
+import { booleanAttribute, Component, inject, input, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { CoreSnackbarMessages } from 'src/app/core/constants/snackbar-messages';
 import { SnackbarService } from 'src/app/core/services/snackbar/snackbar.service';
@@ -9,7 +10,7 @@ import { MaterialModule } from '../../material.module';
 @Component({
     selector: 'app-profile-button',
     standalone: true,
-    imports: [MaterialModule, RouterLink],
+    imports: [MaterialModule, RouterLink, OverlayModule],
     templateUrl: './profile-button.component.html',
     styleUrl: './profile-button.component.scss'
 })
@@ -20,6 +21,8 @@ export class ProfileButtonComponent {
     small = input(false, { transform: booleanAttribute });
 
     profile = this._authService.currentUser;
+
+    isOpen = signal(false);
 
     async logout() {
         await this._authService

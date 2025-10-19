@@ -8,8 +8,8 @@
         <mat-spinner />
     } @else if (post.error()) {
         <app-icon-text>
-            <mat-icon>error_outline</mat-icon>
-            <h5>Failed to fetch post.</h5>
+            <mat-icon class="icon-error">error_outline</mat-icon>
+            <h3 class="text-error">Failed to fetch post.</h3>
         </app-icon-text>
     } @else if (post.hasValue()) {
         <app-post class="post" [post]="post.value()" />

@@ -24,7 +24,7 @@ export class AuthShellComponent {
     titles = {
         login: 'Welcome! Please login',
         signup: 'Welcome! Please create your account below',
-        'forgot-password': "Enter your Email below and we'll send you a recovery code",
+        'forgot-password': "Enter your Email below and I'll send you a recovery code",
         'reset-password': 'Enter a new password'
     };
 

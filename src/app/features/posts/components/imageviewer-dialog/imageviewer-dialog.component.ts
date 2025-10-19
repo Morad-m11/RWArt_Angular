@@ -18,4 +18,6 @@ export interface ImageViewerDialogData {
 })
 export class ImageviewerDialogComponent {
     readonly data = inject<ImageViewerDialogData>(MAT_DIALOG_DATA);
+    readonly windowHeight = window.innerHeight;
+    readonly windowWidth = window.innerWidth;
 }

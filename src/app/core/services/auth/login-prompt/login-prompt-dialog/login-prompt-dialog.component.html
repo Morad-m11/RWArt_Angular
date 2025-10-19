@@ -1,12 +1,13 @@
-<h2 matDialogTitle>Please login first</h2>
+<span matDialogTitle>Please login first</span>
 
 <mat-dialog-actions>
-    <button matButton matDialogClose>Never</button>
+    <button matButton matDialogClose>Nope</button>
     <button
         matButton="filled"
         routerLink="auth/login"
         [queryParams]="{ redirect: routeUrl }"
-        matDialogClose>
+        matDialogClose
+    >
         Login
     </button>
 </mat-dialog-actions>

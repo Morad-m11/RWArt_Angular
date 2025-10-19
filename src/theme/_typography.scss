@@ -1,37 +1,4 @@
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-    margin: 0;
-}
-
 h1 {
-    font-family: var(--mat-sys-display-large-font);
-    font-size: var(--mat-sys-display-large-size);
-    line-height: var(--mat-sys-display-large-line-height);
-    font-weight: var(--mat-sys-display-large-weight);
-    letter-spacing: var(--mat-sys-display-large-tracking);
-}
-
-h2 {
-    font-family: var(--mat-sys-display-medium-font);
-    font-size: var(--mat-sys-display-medium-size);
-    line-height: var(--mat-sys-display-medium-line-height);
-    font-weight: var(--mat-sys-display-medium-weight);
-    letter-spacing: var(--mat-sys-display-medium-tracking);
-}
-
-h3 {
-    font-family: var(--mat-sys-display-small-font);
-    font-size: var(--mat-sys-display-small-size);
-    line-height: var(--mat-sys-display-small-line-height);
-    font-weight: var(--mat-sys-display-small-weight);
-    letter-spacing: var(--mat-sys-display-small-tracking);
-}
-
-h4 {
     font-family: var(--mat-sys-headline-large-font);
     font-size: var(--mat-sys-headline-large-size);
     line-height: var(--mat-sys-headline-large-line-height);
@@ -39,7 +6,7 @@ h4 {
     letter-spacing: var(--mat-sys-headline-large-tracking);
 }
 
-h5 {
+h2 {
     font-family: var(--mat-sys-headline-medium-font);
     font-size: var(--mat-sys-headline-medium-size);
     line-height: var(--mat-sys-headline-medium-line-height);
@@ -47,12 +14,36 @@ h5 {
     letter-spacing: var(--mat-sys-headline-medium-tracking);
 }
 
-h6 {
+h3 {
     font-family: var(--mat-sys-headline-small-font);
     font-size: var(--mat-sys-headline-small-size);
     line-height: var(--mat-sys-headline-small-line-height);
     font-weight: var(--mat-sys-headline-small-weight);
     letter-spacing: var(--mat-sys-headline-small-tracking);
+}
+
+h4 {
+    font-family: var(--mat-sys-title-large-font);
+    font-size: var(--mat-sys-title-large-size);
+    line-height: var(--mat-sys-title-large-line-height);
+    font-weight: var(--mat-sys-title-large-weight);
+    letter-spacing: var(--mat-sys-title-large-tracking);
+}
+
+h5 {
+    font-family: var(--mat-sys-title-medium-font);
+    font-size: var(--mat-sys-title-medium-size);
+    line-height: var(--mat-sys-title-medium-line-height);
+    font-weight: var(--mat-sys-title-medium-weight);
+    letter-spacing: var(--mat-sys-title-medium-tracking);
+}
+
+h6 {
+    font-family: var(--mat-sys-title-small-font);
+    font-size: var(--mat-sys-title-small-size);
+    line-height: var(--mat-sys-title-small-line-height);
+    font-weight: var(--mat-sys-title-small-weight);
+    letter-spacing: var(--mat-sys-title-small-tracking);
 }
 
 li,

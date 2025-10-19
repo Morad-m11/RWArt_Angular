@@ -1,4 +1,4 @@
-<h2 mat-dialog-title>Pick a username for your profile</h2>
+<span mat-dialog-title>Pick a username for your profile</span>
 
 <mat-dialog-content>
     <p>This will be the only info shown to other users</p>
@@ -15,7 +15,8 @@
     <button
         matButton="filled"
         [disabled]="username.invalid || username.pending"
-        [mat-dialog-close]="username.value">
+        [mat-dialog-close]="username.value"
+    >
         Pick name
     </button>
 </mat-dialog-actions>

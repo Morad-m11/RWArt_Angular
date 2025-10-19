@@ -4,7 +4,7 @@
 
 @if (profile.error()) {
     <div class="fit mg-center">
-        <h6>{{ errorMessage() }}</h6>
+        <h2>{{ errorMessage() }}</h2>
     </div>
 }
 
@@ -41,7 +41,7 @@
         </mat-list-item>
     </mat-list>
 
-    <h4>{{ value.isSelf ? 'Your' : `${value.username}'s` }} posts</h4>
+    <h2>{{ value.isSelf ? 'Your' : `${value.username}'s` }} posts</h2>
 
     @if (posts.isLoading()) {
         <mat-spinner />
