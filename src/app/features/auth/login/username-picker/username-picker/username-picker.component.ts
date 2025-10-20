@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
+import { RouterLink } from '@angular/router';
 import { MaterialModule } from 'src/app/shared/material.module';
 import { UserService } from 'src/app/shared/services/user/user.service';
 import { FormAsyncSuffixComponent } from '../../../shared/components/form-async-suffix/form-async-suffix.component';
@@ -10,7 +11,7 @@ import { asyncUniqueUserValidator } from '../../../shared/validators/unique/uniq
 @Component({
     selector: 'app-username-picker',
     standalone: true,
-    imports: [MaterialModule, FormAsyncSuffixComponent, FormErrorDirective],
+    imports: [MaterialModule, FormAsyncSuffixComponent, FormErrorDirective, RouterLink],
     templateUrl: './username-picker.component.html',
     styleUrl: './username-picker.component.scss'
 })

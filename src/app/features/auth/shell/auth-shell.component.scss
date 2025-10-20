@@ -1,7 +1,14 @@
-.header {
-    margin-bottom: 30px;
+.card {
+    max-width: 800px;
+    margin: 0 auto;
 
-    mat-card-title {
-        margin-top: 5px;
+    .header {
+        margin-bottom: 1.5rem;
+
+        .title {
+            display: flex;
+            align-items: center;
+            column-gap: 0.5rem;
+        }
     }
 }

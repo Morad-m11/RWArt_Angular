@@ -1,0 +1,30 @@
+<span matDialogTitle>Edit profile</span>
+
+<mat-dialog-content [formGroup]="form">
+    <mat-card id="avatar-card" appearance="outlined">
+        <mat-card-content id="avatar-grid">
+            @for (avatar of avatars; track $index) {
+                <button
+                    matIconButton
+                    [class.selected]="form.controls.picture.value === avatar"
+                    (click)="setAvatar(avatar)"
+                >
+                    <mat-icon [svgIcon]="avatar" />
+                </button>
+            }
+        </mat-card-content>
+    </mat-card>
+
+    <mat-form-field id="username-field">
+        <mat-icon matPrefix>person</mat-icon>
+        <mat-label>Username</mat-label>
+        <input matInput [formControl]="form.controls.username" />
+        <mat-error [appFormError]="form.controls.username" />
+        <app-form-async-suffix matSuffix [control]="form.controls.username" />
+    </mat-form-field>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+    <button matButton matDialogClose>Cancel</button>
+    <button matButton="filled" [matDialogClose]="form.value">Pick</button>
+</mat-dialog-actions>

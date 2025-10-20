@@ -8,14 +8,13 @@ import { computed, effect, inject, Injectable, signal } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { MatDialog } from '@angular/material/dialog';
 import { filter, finalize, firstValueFrom, Observable, shareReplay, tap } from 'rxjs';
+import { SignInProvider } from 'src/app/features/auth/shared/signin-provider-type';
 import { UserService } from 'src/app/shared/services/user/user.service';
 import { Endpoints } from '../../constants/api-endpoints';
 import { CoreSnackbarMessages } from '../../constants/snackbar-messages';
 import { SnackbarService } from '../snackbar/snackbar.service';
 import { StorageService } from '../storage/storage.service';
 import { LoginPromptDialogComponent } from './login-prompt/login-prompt-dialog/login-prompt-dialog.component';
-
-export type SignInProvider = 'google';
 
 interface SignupRequestBody {
     email: string;
@@ -123,11 +122,11 @@ export class AuthService {
     }
 
     async thirdPartyLogin(
-        _provider: string,
+        provider: SignInProvider,
         token: string,
         nameForNewUser?: string
     ): Promise<void> {
-        const url = Endpoints.auth.login.google;
+        const url = Endpoints.auth.login[provider];
 
         const { accessToken } = await firstValueFrom(
             this._http.post<{ accessToken: string }>(url, {

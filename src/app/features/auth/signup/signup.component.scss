@@ -1,5 +1,9 @@
 .form-fields {
     display: flex;
     flex-direction: column;
-    row-gap: 5px;
+}
+
+#terms {
+    margin: 2rem 0;
+    font-size: 0.8rem;
 }

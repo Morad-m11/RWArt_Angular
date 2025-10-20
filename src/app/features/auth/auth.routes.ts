@@ -6,6 +6,7 @@ import { redirectResolver } from './login/redirect-resolver/redirect.resolver';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { tokenResolver } from './shared/resolvers/token.resolver';
 import { AuthShellComponent } from './shell/auth-shell.component';
+import { signupResolver } from './signup/signup-resolver/signup.resolver';
 import { SignupComponent } from './signup/signup.component';
 import { VerificationComponent } from './verification/verification.component';
 
@@ -23,7 +24,8 @@ export default [
             },
             {
                 path: 'signup',
-                component: SignupComponent
+                component: SignupComponent,
+                resolve: { thirdParty: signupResolver }
             },
             {
                 path: 'forgot-password',

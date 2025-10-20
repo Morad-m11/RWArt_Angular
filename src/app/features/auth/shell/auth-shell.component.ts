@@ -23,8 +23,8 @@ export class AuthShellComponent {
 
     titles = {
         login: 'Welcome! Please login',
-        signup: 'Welcome! Please create your account below',
-        'forgot-password': "Enter your Email below and I'll send you a recovery code",
+        signup: 'Welcome! Please create your account',
+        'forgot-password': 'Enter your Email to receive a recovery code',
         'reset-password': 'Enter a new password'
     };
 

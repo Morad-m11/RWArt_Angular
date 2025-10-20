@@ -1,6 +1,6 @@
 import { Component, OnInit, output } from '@angular/core';
 import { GOOGLE_CLIENT_ID } from 'src/app/constants';
-import { SignInProvider } from 'src/app/core/services/auth/auth.service';
+import { SignInProviderInfo } from '../../shared/signin-provider-type';
 
 declare const google: Google;
 
@@ -12,7 +12,7 @@ declare const google: Google;
     styleUrl: './google-button.component.scss'
 })
 export class GoogleButtonComponent implements OnInit {
-    signedIn = output<{ provider: SignInProvider; token: string }>();
+    signedIn = output<SignInProviderInfo>();
 
     ngOnInit(): void {
         google.accounts.id.initialize({

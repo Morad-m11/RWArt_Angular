@@ -8,7 +8,7 @@ interface UniqueCheckParams {
     email?: string;
 }
 
-interface OwnedUser {
+export interface OwnedUser {
     id: number;
     email: string;
     username: string;
@@ -17,7 +17,7 @@ interface OwnedUser {
     isSelf: true;
 }
 
-interface ForeignUser {
+export interface ForeignUser {
     username: string;
     picture: string;
     createdAt: Date;
@@ -26,7 +26,7 @@ interface ForeignUser {
 
 export type UserProfile = OwnedUser | ForeignUser;
 
-export type UserUpdate = Partial<Pick<UserProfile, 'username' | 'picture'>>;
+export type UserUpdate = Pick<UserProfile, 'username' | 'picture'>;
 
 @Injectable({
     providedIn: 'root'

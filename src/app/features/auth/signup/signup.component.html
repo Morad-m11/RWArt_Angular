@@ -1,5 +1,28 @@
-@if (!success()) {
-    <form [formGroup]="form" (submit)="signup()">
+<form [formGroup]="form" (submit)="signup()">
+    @if (thirdParty()) {
+        <div class="form-fields">
+            <mat-form-field>
+                <mat-icon matPrefix>person</mat-icon>
+                <mat-label>Username</mat-label>
+                <input matInput [formControl]="form.controls.username" />
+                <mat-error [appFormError]="form.controls.username" />
+                <app-form-async-suffix matSuffix [control]="form.controls.username" />
+            </mat-form-field>
+        </div>
+
+        <div class="fx-center mg-1">
+            <button
+                id="submit-button"
+                mat-flat-button
+                type="submit"
+                [appLoading]="loading()"
+                [disabled]="loading() || form.pending || form.controls.username.invalid"
+            >
+                Create account
+                <mat-icon iconPositionEnd>chevron_right</mat-icon>
+            </button>
+        </div>
+    } @else if (!success()) {
         <div class="form-fields">
             <mat-form-field>
                 <mat-icon matPrefix>email</mat-icon>
@@ -20,20 +43,22 @@
                 <mat-icon matPrefix>key</mat-icon>
                 <mat-label>Password</mat-label>
                 <input matInput type="password" [formControl]="form.controls.password" />
+                <mat-hint>
+                    Password should be at least 8 characters long and include a number
+                </mat-hint>
                 <mat-error [appFormError]="form.controls.password" />
             </mat-form-field>
-
-            <mat-form-field>
-                <mat-icon matPrefix>key</mat-icon>
-                <mat-label>Confirm password</mat-label>
-                <input matInput type="password" [formControl]="form.controls.passwordConfirm" />
-                <mat-error [appFormError]="form.controls.passwordConfirm" />
-            </mat-form-field>
-
-            @if (errorMessage()) {
-                <p class="text-error">{{ errorMessage() }}</p>
-            }
         </div>
+
+        @if (errorMessage()) {
+            <p class="text-error">{{ errorMessage() }}</p>
+        }
+
+        <p id="terms">
+            By creating an account, you agree to the
+            <a routerLink="/terms">Terms of Service</a>. For more information about privacy
+            practices, see the <a routerLink="/privacy">Privacy Policy</a>.
+        </p>
 
         <div class="fx-center mg-1">
             <button
@@ -41,8 +66,10 @@
                 mat-flat-button
                 type="submit"
                 [appLoading]="loading()"
-                [disabled]="loading() || form.invalid || form.pending">
-                Sign up!
+                [disabled]="loading() || form.invalid || form.pending"
+            >
+                Create account
+                <mat-icon iconPositionEnd>chevron_right</mat-icon>
             </button>
         </div>
 
@@ -51,11 +78,11 @@
         <button id="login-button" class="mg-1" type="button" mat-button routerLink="/auth/login">
             Already have an account?
         </button>
-    </form>
-} @else {
-    <app-result-card>
-        <mat-icon class="icon-primary">done</mat-icon>
-        <span class="text-primary">Signup complete</span>
-        <p>Please check your email to complete the verification process</p>
-    </app-result-card>
-}
+    } @else {
+        <app-result-card>
+            <mat-icon class="icon-primary">done</mat-icon>
+            <span class="text-primary">Signup complete</span>
+            <p>Please check your email to complete the verification process</p>
+        </app-result-card>
+    }
+</form>

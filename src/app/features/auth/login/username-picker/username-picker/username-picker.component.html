@@ -8,6 +8,12 @@
         <app-form-async-suffix matSuffix [control]="username" />
         <mat-error [appFormError]="username" />
     </mat-form-field>
+
+    <p id="terms">
+        By creating an account, you agree to the
+        <a routerLink="/terms">Terms of Service</a>. For more information about privacy practices,
+        see the <a routerLink="/privacy">Privacy Policy</a>.
+    </p>
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">

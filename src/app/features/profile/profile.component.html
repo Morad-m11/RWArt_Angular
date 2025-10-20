@@ -12,18 +12,13 @@
     @let value = profile.value();
 
     <div class="pic-container">
+        <img [src]="`assets/${value.picture}.svg`" alt="Profile picture" />
+        <span>{{ value.username }}</span>
+
         @if (value.isSelf) {
-            <img
-                class="editable"
-                [src]="`assets/${value.picture}.svg`"
-                alt="Profile picture"
-                matTooltip="Click to edit"
-                [matMenuTriggerFor]="menu"
-            />
-            <button matButton (click)="pickUsername()">{{ value.username }}</button>
-        } @else {
-            <img [src]="`assets/${value.picture}.svg`" alt="Profile picture" />
-            <span>{{ value.username }}</span>
+            <button matIconButton matTooltip="Edit profile" (click)="openEditdialog()">
+                <mat-icon>edit</mat-icon>
+            </button>
         }
     </div>
 
@@ -71,26 +66,3 @@
         </div>
     }
 }
-
-<mat-menu #menu>
-    @for (picture of rainWorld | keyvalue; track $index) {
-        <button
-            mat-menu-item
-            [matMenuTriggerFor]="subMenu"
-            [matMenuTriggerData]="{ list: picture.value }"
-        >
-            {{ picture.key }}
-        </button>
-    }
-</mat-menu>
-
-<mat-menu #subMenu>
-    <ng-template matMenuContent let-list="list">
-        @for (element of list; track element) {
-            <button mat-menu-item (click)="pickProfilePicture(element.icon)">
-                <mat-icon [svgIcon]="element.icon" />
-                <span>{{ element.name }}</span>
-            </button>
-        }
-    </ng-template>
-</mat-menu>

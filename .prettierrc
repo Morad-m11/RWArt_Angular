@@ -11,7 +11,7 @@
             "files": "*.html",
             "options": {
                 "bracketSameLine": false,
-                "htmlWhitespaceSensitivity": "ignore",
+                "htmlWhitespaceSensitivity": "strict",
                 "printWidth": 100,
                 "parser": "angular"
             }

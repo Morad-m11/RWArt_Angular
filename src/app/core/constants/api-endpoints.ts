@@ -25,4 +25,4 @@ export const Endpoints = {
         upvote: (id: string) => `post/${id}/upvote`
     },
     feedback: 'feedback'
-};
+} as const;

@@ -4,12 +4,13 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router, RouterLink } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
-import { AuthService, SignInProvider } from 'src/app/core/services/auth/auth.service';
+import { AuthService } from 'src/app/core/services/auth/auth.service';
 import { SnackbarService } from 'src/app/core/services/snackbar/snackbar.service';
 import { LoadingDirective } from 'src/app/shared/directives/loading/loading.directive';
 import { MaterialModule } from 'src/app/shared/material.module';
 import { FormErrorDirective } from '../shared/directives/form-error/form-error.directive';
 import { getErrorMessage } from '../shared/error-messages';
+import { SignInProviderInfo } from '../shared/signin-provider-type';
 import { GoogleButtonComponent } from './google-button/google-button.component';
 import { UsernamePickerComponent } from './username-picker/username-picker/username-picker.component';
 
@@ -64,13 +65,13 @@ export class LoginComponent {
             .finally(() => this.loading.set(false));
     }
 
-    async handleThirdPartySignIn($event: { provider: SignInProvider; token: string }) {
+    async handleThirdPartySignIn(event: SignInProviderInfo) {
         this.loading.set(true);
         this.errorMessage.set('');
         this.showResendVerification.set(false);
 
         await this._authService
-            .thirdPartyLogin($event.provider, $event.token)
+            .thirdPartyLogin(event.provider, event.token)
             .then(() => this._handleSuccess())
             .catch(async (error: HttpErrorResponse) => {
                 if (error.status !== HttpStatusCode.Conflict) {
@@ -78,18 +79,14 @@ export class LoginComponent {
                     return;
                 }
 
-                const username = await this._pickUserName();
-
-                if (!username) {
-                    return;
-                }
-
-                await this._authService
-                    .thirdPartyLogin($event.provider, $event.token, username)
-                    .then(() => this._handleSuccess())
-                    .catch((error: HttpErrorResponse) => {
-                        this._setErrorMessage(error);
-                    });
+                this._router.navigate(['/auth/signup'], {
+                    queryParams: {
+                        thirdParty: JSON.stringify({
+                            provider: event.provider,
+                            token: event.token
+                        })
+                    }
+                });
             })
             .finally(() => {
                 this.loading.set(false);

@@ -1,22 +1,26 @@
-import { DatePipe, KeyValuePipe } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { HttpErrorResponse, httpResource } from '@angular/common/http';
 import { Component, computed, inject, input } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Router, RouterLink } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 import { Endpoints } from 'src/app/core/constants/api-endpoints';
 import { SnackbarService } from 'src/app/core/services/snackbar/snackbar.service';
+import { assert } from 'src/app/shared/assert';
 import { MaterialModule } from 'src/app/shared/material.module';
-import { RAIN_WORLD } from 'src/app/shared/rainworld';
-import { UserProfile, UserService } from 'src/app/shared/services/user/user.service';
-import { UsernamePickerComponent } from '../auth/login/username-picker/username-picker/username-picker.component';
+import {
+    OwnedUser,
+    UserProfile,
+    UserService
+} from 'src/app/shared/services/user/user.service';
 import { PostComponent } from '../posts/components/post/post.component';
 import { Post } from '../posts/shared/post.interface';
+import { EditDialogComponent, EditDialogData } from './edit-dialog/edit-dialog.component';
 
 @Component({
     selector: 'app-profile',
     standalone: true,
-    imports: [MaterialModule, DatePipe, PostComponent, RouterLink, KeyValuePipe],
+    imports: [MaterialModule, DatePipe, PostComponent, RouterLink],
     templateUrl: './profile.component.html',
     styleUrl: './profile.component.scss'
 })
@@ -24,9 +28,6 @@ export default class ProfileComponent {
     private readonly _snackbar = inject(SnackbarService);
     private readonly _userService = inject(UserService);
     private readonly _dialog = inject(MatDialog);
-    private readonly _router = inject(Router);
-
-    readonly rainWorld = RAIN_WORLD;
 
     username = input.required<string>();
 
@@ -48,44 +49,36 @@ export default class ProfileComponent {
         this.posts.reload();
     }
 
-    async pickProfilePicture(slug: string) {
-        const profile = this.profile.value();
+    async openEditdialog() {
+        assert(
+            this.profile.hasValue() && this.profile.value().isSelf,
+            'invalid profile access on edit'
+        );
 
-        if (!profile?.isSelf) {
+        const { id, picture, username } = this.profile.value() as OwnedUser;
+        const dialogRef = this._dialog.open(EditDialogComponent, {
+            autoFocus: false,
+            data: { picture, username } as EditDialogData
+        });
+
+        const newProfile = await firstValueFrom<EditDialogData>(dialogRef.afterClosed());
+        if (!newProfile) {
             return;
         }
 
+        await this.updateProfile(id, newProfile);
+    }
+
+    private async updateProfile(
+        profileId: number,
+        changes: { picture: string; username: string }
+    ) {
         try {
-            await this._userService.update(profile.id, { picture: slug });
-            this.profile.update((x) => ({ ...x, picture: slug }) as typeof x);
+            await this._userService.update(profileId, changes);
+            this.profile.update((x) => ({ ...x, ...changes }) as typeof x);
         } catch (error) {
             const status = (error as HttpErrorResponse).status;
             this._snackbar.error(`Could not update avatar (${status})`);
-        }
-    }
-
-    async pickUsername() {
-        const profile = this.profile.value();
-
-        if (!profile?.isSelf) {
-            return;
-        }
-
-        const username = await firstValueFrom<string | undefined>(
-            this._dialog.open(UsernamePickerComponent).afterClosed()
-        );
-
-        if (!username) {
-            return;
-        }
-
-        try {
-            await this._userService.update(profile.id, { username });
-            this.profile.update((x) => ({ ...x, username }) as typeof x);
-            await this._router.navigate(['/user', username], { replaceUrl: true });
-        } catch (error) {
-            const status = (error as HttpErrorResponse).status;
-            this._snackbar.error(`Could not update username (${status})`);
         }
     }
 }
