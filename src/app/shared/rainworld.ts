@@ -54,6 +54,7 @@ export const FILTERS: Filter[] = [
         items: [
             { name: 'Digital', icon: 'tablet' },
             { name: 'Sketch', icon: 'draw' },
+            { name: 'Pixel', icon: 'gradient' },
             { name: '3D', icon: 'view_in_ar' }
         ]
     }
