@@ -3,7 +3,7 @@
 @use './typography';
 
 html {
-    color-scheme: light dark;
+    color-scheme: dark;
 
     @include mat.theme(
         (
