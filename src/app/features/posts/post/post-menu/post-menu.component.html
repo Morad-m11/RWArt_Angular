@@ -1,0 +1,17 @@
+<button class="menu" matIconButton [matMenuTriggerFor]="menu" aria-label="Menu button">
+    <mat-icon>more_vert</mat-icon>
+</button>
+
+<mat-menu #menu="matMenu">
+    @if (post().isOwner) {
+        <button mat-menu-item class="red-item" (click)="delete()">
+            <mat-icon>delete</mat-icon>
+            <span>Delete</span>
+        </button>
+    }
+
+    <button mat-menu-item (click)="shareLink()">
+        <mat-icon>share</mat-icon>
+        <span>Share</span>
+    </button>
+</mat-menu>

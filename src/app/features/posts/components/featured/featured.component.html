@@ -14,7 +14,12 @@
                         <mat-icon>chevron_left</mat-icon>
                     </button>
 
-                    <app-post [post]="posts.value()[postIndex()]" (deleted)="refresh()" />
+                    <app-post
+                        showMenu
+                        showDescription
+                        [post]="posts.value()[postIndex()]"
+                        (deleted)="refresh()"
+                    />
 
                     <button
                         matMiniFab
@@ -25,7 +30,7 @@
                     </button>
                 } @else {
                     @for (post of posts.value(); track post.id) {
-                        <app-post [post]="post" (deleted)="refresh()" />
+                        <app-post showMenu showDescription [post]="post" (deleted)="refresh()" />
                     }
                 }
             </div>

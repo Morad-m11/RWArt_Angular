@@ -1,40 +1,30 @@
-<button class="img-btn" (click)="openFullscreen()">
-    <img
-        #img
-        class="img"
-        [ngSrc]="post().imageId"
-        [width]="imageLoadWidth"
-        [height]="imageLoadHeight"
-        alt="Image {{ post().imageId }}"
-    />
-</button>
-
-<button class="menu" matIconButton [matMenuTriggerFor]="menu" aria-label="Menu button">
-    <mat-icon>more_vert</mat-icon>
-</button>
-
-<div class="post-bottom">
-    @if (post().tags.length > 0) {
-        <div class="chip-container" role="row">
-            @for (tag of post().tags; track tag) {
-                <span class="chip">{{ tag.name | titlecase }}</span>
-            }
-        </div>
-    }
-
-    <app-description [post]="post()" (upvoted)="upvote()" />
-</div>
-
-<mat-menu #menu="matMenu">
-    @if (this.post().isOwner) {
-        <button mat-menu-item class="red-item" (click)="delete()">
-            <mat-icon>delete</mat-icon>
-            <span>Delete</span>
-        </button>
-    }
-
-    <button mat-menu-item (click)="shareLink()">
-        <mat-icon>share</mat-icon>
-        <span>Share</span>
+<div class="container">
+    <button class="img-btn" (click)="openFullscreen()">
+        <img
+            #img
+            class="img"
+            [ngSrc]="post().imageId"
+            [width]="imageLoadWidth"
+            [height]="imageLoadHeight"
+            alt="Image {{ post().imageId }}"
+        />
     </button>
-</mat-menu>
+
+    @if (showMenu()) {
+        <app-post-menu class="menu" [post]="post()" />
+    }
+
+    <div class="post-bottom">
+        @if (post().tags.length > 0) {
+            <div class="chip-container" role="row">
+                @for (tag of post().tags; track tag) {
+                    <span class="chip">{{ tag.name | titlecase }}</span>
+                }
+            </div>
+        }
+
+        @if (showDescription()) {
+            <app-description [post]="post()" (upvoted)="upvote()" />
+        }
+    </div>
+</div>

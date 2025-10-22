@@ -7,10 +7,12 @@ import {
     numberAttribute,
     signal
 } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { Endpoints } from 'src/app/core/constants/api-endpoints';
 import { IconTextComponent } from 'src/app/shared/components/icon-text/icon-text.component';
 import { LoadingDirective } from 'src/app/shared/directives/loading/loading.directive';
 import { MaterialModule } from 'src/app/shared/material.module';
+import { PostMenuComponent } from '../../post/post-menu/post-menu.component';
 import { Post, Tag } from '../../shared/post.interface';
 import { FilterChangeEvent, FilterComponent } from '../filter/filter.component';
 import { PostComponent } from '../post/post.component';
@@ -20,10 +22,12 @@ import { PostComponent } from '../post/post.component';
     standalone: true,
     imports: [
         MaterialModule,
-        PostComponent,
         LoadingDirective,
         IconTextComponent,
-        FilterComponent
+        FilterComponent,
+        RouterLink,
+        PostMenuComponent,
+        PostComponent
     ],
     templateUrl: './post-list.component.html',
     styleUrl: './post-list.component.scss'
