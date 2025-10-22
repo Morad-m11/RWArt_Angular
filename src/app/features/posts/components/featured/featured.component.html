@@ -1,50 +1,12 @@
-<div class="container">
-    @if (posts.isLoading()) {
-        <mat-spinner />
-    } @else if (posts.error()) {
-        <app-icon-text>
-            <p class="text-error">Failed to fetch posts.</p>
-            <button matButton (click)="posts.reload()">Retry</button>
-        </app-icon-text>
-    } @else if (posts.hasValue() && posts.value().length) {
-        @if (isHandset()) {
-            <div class="fx-col fx-gap-05">
-                <app-post
-                    class="post"
-                    showMenu
-                    showDescription
-                    [post]="posts.value()[postIndex()]"
-                    (deleted)="refresh()"
-                />
-
-                <div class="fx-center fx-gap-1">
-                    <button matMiniFab [disabled]="postIndex() === 0" (click)="prev()">
-                        <mat-icon>chevron_left</mat-icon>
-                    </button>
-
-                    <button
-                        matMiniFab
-                        [disabled]="postIndex() === posts.value().length - 1"
-                        (click)="next()"
-                    >
-                        <mat-icon>chevron_right</mat-icon>
-                    </button>
-                </div>
-            </div>
-        } @else {
-            <div class="fx-center fx-gap-1">
-                @for (post of posts.value(); track post.id) {
-                    <app-post
-                        class="post"
-                        showMenu
-                        showDescription
-                        [post]="post"
-                        (deleted)="refresh()"
-                    />
-                }
-            </div>
-        }
-    } @else {
-        <p class="fx-center fx-align text-primary">Nothing to see here.</p>
-    }
-</div>
+@if (posts.isLoading()) {
+    <mat-spinner />
+} @else if (posts.error()) {
+    <app-icon-text>
+        <p class="text-error">Failed to fetch posts.</p>
+        <button matButton (click)="posts.reload()">Retry</button>
+    </app-icon-text>
+} @else if (posts.hasValue() && posts.value().length) {
+    <app-carousel [posts]="posts.value()" />
+} @else {
+    <p class="fx-center fx-align text-primary">Nothing to see here.</p>
+}

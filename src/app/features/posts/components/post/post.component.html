@@ -3,8 +3,8 @@
         #img
         class="img"
         [ngSrc]="post().imageId"
-        [width]="imageLoadWidth"
-        [height]="imageLoadHeight"
+        [width]="imageLoadWidth()"
+        [height]="imageLoadHeight()"
         alt="Image {{ post().imageId }}"
     />
 </button>

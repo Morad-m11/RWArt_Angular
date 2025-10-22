@@ -29,8 +29,8 @@ export class PostComponent {
     private readonly _snackbar = inject(SnackbarService);
     private readonly _dialog = inject(MatDialog);
 
-    readonly imageLoadWidth = 400;
-    readonly imageLoadHeight = 500;
+    imageLoadWidth = input(400);
+    imageLoadHeight = input(500);
 
     post = model.required<Post>();
     showMenu = input(false, { transform: booleanAttribute });
