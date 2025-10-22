@@ -1,4 +1,4 @@
-<mat-card class="container" appearance="outlined">
+<div class="container">
     @if (posts.isLoading()) {
         <mat-spinner />
     } @else if (posts.error()) {
@@ -47,4 +47,4 @@
     } @else {
         <p class="fx-center fx-align text-primary">Nothing to see here.</p>
     }
-</mat-card>
+</div>

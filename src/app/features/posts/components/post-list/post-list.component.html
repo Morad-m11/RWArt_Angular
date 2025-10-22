@@ -1,7 +1,7 @@
 <mat-card class="container">
     <app-filter class="filter" (filtered)="filterPosts($event)" />
 
-    <div class="fx-col fx-gap-1">
+    <div class="fx-col fx-gap-2">
         @if (postResource.isLoading()) {
             <mat-spinner />
         }
