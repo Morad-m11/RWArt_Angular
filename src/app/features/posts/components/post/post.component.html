@@ -1,30 +1,28 @@
-<div class="container">
-    <button class="img-btn" (click)="openFullscreen()">
-        <img
-            #img
-            class="img"
-            [ngSrc]="post().imageId"
-            [width]="imageLoadWidth"
-            [height]="imageLoadHeight"
-            alt="Image {{ post().imageId }}"
-        />
-    </button>
+<button class="img-btn" (click)="openFullscreen()">
+    <img
+        #img
+        class="img"
+        [ngSrc]="post().imageId"
+        [width]="imageLoadWidth"
+        [height]="imageLoadHeight"
+        alt="Image {{ post().imageId }}"
+    />
+</button>
 
-    @if (showMenu()) {
-        <app-post-menu class="menu" [post]="post()" />
+@if (showMenu()) {
+    <app-post-menu class="menu" [post]="post()" />
+}
+
+<div class="post-bottom">
+    @if (post().tags.length > 0) {
+        <div class="chip-container" role="row">
+            @for (tag of post().tags; track tag) {
+                <span class="chip">{{ tag.name | titlecase }}</span>
+            }
+        </div>
     }
 
-    <div class="post-bottom">
-        @if (post().tags.length > 0) {
-            <div class="chip-container" role="row">
-                @for (tag of post().tags; track tag) {
-                    <span class="chip">{{ tag.name | titlecase }}</span>
-                }
-            </div>
-        }
-
-        @if (showDescription()) {
-            <app-description [post]="post()" (upvoted)="upvote()" />
-        }
-    </div>
+    @if (showDescription()) {
+        <app-description [post]="post()" (upvoted)="upvote()" />
+    }
 </div>
