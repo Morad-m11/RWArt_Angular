@@ -1,12 +1,18 @@
 @use '@angular/material' as mat;
 
 .embla {
-    font-size: 2rem;
+    font-size: clamp(1.6rem, 2.5vw, 2rem);
     max-width: 48em;
     margin: auto;
     --slide-height: 19em;
     --slide-spacing: 0em;
     --slide-size: 55%;
+}
+
+@media (max-width: 600px) {
+    .embla {
+        --slide-size: 100%;
+    }
 }
 
 .embla__viewport {
@@ -42,14 +48,14 @@
     justify-content: center;
     height: var(--slide-height);
     user-select: none;
+    backface-visibility: hidden;
 }
 
 .embla__controls {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    justify-content: space-between;
+    display: flex;
+    justify-content: center;
     gap: 1.2em;
-    margin-top: 1.8em;
+    margin-top: 1.2em;
 }
 
 .embla__buttons {
@@ -68,7 +74,7 @@
     display: inline-flex;
     text-decoration: none;
     cursor: pointer;
-    border: 0;
+    border: 1px solid var(--mat-sys-outline-variant);
     padding: 0;
     margin: 0;
     box-shadow: inset 0 0 0 0.2em var(--detail-medium-contrast);
@@ -80,6 +86,10 @@
     display: flex;
     align-items: center;
     justify-content: center;
+
+    &:hover {
+        background: var(--mat-sys-surface-container-high);
+    }
 }
 
 .embla__button:disabled {
@@ -91,54 +101,9 @@
     height: 35%;
 }
 
-.embla__dots {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-end;
-    align-items: center;
-    margin-right: calc((2.6em - 1.4em) / 2 * -1);
-}
-
-.embla__dot {
-    -webkit-tap-highlight-color: rgba(var(--text-high-contrast-rgb-value), 0.5);
-    -webkit-appearance: none;
-    appearance: none;
-    background-color: transparent;
-    touch-action: manipulation;
-    display: inline-flex;
-    text-decoration: none;
-    cursor: pointer;
-    border: 0;
-    padding: 0;
-    margin: 0;
-    width: 2.6em;
-    height: 2.6em;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-}
-
-.embla__dot:after {
-    box-shadow: inset 0 0 0 0.2em var(--detail-medium-contrast);
-    width: 1.4em;
-    height: 1.4em;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    content: '';
-}
-
-.embla__dot--selected:after {
-    box-shadow: inset 0 0 0 0.2em var(--text-body);
-}
-
-.embla__slide__number {
-    backface-visibility: hidden;
-}
-
 .title-card {
-    margin: 1rem;
+    margin: 1em auto 0.5em;
+    font-size: clamp(1.7rem, 2.5vw, 2rem);
 
     @include mat.card-overrides(
         (
