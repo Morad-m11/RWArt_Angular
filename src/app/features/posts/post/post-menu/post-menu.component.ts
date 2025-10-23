@@ -20,7 +20,7 @@ export class PostMenuComponent {
     private readonly _postService = inject(PostsService);
 
     post = input.required<Post>();
-    deleted = output();
+    deleteClicked = output();
 
     async delete() {
         const dialogRef = this._dialog.open(ConfirmDialogComponent);
@@ -30,7 +30,7 @@ export class PostMenuComponent {
             return;
         }
 
-        this.deleted.emit();
+        this.deleteClicked.emit();
     }
 
     async shareLink() {

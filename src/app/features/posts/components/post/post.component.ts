@@ -32,9 +32,9 @@ export class PostComponent {
     imageLoadWidth = input(400);
     imageLoadHeight = input(500);
 
-    post = model.required<Post>();
     showMenu = input(false, { transform: booleanAttribute });
     showDescription = input(false, { transform: booleanAttribute });
+    post = model.required<Post>();
     deleted = output();
 
     constructor() {
@@ -56,6 +56,15 @@ export class PostComponent {
             maxHeight: '90vh',
             autoFocus: false
         });
+    }
+
+    async deletePost() {
+        try {
+            await this._postService.delete(this.post().id);
+            this.deleted.emit();
+        } catch (error) {
+            this._snackbar.error('Failed to delete post', 2000);
+        }
     }
 
     async upvote() {

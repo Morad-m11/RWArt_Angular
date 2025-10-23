@@ -10,7 +10,7 @@
 </button>
 
 @if (showMenu()) {
-    <app-post-menu class="menu" [post]="post()" />
+    <app-post-menu class="menu" [post]="post()" (deleteClicked)="deletePost()" />
 }
 
 <div class="post-bottom">
