@@ -1,5 +1,13 @@
-import { NgOptimizedImage, TitleCasePipe } from '@angular/common';
-import { booleanAttribute, Component, inject, input, model, output } from '@angular/core';
+import { CommonModule, NgOptimizedImage, TitleCasePipe } from '@angular/common';
+import {
+    booleanAttribute,
+    Component,
+    computed,
+    inject,
+    input,
+    model,
+    output
+} from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatDialog } from '@angular/material/dialog';
 import { filter } from 'rxjs';
@@ -19,7 +27,8 @@ import { DescriptionComponent } from './description/description.component';
         NgOptimizedImage,
         DescriptionComponent,
         TitleCasePipe,
-        PostMenuComponent
+        PostMenuComponent,
+        CommonModule
     ],
     templateUrl: './post.component.html',
     styleUrl: './post.component.scss'
@@ -31,11 +40,13 @@ export class PostComponent {
 
     imageLoadWidth = input(400);
     imageLoadHeight = input(500);
-
     showMenu = input(false, { transform: booleanAttribute });
     showDescription = input(false, { transform: booleanAttribute });
     post = model.required<Post>();
+
     deleted = output();
+
+    imageWidthSet = computed(() => `200w, 500w, ${this.imageLoadWidth()}w`);
 
     constructor() {
         this._postService.upvoted$

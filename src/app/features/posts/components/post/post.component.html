@@ -2,9 +2,11 @@
     <img
         #img
         class="img"
+        priority
         [ngSrc]="post().imageId"
         [width]="imageLoadWidth()"
         [height]="imageLoadHeight()"
+        [ngSrcset]="imageWidthSet()"
         alt="Image {{ post().imageId }}"
     />
 </button>
