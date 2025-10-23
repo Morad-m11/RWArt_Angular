@@ -32,7 +32,7 @@
                         <app-post-menu [post]="post" class="post-menu" />
                     </mat-card-header>
 
-                    <app-post class="post" [post]="post" />
+                    <app-post class="post" showDescription [post]="post" />
                 </mat-card>
             } @empty {
                 <p class="fx-center text-primary">Could not find any posts.</p>

@@ -1,5 +1,5 @@
 import { httpResource } from '@angular/common/http';
-import { Component, input, numberAttribute } from '@angular/core';
+import { Component } from '@angular/core';
 import { Endpoints } from 'src/app/core/constants/api-endpoints';
 import { IconTextComponent } from 'src/app/shared/components/icon-text/icon-text.component';
 import { MaterialModule } from 'src/app/shared/material.module';
@@ -14,12 +14,12 @@ import { CarouselComponent } from './carousel/carousel.component';
     styleUrl: './featured.component.scss'
 })
 export class FeaturedComponent {
-    limit = input(3, { transform: numberAttribute });
+    private readonly _limit = 3;
 
     posts = httpResource<Post[]>(
         () => ({
             url: Endpoints.post.featured,
-            params: { limit: this.limit() }
+            params: { limit: this._limit }
         }),
         { defaultValue: [] }
     );

@@ -1,13 +1,11 @@
 import { Component } from '@angular/core';
-import { IconTextComponent } from 'src/app/shared/components/icon-text/icon-text.component';
+import { RouterModule } from '@angular/router';
 import { MaterialModule } from 'src/app/shared/material.module';
-import { FeaturedComponent } from './components/featured/featured.component';
-import { PostListComponent } from './components/post-list/post-list.component';
 
 @Component({
     selector: 'app-posts',
     standalone: true,
-    imports: [MaterialModule, FeaturedComponent, PostListComponent, IconTextComponent],
+    imports: [MaterialModule, RouterModule],
     templateUrl: './posts.component.html',
     styleUrl: './posts.component.scss'
 })
