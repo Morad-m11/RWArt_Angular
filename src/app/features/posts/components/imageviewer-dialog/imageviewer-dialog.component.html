@@ -2,7 +2,7 @@
     <div class="container">
         <!-- width + height empty to get auto sizing -->
         <img class="img" priority [ngSrc]="data.post.imageId" width="" height="" alt="Post Image" />
-        <app-description class="description" [post]="data.post" />
+        <app-description showLikes class="description" [post]="data.post" />
     </div>
 </mat-dialog-content>
 
