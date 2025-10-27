@@ -56,8 +56,10 @@
 
         <p id="terms">
             By creating an account, you agree to the
-            <a href="terms" target="_blank">Terms of Service</a>. For more information about privacy
-            practices, see the <a href="privacy" target="_blank">Privacy Policy</a>.
+            <a href="terms" target="_blank">Terms of Service</a>
+            . For more information about privacy practices, see the
+            <a href="privacy" target="_blank">Privacy Policy</a>
+            .
         </p>
 
         <div class="fx-center mg-1">
@@ -82,7 +84,11 @@
         <app-result-card>
             <mat-icon class="icon-primary">done</mat-icon>
             <span class="text-primary">Signup complete</span>
-            <p>Please check your email to complete the verification process</p>
+            <p>
+                A verification link has been sent to
+                <b>{{ form.controls.email.value }}</b>
+                .
+            </p>
         </app-result-card>
     }
 </form>

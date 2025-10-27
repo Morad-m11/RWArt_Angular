@@ -1,7 +1,7 @@
 import { httpResource } from '@angular/common/http';
 import { Component, computed, linkedSignal, signal } from '@angular/core';
 import { Endpoints } from 'src/app/core/constants/api-endpoints';
-import { PostCardComponent } from 'src/app/featured/shared/components/post-card/post-card.component';
+import { PostCardComponent } from 'src/app/features/posts/components/post-card/post-card.component';
 import { IconTextComponent } from 'src/app/shared/components/icon-text/icon-text.component';
 import { LoadingDirective } from 'src/app/shared/directives/loading/loading.directive';
 import { MaterialModule } from 'src/app/shared/material.module';
