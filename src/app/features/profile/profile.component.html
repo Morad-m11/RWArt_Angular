@@ -1,68 +1,78 @@
-@if (profile.isLoading()) {
-    <mat-spinner />
-}
-
-@if (profile.error()) {
-    <div class="fit mg-center">
-        <h2>{{ errorMessage() }}</h2>
-    </div>
-}
-
-@if (profile.hasValue()) {
-    @let value = profile.value();
-
-    <div class="pic-container">
-        <img [src]="`assets/${value.picture}.svg`" alt="Profile picture" />
-        <span>{{ value.username }}</span>
-
-        @if (value.isSelf) {
-            <button matIconButton matTooltip="Edit profile" (click)="openEditdialog()">
-                <mat-icon>edit</mat-icon>
-            </button>
-        }
-    </div>
-
-    <mat-list>
-        @if (value.isSelf) {
-            <mat-list-item>
-                <span matListItemTitle>Email</span>
-                <span matListItemLine>{{ value.email }}</span>
-            </mat-list-item>
-        }
-
-        <mat-list-item>
-            <span matListItemTitle>Joined</span>
-            <span matListItemLine>{{ value.createdAt | date }}</span>
-        </mat-list-item>
-    </mat-list>
-
-    <h2>{{ value.isSelf ? 'Your' : `${value.username}'s` }} posts</h2>
-
-    @if (posts.isLoading()) {
+<div class="pad-1">
+    @if (profile.isLoading()) {
         <mat-spinner />
     }
 
-    @if (posts.error()) {
-        <div class="fx-row fx-align fx-gap-1">
-            <p class="text-error">Failed to fetch posts.</p>
-            <button matButton (click)="posts.reload()">Retry</button>
+    @if (profile.error()) {
+        <div class="fit mg-center">
+            <h2>{{ errorMessage() }}</h2>
         </div>
     }
 
-    @if (posts.hasValue()) {
-        <div class="post-list">
-            @for (post of posts.value(); track post.id) {
-                <app-post showMenu showDescription [post]="post" (deleted)="reloadPosts()" />
-            } @empty {
+    @if (profile.hasValue()) {
+        @let value = profile.value();
+
+        <section class="fit mg-center">
+            <div class="pic-container">
+                <img [src]="`assets/${value.picture}.svg`" alt="Profile picture" />
+                <span>{{ value.username }}</span>
+
                 @if (value.isSelf) {
-                    <button matButton="tonal" routerLink="/posts/create">
-                        <mat-icon>add</mat-icon>
-                        <span>Create your first Post</span>
+                    <button matIconButton matTooltip="Edit profile" (click)="openEditdialog()">
+                        <mat-icon>edit</mat-icon>
                     </button>
-                } @else {
-                    <span>Nothing to see here.</span>
+                }
+            </div>
+
+            <mat-list>
+                @if (value.isSelf) {
+                    <mat-list-item>
+                        <span matListItemTitle>Email</span>
+                        <span matListItemLine>{{ value.email }}</span>
+                    </mat-list-item>
+                }
+
+                <mat-list-item>
+                    <span matListItemTitle>Joined</span>
+                    <span matListItemLine>{{ value.createdAt | date }}</span>
+                </mat-list-item>
+            </mat-list>
+
+            <h2>{{ value.isSelf ? 'Your' : `${value.username}'s` }} posts</h2>
+        </section>
+
+        <section class="post-list">
+            @if (posts.isLoading()) {
+                <mat-spinner />
+            }
+
+            @if (posts.error()) {
+                <div class="fx-row fx-align fx-gap-1">
+                    <p class="text-error">Failed to fetch posts.</p>
+                    <button matButton (click)="posts.reload()">Retry</button>
+                </div>
+            }
+
+            @if (posts.hasValue()) {
+                @for (post of posts.value(); track post.id) {
+                    <app-post
+                        showMenu
+                        showDescription
+                        showLikes
+                        [post]="post"
+                        (deleted)="reloadPosts()"
+                    />
+                } @empty {
+                    @if (value.isSelf) {
+                        <button matButton="tonal" routerLink="/posts/create">
+                            <mat-icon>add</mat-icon>
+                            <span>Create your first Post</span>
+                        </button>
+                    } @else {
+                        <span>Nothing to see here.</span>
+                    }
                 }
             }
-        </div>
+        </section>
     }
-}
+</div>

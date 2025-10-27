@@ -24,9 +24,12 @@
             </button>
         } @else {
             <mat-icon>cloud_upload</mat-icon>
-            <p>Drag an image here, or click to select</p>
-            <p>Max file size: {{ maxFileSize() }}</p>
-            <button class="fit" matButton="tonal" (click)="fileInput.click()">Browse</button>
+            <p>Drop here to uplaod</p>
+            <small>Max file size: {{ maxFileSize() }}</small>
+            <small>Allowed media types: {{ acceptedFileTypesUI }}</small>
+            <button style="margin-top: 10px" matButton="tonal" (click)="fileInput.click()">
+                Browse
+            </button>
         }
     </div>
 

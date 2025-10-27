@@ -17,26 +17,6 @@ html {
     );
 }
 
-.snackbar-success {
-    @include mat.snack-bar-overrides(
-        (
-            supporting-text-color: var(--mat-sys-on-primary-container),
-            button-color: var(--mat-sys-primary),
-            container-color: var(--mat-sys-secondary-container)
-        )
-    );
-}
-
-.snackbar-error {
-    @include mat.snack-bar-overrides(
-        (
-            supporting-text-color: var(--mat-sys-on-error-container),
-            button-color: var(--mat-sys-error),
-            container-color: var(--mat-sys-error-container)
-        )
-    );
-}
-
 $colors: primary, secondary, tertiary, error;
 @each $color in $colors {
     .text-#{$color} {
@@ -66,6 +46,31 @@ $colors: primary, secondary, tertiary, error;
             )
         );
     }
+}
+
+.dialog-outlined {
+    border-radius: var(--mat-sys-corner-extra-large);
+    outline: 1px solid var(--mat-sys-outline);
+}
+
+.snackbar-success {
+    @include mat.snack-bar-overrides(
+        (
+            supporting-text-color: var(--mat-sys-on-primary-container),
+            button-color: var(--mat-sys-primary),
+            container-color: var(--mat-sys-secondary-container)
+        )
+    );
+}
+
+.snackbar-error {
+    @include mat.snack-bar-overrides(
+        (
+            supporting-text-color: var(--mat-sys-on-error-container),
+            button-color: var(--mat-sys-error),
+            container-color: var(--mat-sys-error-container)
+        )
+    );
 }
 
 mat-divider[inset] {

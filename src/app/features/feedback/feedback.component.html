@@ -1,88 +1,91 @@
-@if (!success()) {
-    <h3>Thank you for taking the time to provide feedback!</h3>
-    <h5>Please fill out the form below</h5>
+<div class="pad-1 fit mg-center">
+    @if (!success()) {
+        <h3>Thank you for taking the time to provide feedback!</h3>
+        <h5>Please fill out the form below</h5>
 
-    <form class="form" [formGroup]="form" (submit)="$event.preventDefault(); submit()">
-        <div class="fx-row fx-align fx-gap-1">
+        <form class="form" [formGroup]="form" (submit)="$event.preventDefault(); submit()">
+            <div class="fx-row fx-align fx-gap-1">
+                <mat-form-field subscriptSizing="dynamic">
+                    <mat-label>Name</mat-label>
+                    <mat-icon matPrefix>person</mat-icon>
+                    <input matInput [formControl]="form.controls.name" />
+                </mat-form-field>
+
+                @if (!currentUser()) {
+                    <p>Or</p>
+
+                    <button
+                        matButton="tonal"
+                        routerLink="/auth/login"
+                        [queryParams]="{ redirect: 'feedback' }"
+                    >
+                        Login
+                    </button>
+                }
+            </div>
+
             <mat-form-field subscriptSizing="dynamic">
-                <mat-label>Name</mat-label>
-                <mat-icon matPrefix>person</mat-icon>
-                <input matInput [formControl]="form.controls.name" />
+                <mat-label>Title</mat-label>
+                <mat-icon matPrefix>title</mat-icon>
+                <input matInput [formControl]="form.controls.title" />
             </mat-form-field>
 
-            @if (!currentUser()) {
-                <p>Or</p>
+            <mat-form-field subscriptSizing="dynamic">
+                <mat-label>Category</mat-label>
+                <mat-icon matPrefix>inbox_text</mat-icon>
+                <mat-select [formControl]="form.controls.category">
+                    <mat-option value="feature">
+                        <mat-icon>extension</mat-icon>
+                        <span>Feature</span>
+                    </mat-option>
 
-                <button
-                    matButton="tonal"
-                    routerLink="/auth/login"
-                    [queryParams]="{ redirect: 'feedback' }"
-                >
-                    Login
-                </button>
+                    <mat-option value="bug">
+                        <mat-icon>bug_report</mat-icon>
+                        <span>Bug</span>
+                    </mat-option>
+
+                    <mat-option value="question">
+                        <mat-icon>help</mat-icon>
+                        <span>Question</span>
+                    </mat-option>
+
+                    <mat-option value="other">Other</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field subscriptSizing="dynamic">
+                <mat-label>Message</mat-label>
+                <mat-icon matPrefix>message</mat-icon>
+                <mat-hint>{{`${text.value.length}/${messageMaxLength}`}}</mat-hint>
+                <textarea
+                    #text
+                    matInput
+                    [maxlength]="messageMaxLength"
+                    cdkTextareaAutosize
+                    cdkAutosizeMinRows="5"
+                    cdkAutosizeMaxRows="10"
+                    [formControl]="form.controls.message"
+                ></textarea>
+            </mat-form-field>
+
+            @if (errorMessage(); as error) {
+                <p class="text-error">{{ error }}</p>
             }
-        </div>
 
-        <mat-form-field subscriptSizing="dynamic">
-            <mat-label>Title</mat-label>
-            <mat-icon matPrefix>title</mat-icon>
-            <input matInput [formControl]="form.controls.title" />
-        </mat-form-field>
-
-        <mat-form-field subscriptSizing="dynamic">
-            <mat-label>Category</mat-label>
-            <mat-icon matPrefix>inbox_text</mat-icon>
-            <mat-select [formControl]="form.controls.category">
-                <mat-option value="feature">
-                    <mat-icon>extension</mat-icon>
-                    <span>Feature</span>
-                </mat-option>
-
-                <mat-option value="bug">
-                    <mat-icon>bug_report</mat-icon>
-                    <span>Bug</span>
-                </mat-option>
-
-                <mat-option value="question">
-                    <mat-icon>help</mat-icon>
-                    <span>Question</span>
-                </mat-option>
-
-                <mat-option value="other">Other</mat-option>
-            </mat-select>
-        </mat-form-field>
-
-        <mat-form-field subscriptSizing="dynamic">
-            <mat-label>Message</mat-label>
-            <mat-icon matPrefix>message</mat-icon>
-            <mat-hint>{{`${text.value.length}/${messageMaxLength}`}}</mat-hint>
-            <textarea
-                #text
-                matInput
-                [maxlength]="messageMaxLength"
-                cdkTextareaAutosize
-                cdkAutosizeMinRows="5"
-                cdkAutosizeMaxRows="10"
-                [formControl]="form.controls.message"
-            ></textarea>
-        </mat-form-field>
-
-        @if (errorMessage(); as error) {
-            <p class="text-error">{{ error }}</p>
-        }
-
-        <button
-            class="fit"
-            matButton="filled"
-            [disabled]="form.invalid || loading()"
-            [appLoading]="loading()"
-        >
-            Send
-        </button>
-    </form>
-} @else {
-    <app-result-card>
-        <mat-icon class="icon-primary">done</mat-icon>
-        <span class="text-primary">Feedback received. Thank you for taking the time!</span>
-    </app-result-card>
-}
+            <div class="send-btn">
+                <button
+                    matButton="filled"
+                    [disabled]="form.invalid || loading()"
+                    [appLoading]="loading()"
+                >
+                    Send
+                </button>
+            </div>
+        </form>
+    } @else {
+        <app-result-card>
+            <mat-icon class="icon-primary">done</mat-icon>
+            <span class="text-primary">Feedback received. Thank you for taking the time!</span>
+        </app-result-card>
+    }
+</div>

@@ -40,6 +40,7 @@ export class PostComponent {
 
     imageLoadWidth = input(400);
     imageLoadHeight = input(500);
+    showTags = input(false, { transform: booleanAttribute });
     showLikes = input(false, { transform: booleanAttribute });
     showMenu = input(false, { transform: booleanAttribute });
     showDescription = input(false, { transform: booleanAttribute });
@@ -62,6 +63,7 @@ export class PostComponent {
         this._dialog.open(ImageviewerDialogComponent, {
             data: { post: this.post() },
             hasBackdrop: true,
+            panelClass: 'dialog-outlined',
             width: '90vw',
             height: '90vh',
             maxWidth: '90vw',
