@@ -3,7 +3,7 @@ import { Component, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { FormBuilder, FormsModule, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 import { SnackbarService } from 'src/app/core/services/snackbar/snackbar.service';
 import { IconTextComponent } from 'src/app/shared/components/icon-text/icon-text.component';
@@ -22,7 +22,8 @@ import { TagsDialogComponent } from './tags-dialog/tags-dialog.component';
         FormsModule,
         ImageUploadComponent,
         LoadingDirective,
-        IconTextComponent
+        IconTextComponent,
+        RouterLink
     ],
     templateUrl: './create-post.component.html',
     styleUrl: './create-post.component.scss'

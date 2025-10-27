@@ -32,7 +32,7 @@
 <div class="fx-row fx-gap-1">
     <app-icon-text>
         <button matButton="tonal" (click)="selectTags()">
-            <mat-icon>add</mat-icon>
+            <mat-icon>new_label</mat-icon>
             <span>Add tags</span>
         </button>
 
@@ -40,12 +40,15 @@
     </app-icon-text>
 </div>
 
-<button
-    class="fit"
-    matButton="filled"
-    [appLoading]="loading()"
-    [disabled]="form.invalid || loading()"
-    (click)="submit()"
->
-    Create
-</button>
+<div class="fx-row fx-gap-1">
+    <button
+        matButton="filled"
+        [appLoading]="loading()"
+        [disabled]="form.invalid || loading()"
+        (click)="submit()"
+    >
+        <mat-icon>add</mat-icon>
+        Create
+    </button>
+    <a matButton="outlined" routerLink="/terms" target="_blank">Content rules</a>
+</div>
