@@ -1,0 +1,16 @@
+<mat-card class="post-card" appearance="raised">
+    <mat-card-header>
+        <mat-card-title>
+            <a class="link text-primary" [routerLink]="['/user', post().author.username]">
+                {{ post().author.username }}
+            </a>
+        </mat-card-title>
+        <mat-card-subtitle>{{ post().title }}</mat-card-subtitle>
+
+        <img matCardAvatar [src]="`assets/${post().author.picture}.svg`" />
+
+        <app-post-menu [post]="post()" class="post-menu" />
+    </mat-card-header>
+
+    <app-post class="post" showDescription [post]="post()" />
+</mat-card>

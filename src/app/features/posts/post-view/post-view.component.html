@@ -1,5 +1,5 @@
-<div class="fx-col fx-gap-1">
-    <a class="fit" matButton routerLink="/posts">
+<div class="post-container">
+    <a class="mg-1" matButton routerLink="/posts">
         <mat-icon>chevron_left</mat-icon>
         <span>All posts</span>
     </a>
@@ -12,6 +12,6 @@
             <h3 class="text-error">Failed to fetch post.</h3>
         </app-icon-text>
     } @else if (post.hasValue()) {
-        <app-post class="post" [post]="post.value()" />
+        <app-post-card [post]="post.value()" />
     }
 </div>

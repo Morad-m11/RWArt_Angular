@@ -1,14 +1,12 @@
 import { httpResource } from '@angular/common/http';
 import { Component, computed, linkedSignal, signal } from '@angular/core';
-import { RouterLink } from '@angular/router';
 import { Endpoints } from 'src/app/core/constants/api-endpoints';
+import { PostCardComponent } from 'src/app/featured/shared/components/post-card/post-card.component';
 import { IconTextComponent } from 'src/app/shared/components/icon-text/icon-text.component';
 import { LoadingDirective } from 'src/app/shared/directives/loading/loading.directive';
 import { MaterialModule } from 'src/app/shared/material.module';
-import { PostMenuComponent } from '../../post/post-menu/post-menu.component';
 import { Post, Tag } from '../../shared/post.interface';
 import { FilterChangeEvent, FilterComponent } from '../filter/filter.component';
-import { PostComponent } from '../post/post.component';
 
 @Component({
     selector: 'app-post-list',
@@ -18,9 +16,7 @@ import { PostComponent } from '../post/post.component';
         LoadingDirective,
         IconTextComponent,
         FilterComponent,
-        RouterLink,
-        PostMenuComponent,
-        PostComponent
+        PostCardComponent
     ],
     templateUrl: './post-list.component.html',
     styleUrl: './post-list.component.scss'

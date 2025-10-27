@@ -15,7 +15,7 @@
 </div>
 
 @if (showLikes()) {
-    <button matButton>
+    <button matButton (click)="upvoted.emit()">
         <mat-icon>{{ post().isUpvoted ? 'favorite' : 'favorite_outlined' }}</mat-icon>
         <p>{{ post().upvoteCount }}</p>
     </button>
