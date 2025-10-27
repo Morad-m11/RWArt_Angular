@@ -3,8 +3,8 @@
         <div class="embla__container">
             @for (post of posts(); track post.id) {
                 <div class="embla__slide">
-                    <div class="embla__slide__number">
-                        <mat-card class="title-card">
+                    <div class="embla__slide__number post-container">
+                        <mat-card>
                             <mat-card-header>
                                 <mat-card-title>
                                     <a
@@ -20,7 +20,19 @@
                             </mat-card-header>
                         </mat-card>
 
-                        <app-post [imageLoadWidth]="600" [imageLoadHeight]="500" [post]="post" />
+                        <app-post
+                            #postComp
+                            [(post)]="posts()[$index]"
+                            [imageLoadWidth]="600"
+                            [imageLoadHeight]="500"
+                        />
+
+                        <button matButton (click)="postComp.upvote()">
+                            <mat-icon>
+                                {{ post.isUpvoted ? 'favorite' : 'favorite_outlined' }}
+                            </mat-icon>
+                            <span>{{ post.upvoteCount }}</span>
+                        </button>
                     </div>
                 </div>
             }

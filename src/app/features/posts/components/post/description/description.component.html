@@ -14,14 +14,9 @@
     <span class="description-text">{{ post().description }}</span>
 </div>
 
-<div class="fx-col fx-align">
-    <button matIconButton (click)="upvoted.emit()">
-        @if (!post().isUpvoted) {
-            <mat-icon>favorite_outlined</mat-icon>
-        } @else {
-            <mat-icon class="icon-primary">favorite</mat-icon>
-        }
+@if (showLikes()) {
+    <button matButton>
+        <mat-icon>{{ post().isUpvoted ? 'favorite' : 'favorite_outlined' }}</mat-icon>
+        <p>{{ post().upvoteCount }}</p>
     </button>
-
-    <small>{{ post().upvoteCount }}</small>
-</div>
+}

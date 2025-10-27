@@ -55,7 +55,7 @@
     display: flex;
     justify-content: center;
     gap: 1.2em;
-    margin-top: 1.2em;
+    margin-top: 0.8em;
 }
 
 .embla__buttons {
@@ -101,20 +101,22 @@
     height: 35%;
 }
 
-.title-card {
-    margin: 1em auto 0.5em;
-    font-size: clamp(1.7rem, 2.5vw, 2rem);
+// Mine
 
-    @include mat.card-overrides(
-        (
-            subtitle-text-size: 0.5em,
-            title-text-size: 0.7em
-        )
-    );
-}
+.post-container {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    row-gap: 0.5rem;
 
-.img {
-    object-fit: cover;
-    width: 100%;
-    height: 100%;
+    mat-card {
+        font-size: clamp(1.7rem, 2.5vw, 2rem);
+
+        @include mat.card-overrides(
+            (
+                subtitle-text-size: 0.5em,
+                title-text-size: 0.7em
+            )
+        );
+    }
 }

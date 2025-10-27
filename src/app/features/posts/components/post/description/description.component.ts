@@ -1,4 +1,4 @@
-import { Component, input, output, signal } from '@angular/core';
+import { booleanAttribute, Component, input, output, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { MaterialModule } from 'src/app/shared/material.module';
 import { Post } from '../../../shared/post.interface';
@@ -11,7 +11,9 @@ import { Post } from '../../../shared/post.interface';
     styleUrl: './description.component.scss'
 })
 export class DescriptionComponent {
+    showLikes = input(false, { transform: booleanAttribute });
     post = input.required<Post>();
+
     upvoted = output();
 
     isExpanded = signal(false);

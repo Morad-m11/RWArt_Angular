@@ -40,6 +40,7 @@ export class PostComponent {
 
     imageLoadWidth = input(400);
     imageLoadHeight = input(500);
+    showLikes = input(false, { transform: booleanAttribute });
     showMenu = input(false, { transform: booleanAttribute });
     showDescription = input(false, { transform: booleanAttribute });
     post = model.required<Post>();
