@@ -13,8 +13,8 @@ const MAX_FILE_SIZE_BYTES = 10 * 1e6;
     styleUrl: './image-upload.component.scss'
 })
 export class ImageUploadComponent {
-    readonly acceptedFileTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
-    readonly acceptedFileTypesUI = 'jpeg, png, webp, gif';
+    readonly acceptedFileTypes = ['image/jpeg', 'image/png', 'image/webp'];
+    readonly acceptedFileTypesUI = 'jpeg, png, webp';
 
     file = signal<File | null>(null);
     fileSize = computed(() =>
