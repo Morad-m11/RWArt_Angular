@@ -7,7 +7,7 @@ export interface Tag {
 
 export interface Post {
     id: string;
-    author: { username: string };
+    author: { username: string; picture: string };
     title: string;
     description: string;
     tags: Tag[];

@@ -1,9 +1,7 @@
-<div class="container">
-    <div class="filter">
-        <app-filter (filtered)="filterPosts($event)" />
-    </div>
+<mat-card class="container">
+    <app-filter class="filter" (filtered)="filterPosts($event)" />
 
-    <mat-card class="pad-1 fx-col fx-align fx-gap-2" appearance="outlined">
+    <div class="fx-col fx-gap-2">
         @if (postResource.isLoading()) {
             <mat-spinner />
         }
@@ -17,7 +15,25 @@
 
         @if (postResource.hasValue()) {
             @for (post of posts(); track post.id) {
-                <app-post class="post" [post]="post" (deleted)="refresh()" />
+                <mat-card class="post-card" appearance="raised">
+                    <mat-card-header>
+                        <mat-card-title>
+                            <a
+                                class="link text-primary"
+                                [routerLink]="['/user', post.author.username]"
+                            >
+                                {{ post.author.username }}
+                            </a>
+                        </mat-card-title>
+                        <mat-card-subtitle>{{ post.title }}</mat-card-subtitle>
+
+                        <img matCardAvatar [src]="`assets/${post.author.picture}.svg`" />
+
+                        <app-post-menu [post]="post" class="post-menu" />
+                    </mat-card-header>
+
+                    <app-post class="post" showDescription [post]="post" />
+                </mat-card>
             } @empty {
                 <p class="fx-center text-primary">Could not find any posts.</p>
             }
@@ -33,5 +49,5 @@
                 </button>
             }
         }
-    </mat-card>
-</div>
+    </div>
+</mat-card>

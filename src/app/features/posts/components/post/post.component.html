@@ -2,16 +2,18 @@
     <img
         #img
         class="img"
+        priority
         [ngSrc]="post().imageId"
-        [width]="imageLoadWidth"
-        [height]="imageLoadHeight"
+        [width]="imageLoadWidth()"
+        [height]="imageLoadHeight()"
+        [ngSrcset]="imageWidthSet()"
         alt="Image {{ post().imageId }}"
     />
 </button>
 
-<button class="menu" matIconButton [matMenuTriggerFor]="menu" aria-label="Menu button">
-    <mat-icon>more_vert</mat-icon>
-</button>
+@if (showMenu()) {
+    <app-post-menu class="menu" [post]="post()" (deleteClicked)="deletePost()" />
+}
 
 <div class="post-bottom">
     @if (post().tags.length > 0) {
@@ -22,19 +24,7 @@
         </div>
     }
 
-    <app-description [post]="post()" (upvoted)="upvote()" />
-</div>
-
-<mat-menu #menu="matMenu">
-    @if (this.post().isOwner) {
-        <button mat-menu-item class="red-item" (click)="delete()">
-            <mat-icon>delete</mat-icon>
-            <span>Delete</span>
-        </button>
+    @if (showDescription()) {
+        <app-description [post]="post()" (upvoted)="upvote()" />
     }
-
-    <button mat-menu-item (click)="shareLink()">
-        <mat-icon>share</mat-icon>
-        <span>Share</span>
-    </button>
-</mat-menu>
+</div>

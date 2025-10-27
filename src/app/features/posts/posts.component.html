@@ -1,37 +1,32 @@
-<mat-tab-group
+<nav
+    class="nav-tab"
+    mat-tab-nav-bar
     mat-stretch-tabs="false"
     mat-align-tabs="center"
-    fitInkBarToContent
-    dynamicHeight
-    animationDuration="300"
+    [tabPanel]="tabPanel"
 >
-    <mat-tab>
-        <ng-template matTabLabel>
-            <app-icon-text>
-                <mat-icon>web_stories</mat-icon>
-                <span>Featured</span>
-            </app-icon-text>
-        </ng-template>
+    <a
+        mat-tab-link
+        routerLinkActive
+        #rlaFeatured="routerLinkActive"
+        [active]="rlaFeatured.isActive"
+        routerLink="/featured"
+    >
+        <mat-icon>web_stories</mat-icon>
+        Featured
+    </a>
+    <a
+        mat-tab-link
+        routerLinkActive
+        #rlaPosts="routerLinkActive"
+        [active]="rlaPosts.isActive"
+        routerLink="/posts"
+    >
+        <mat-icon>collections</mat-icon>
+        Posts
+    </a>
+</nav>
 
-        <div class="featured">
-            <app-featured limit="3" />
-        </div>
-    </mat-tab>
-
-    <mat-tab>
-        <ng-template matTabLabel>
-            <app-icon-text>
-                <mat-icon>collections</mat-icon>
-                <span>Posts</span>
-            </app-icon-text>
-        </ng-template>
-
-        @defer (on viewport) {
-            <app-post-list limit="10" />
-        } @placeholder {
-            <div style="height: 600px"></div>
-        } @error {
-            <p class="text-error">Failed to load posts.</p>
-        }
-    </mat-tab>
-</mat-tab-group>
+<mat-tab-nav-panel #tabPanel>
+    <router-outlet />
+</mat-tab-nav-panel>

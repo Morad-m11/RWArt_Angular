@@ -1,16 +1,11 @@
 import { httpResource } from '@angular/common/http';
-import {
-    Component,
-    computed,
-    input,
-    linkedSignal,
-    numberAttribute,
-    signal
-} from '@angular/core';
+import { Component, computed, linkedSignal, signal } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { Endpoints } from 'src/app/core/constants/api-endpoints';
 import { IconTextComponent } from 'src/app/shared/components/icon-text/icon-text.component';
 import { LoadingDirective } from 'src/app/shared/directives/loading/loading.directive';
 import { MaterialModule } from 'src/app/shared/material.module';
+import { PostMenuComponent } from '../../post/post-menu/post-menu.component';
 import { Post, Tag } from '../../shared/post.interface';
 import { FilterChangeEvent, FilterComponent } from '../filter/filter.component';
 import { PostComponent } from '../post/post.component';
@@ -20,18 +15,19 @@ import { PostComponent } from '../post/post.component';
     standalone: true,
     imports: [
         MaterialModule,
-        PostComponent,
         LoadingDirective,
         IconTextComponent,
-        FilterComponent
+        FilterComponent,
+        RouterLink,
+        PostMenuComponent,
+        PostComponent
     ],
     templateUrl: './post-list.component.html',
     styleUrl: './post-list.component.scss'
 })
 export class PostListComponent {
     private readonly _offset = signal(0);
-
-    limit = input(10, { transform: numberAttribute });
+    private readonly _limit = 10;
 
     filters = signal<{ search?: string; tags?: Tag[] }>({});
 
@@ -39,7 +35,7 @@ export class PostListComponent {
         () => ({
             url: Endpoints.post.base,
             params: {
-                limit: this.limit(),
+                limit: this._limit,
                 offset: this._offset(),
                 search: this.filters().search ?? '',
                 tags: JSON.stringify(this.filters().tags ?? [])
@@ -76,6 +72,6 @@ export class PostListComponent {
     }
 
     loadMorePosts() {
-        this._offset.update((x) => x + this.limit());
+        this._offset.update((x) => x + this._limit);
     }
 }

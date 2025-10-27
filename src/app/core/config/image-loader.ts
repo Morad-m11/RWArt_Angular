@@ -17,6 +17,6 @@ const provideImageLoaderMock = (path: string): Provider[] => {
 
 export const provideImageLoader = (): Provider[] => {
     return isDevMode()
-        ? provideImageLoaderMock('https://picsum.photos/id/237')
+        ? provideImageLoaderMock('https://picsum.photos')
         : provideCloudinaryLoader(`https://res.cloudinary.com/${CLOUDINARY_CLIENT_ID}`);
 };

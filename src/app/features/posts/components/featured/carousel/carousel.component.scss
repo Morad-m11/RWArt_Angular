@@ -1,0 +1,120 @@
+@use '@angular/material' as mat;
+
+.embla {
+    font-size: clamp(1.6rem, 2.5vw, 2rem);
+    max-width: 48em;
+    margin: auto;
+    --slide-height: 19em;
+    --slide-spacing: 0em;
+    --slide-size: 55%;
+}
+
+@media (max-width: 600px) {
+    .embla {
+        --slide-size: 100%;
+    }
+}
+
+.embla__viewport {
+    overflow: visible;
+}
+
+.embla__container {
+    display: flex;
+    touch-action: pan-y pinch-zoom;
+    margin-left: calc(var(--slide-spacing) * -1);
+}
+
+.embla__slide {
+    transform: translate3d(0, 0, 0);
+    flex: 0 0 var(--slide-size);
+    min-width: 0;
+    padding-left: var(--slide-spacing);
+
+    opacity: 1;
+    transition: opacity 0.2s;
+
+    &:not(.selected) {
+        opacity: 0.4;
+    }
+}
+
+.embla__slide__number {
+    box-shadow: inset 0 0 0 0.2em var(--detail-medium-contrast);
+    border-radius: 14px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: var(--slide-height);
+    user-select: none;
+    backface-visibility: hidden;
+}
+
+.embla__controls {
+    display: flex;
+    justify-content: center;
+    gap: 1.2em;
+    margin-top: 1.2em;
+}
+
+.embla__buttons {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.6em;
+    align-items: center;
+}
+
+.embla__button {
+    -webkit-tap-highlight-color: rgba(var(--text-high-contrast-rgb-value), 0.5);
+    -webkit-appearance: none;
+    appearance: none;
+    background-color: transparent;
+    touch-action: manipulation;
+    display: inline-flex;
+    text-decoration: none;
+    cursor: pointer;
+    border: 1px solid var(--mat-sys-outline-variant);
+    padding: 0;
+    margin: 0;
+    box-shadow: inset 0 0 0 0.2em var(--detail-medium-contrast);
+    width: 3.6em;
+    height: 3.6em;
+    z-index: 1;
+    border-radius: 50%;
+    color: var(--text-body);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &:hover {
+        background: var(--mat-sys-surface-container-high);
+    }
+}
+
+.embla__button:disabled {
+    color: var(--detail-high-contrast);
+}
+
+.embla__button__svg {
+    width: 35%;
+    height: 35%;
+}
+
+.title-card {
+    margin: 1em auto 0.5em;
+    font-size: clamp(1.7rem, 2.5vw, 2rem);
+
+    @include mat.card-overrides(
+        (
+            subtitle-text-size: 0.5em,
+            title-text-size: 0.7em
+        )
+    );
+}
+
+.img {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+}

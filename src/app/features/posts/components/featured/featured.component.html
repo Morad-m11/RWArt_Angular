@@ -1,36 +1,12 @@
-<mat-card class="container" appearance="outlined">
-    <mat-card-content class="featured-container">
-        @if (posts.isLoading()) {
-            <mat-spinner />
-        } @else if (posts.error()) {
-            <app-icon-text>
-                <p class="text-error">Failed to fetch posts.</p>
-                <button matButton (click)="posts.reload()">Retry</button>
-            </app-icon-text>
-        } @else if (posts.hasValue() && posts.value().length) {
-            <div class="fx-row fx-center fx-align fx-gap-1">
-                @if (isHandset()) {
-                    <button matMiniFab [disabled]="postIndex() === 0" (click)="prev()">
-                        <mat-icon>chevron_left</mat-icon>
-                    </button>
-
-                    <app-post [post]="posts.value()[postIndex()]" (deleted)="refresh()" />
-
-                    <button
-                        matMiniFab
-                        [disabled]="postIndex() === posts.value().length - 1"
-                        (click)="next()"
-                    >
-                        <mat-icon>chevron_right</mat-icon>
-                    </button>
-                } @else {
-                    @for (post of posts.value(); track post.id) {
-                        <app-post [post]="post" (deleted)="refresh()" />
-                    }
-                }
-            </div>
-        } @else {
-            <p class="fx-center fx-align text-primary">Nothing to see here.</p>
-        }
-    </mat-card-content>
-</mat-card>
+@if (posts.isLoading()) {
+    <mat-spinner />
+} @else if (posts.error()) {
+    <app-icon-text>
+        <p class="text-error">Failed to fetch posts.</p>
+        <button matButton (click)="posts.reload()">Retry</button>
+    </app-icon-text>
+} @else if (posts.hasValue() && posts.value().length) {
+    <app-carousel [posts]="posts.value()" />
+} @else {
+    <p class="fx-center fx-align text-primary">Nothing to see here.</p>
+}
