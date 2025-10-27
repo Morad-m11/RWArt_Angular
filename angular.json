@@ -3,7 +3,7 @@
     "version": 1,
     "newProjectRoot": "projects",
     "projects": {
-        "RwArt": {
+        "ArtShelter": {
             "projectType": "application",
             "schematics": {
                 "@schematics/angular:component": {
@@ -28,7 +28,10 @@
                             },
                             "src/assets"
                         ],
-                        "styles": ["src/styles.scss", "src/theme/_theme.scss"]
+                        "styles": [
+                            "src/styles.scss",
+                            "src/theme/_theme.scss"
+                        ]
                     },
                     "configurations": {
                         "production": {
@@ -73,13 +76,13 @@
                     "builder": "@angular/build:dev-server",
                     "configurations": {
                         "production": {
-                            "buildTarget": "RwArt:build:production"
+                            "buildTarget": "ArtShelter:build:production"
                         },
                         "staging": {
-                            "buildTarget": "RwArt:build:staging"
+                            "buildTarget": "ArtShelter:build:staging"
                         },
                         "development": {
-                            "buildTarget": "RwArt:build:development"
+                            "buildTarget": "ArtShelter:build:development"
                         }
                     },
                     "defaultConfiguration": "development"
@@ -90,14 +93,19 @@
                 "lint": {
                     "builder": "@angular-eslint/builder:lint",
                     "options": {
-                        "lintFilePatterns": ["src/**/*.ts", "src/**/*.html"]
+                        "lintFilePatterns": [
+                            "src/**/*.ts",
+                            "src/**/*.html"
+                        ]
                     }
                 }
             }
         }
     },
     "cli": {
-        "schematicCollections": ["angular-eslint"],
+        "schematicCollections": [
+            "angular-eslint"
+        ],
         "analytics": false
     }
 }

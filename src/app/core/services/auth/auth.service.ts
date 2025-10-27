@@ -144,11 +144,7 @@ export class AuthService {
             this._snackbar.error(CoreSnackbarMessages.expired);
         } else {
             await firstValueFrom(this._http.post(Endpoints.auth.logout, null)).catch(
-                (error: HttpErrorResponse) => {
-                    if (error.status !== 401) {
-                        throw error;
-                    }
-                }
+                (error) => console.error(error)
             );
         }
 
