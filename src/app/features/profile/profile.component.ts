@@ -7,6 +7,7 @@ import { firstValueFrom } from 'rxjs';
 import { Endpoints } from 'src/app/core/constants/api-endpoints';
 import { SnackbarService } from 'src/app/core/services/snackbar/snackbar.service';
 import { assert } from 'src/app/shared/assert';
+import { IconTextComponent } from 'src/app/shared/components/icon-text/icon-text.component';
 import { MaterialModule } from 'src/app/shared/material.module';
 import {
     OwnedUser,
@@ -20,7 +21,7 @@ import { EditDialogComponent, EditDialogData } from './edit-dialog/edit-dialog.c
 @Component({
     selector: 'app-profile',
     standalone: true,
-    imports: [MaterialModule, DatePipe, PostComponent, RouterLink],
+    imports: [MaterialModule, DatePipe, PostComponent, RouterLink, IconTextComponent],
     templateUrl: './profile.component.html',
     styleUrl: './profile.component.scss'
 })

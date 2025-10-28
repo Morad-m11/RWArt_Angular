@@ -12,7 +12,7 @@
     @if (profile.hasValue()) {
         @let value = profile.value();
 
-        <section class="fit mg-center">
+        <section class="profile-section">
             <div class="pic-container">
                 <img [src]="`assets/${value.picture}.svg`" alt="Profile picture" />
                 <span>{{ value.username }}</span>
@@ -23,6 +23,18 @@
                     </button>
                 }
             </div>
+
+            @if (value.unclaimedUrl) {
+                <app-icon-text>
+                    <mat-icon>info</mat-icon>
+                    <p>
+                        This account was created by Art Shelter with permission.
+                        <a class="link text-primary" [href]="value.unclaimedUrl" target="_blank">
+                            Original Profile
+                        </a>
+                    </p>
+                </app-icon-text>
+            }
 
             <mat-list>
                 @if (value.isSelf) {

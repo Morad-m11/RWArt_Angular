@@ -15,14 +15,12 @@ export interface OwnedUser {
     picture: string;
     createdAt: Date;
     isSelf: true;
+    unclaimedUrl?: string;
 }
 
-export interface ForeignUser {
-    username: string;
-    picture: string;
-    createdAt: Date;
+export type ForeignUser = Omit<OwnedUser, 'id' | 'email'> & {
     isSelf: false;
-}
+};
 
 export type UserProfile = OwnedUser | ForeignUser;
 
