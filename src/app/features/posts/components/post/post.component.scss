@@ -1,14 +1,3 @@
-@use '@angular/material' as mat;
-
-.red-item {
-    @include mat.menu-overrides(
-        (
-            item-icon-color: var(--mat-sys-error),
-            item-label-text-color: var(--mat-sys-error)
-        )
-    );
-}
-
 :host {
     position: relative;
     width: 100%;

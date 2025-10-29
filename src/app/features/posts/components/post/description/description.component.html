@@ -2,9 +2,11 @@
     <div class="fx-row fx-align fx-gap-1">
         <b class="description-title">{{ post().title }}</b>
 
-        <a matButton [routerLink]="[`/user/${post().author.username}`]">
-            {{ post().author.username }}
-        </a>
+        @if (showUsername()) {
+            <a matButton [routerLink]="[`/user/${post().author.username}`]">
+                {{ post().author.username }}
+            </a>
+        }
 
         <button matIconButton (click)="toggleExpand()">
             <mat-icon>{{ isExpanded() ? 'keyboard_arrow_down' : 'keyboard_arrow_up' }}</mat-icon>

@@ -11,7 +11,8 @@ import { Post } from '../../../shared/post.interface';
     styleUrl: './description.component.scss'
 })
 export class DescriptionComponent {
-    showLikes = input(false, { transform: booleanAttribute });
+    showUsername = input(true, { transform: booleanAttribute });
+    showLikes = input(true, { transform: booleanAttribute });
     post = input.required<Post>();
 
     upvoted = output();

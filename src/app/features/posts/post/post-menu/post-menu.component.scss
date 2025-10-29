@@ -1,0 +1,14 @@
+@use '@angular/material' as mat;
+
+.red-item {
+    @include mat.menu-overrides(
+        (
+            item-icon-color: var(--mat-sys-error),
+            item-label-text-color: var(--mat-sys-error)
+        )
+    );
+}
+
+.menu {
+    background-color: var(--mat-sys-surface-container-highest);
+}

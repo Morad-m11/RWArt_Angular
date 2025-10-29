@@ -25,6 +25,11 @@
     }
 
     @if (showDescription()) {
-        <app-description [post]="post()" [showLikes]="showLikes" (upvoted)="upvote()" />
+        <app-description
+            [post]="post()"
+            [showUsername]="showUsername()"
+            [showLikes]="showLikes()"
+            (upvoted)="upvote()"
+        />
     }
 </div>
