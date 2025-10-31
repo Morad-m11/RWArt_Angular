@@ -23,7 +23,7 @@ export default class FeedbackComponent {
 
     readonly messageMaxLength = 500;
 
-    currentUser = this._authService.currentUser;
+    currentUser = this._authService.userProfile;
 
     form = this._fb.nonNullable.group({
         name: ['', Validators.required],

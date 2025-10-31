@@ -1,0 +1,10 @@
+.loading-message-container {
+    max-width: 800px;
+    margin: auto;
+
+    .loading-gif {
+        display: block;
+        margin: 2rem auto;
+        border-radius: 8px;
+    }
+}

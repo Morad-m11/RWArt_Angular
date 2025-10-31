@@ -20,7 +20,7 @@ export class ProfileButtonComponent {
 
     small = input(false, { transform: booleanAttribute });
 
-    profile = this._authService.currentUser;
+    profile = this._authService.userProfile;
 
     isOpen = signal(false);
 

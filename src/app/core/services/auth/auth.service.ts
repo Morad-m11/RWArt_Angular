@@ -6,7 +6,6 @@ import {
 } from '@angular/common/http';
 import { computed, effect, inject, Injectable, signal } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
-import { MatDialog } from '@angular/material/dialog';
 import { filter, finalize, firstValueFrom, Observable, shareReplay, tap } from 'rxjs';
 import { SignInProvider } from 'src/app/features/auth/shared/signin-provider-type';
 import { UserService } from 'src/app/shared/services/user/user.service';
@@ -14,7 +13,6 @@ import { Endpoints } from '../../constants/api-endpoints';
 import { CoreSnackbarMessages } from '../../constants/snackbar-messages';
 import { SnackbarService } from '../snackbar/snackbar.service';
 import { StorageService } from '../storage/storage.service';
-import { LoginPromptDialogComponent } from './login-prompt/login-prompt-dialog/login-prompt-dialog.component';
 
 interface SignupRequestBody {
     email: string;
@@ -37,25 +35,27 @@ export class AuthService {
     private readonly _storage = inject(StorageService);
     private readonly _snackbar = inject(SnackbarService);
     private readonly _userService = inject(UserService);
-    private readonly _dialog = inject(MatDialog);
 
     private _refreshRequest$: Observable<unknown> | null = null;
 
     private _me = httpResource<AuthUser>(() => {
         this._userService.updated();
-
-        if (!this.isLoggedIn()) {
-            return;
-        }
-
         return Endpoints.auth.me;
     });
     private _me$ = toObservable(this._me.status);
 
     isLoggedIn = signal(this._storage.hasAccessToken());
-    currentUser = computed(() => this._me.value() ?? null);
+    userProfile = computed(() => (this._me.hasValue() ? this._me.value() : null));
 
     constructor() {
+        effect(() => {
+            if (this.isLoggedIn()) {
+                this._me.reload();
+            } else {
+                this._me.set(undefined);
+            }
+        });
+
         effect(() => {
             if (this._me.error()) {
                 this.isLoggedIn.set(false);
@@ -98,15 +98,14 @@ export class AuthService {
     }
 
     async handleAuthError(error: HttpErrorResponse): Promise<unknown> {
-        const isLoggedIn = this.isLoggedIn();
+        const hasAccessToken = this._storage.getAccessToken();
         const is401 = error.status === HttpStatusCode.Unauthorized;
 
-        if (!isLoggedIn || !is401) {
-            this.promptLogin();
-            throw error;
+        if (hasAccessToken && is401) {
+            return this.refreshAuth();
         }
 
-        return this.refreshAuth();
+        throw error;
     }
 
     async login(username: string, password: string): Promise<void> {
@@ -170,10 +169,5 @@ export class AuthService {
         await firstValueFrom(
             this._http.post(Endpoints.auth.resetPassword, { password: pass, token })
         );
-    }
-
-    async promptLogin() {
-        const dialogRef = this._dialog.open(LoginPromptDialogComponent);
-        return await firstValueFrom(dialogRef.afterClosed());
     }
 }

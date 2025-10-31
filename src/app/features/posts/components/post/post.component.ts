@@ -1,4 +1,5 @@
 import { CommonModule, NgOptimizedImage, TitleCasePipe } from '@angular/common';
+import { HttpErrorResponse } from '@angular/common/http';
 import {
     booleanAttribute,
     Component,
@@ -10,7 +11,8 @@ import {
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatDialog } from '@angular/material/dialog';
-import { filter } from 'rxjs';
+import { filter, firstValueFrom } from 'rxjs';
+import { LoginPromptDialogComponent } from 'src/app/core/services/auth/login-prompt/login-prompt-dialog/login-prompt-dialog.component';
 import { SnackbarService } from 'src/app/core/services/snackbar/snackbar.service';
 import { MaterialModule } from 'src/app/shared/material.module';
 import { PostMenuComponent } from '../../post/post-menu/post-menu.component';
@@ -85,8 +87,12 @@ export class PostComponent {
     async upvote() {
         try {
             await this._postService.upvote(this.post().id);
-        } catch {
-            this._snackbar.error('Failed to upvote', 2000);
+        } catch (error) {
+            if (error instanceof HttpErrorResponse && error.status === 401) {
+                this.promptLogin();
+            } else {
+                this._snackbar.error('Failed to upvote', 2000);
+            }
         }
     }
 
@@ -96,5 +102,10 @@ export class PostComponent {
             isUpvoted: !this.post().isUpvoted,
             upvoteCount: post.isUpvoted ? post.upvoteCount - 1 : post.upvoteCount + 1
         }));
+    }
+
+    async promptLogin() {
+        const dialogRef = this._dialog.open(LoginPromptDialogComponent);
+        return await firstValueFrom(dialogRef.afterClosed());
     }
 }

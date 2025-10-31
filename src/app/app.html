@@ -1,3 +1,27 @@
 <app-shell>
-    <router-outlet />
+    @if (serverReady()) {
+        <router-outlet />
+    } @else if (progress() && progress()! > 3) {
+        <div class="loading-message-container">
+            <img class="mg-center" src="public/ArtShelter.png" width="64" height="64" />
+
+            <h1 class="text-primary">Hello there!</h1>
+
+            <h4>
+                This project is running for free!
+                <br />
+                Unfortunately, that means that the Server shuts down on little usage breaks.
+            </h4>
+
+            <h5>
+                But don't worry, it's booting up for you right now.
+                <br />
+                This might take up to a minute.
+            </h5>
+
+            <mat-progress-bar [value]="progress()" />
+
+            <img class="loading-gif" src="public/loading.gif" width="128" height="128" />
+        </div>
+    }
 </app-shell>
