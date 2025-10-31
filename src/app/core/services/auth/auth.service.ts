@@ -64,15 +64,8 @@ export class AuthService {
         });
     }
 
-    async waitForAuth(): Promise<void> {
-        const currentStatus = this._me.status();
-        const isNotLoading = currentStatus !== 'loading' && currentStatus !== 'reloading';
-
-        if (isNotLoading) {
-            return;
-        }
-
-        await firstValueFrom(
+    async waitForAuth(): Promise<unknown> {
+        return await firstValueFrom(
             this._me$.pipe(
                 filter((status) => status !== 'loading' && status !== 'reloading')
             )
