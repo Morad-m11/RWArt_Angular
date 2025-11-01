@@ -4,9 +4,17 @@ import {
     httpResource,
     HttpStatusCode
 } from '@angular/common/http';
-import { computed, effect, inject, Injectable, signal } from '@angular/core';
+import { computed, inject, Injectable } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
-import { filter, finalize, firstValueFrom, Observable, shareReplay, tap } from 'rxjs';
+import {
+    filter,
+    finalize,
+    firstValueFrom,
+    Observable,
+    shareReplay,
+    take,
+    tap
+} from 'rxjs';
 import { SignInProvider } from 'src/app/features/auth/shared/signin-provider-type';
 import { UserService } from 'src/app/shared/services/user/user.service';
 import { Endpoints } from '../../constants/api-endpoints';
@@ -42,34 +50,17 @@ export class AuthService {
         this._userService.updated();
         return Endpoints.auth.me;
     });
-    private _me$ = toObservable(this._me.status);
 
-    isLoggedIn = signal(this._storage.hasAccessToken());
+    private _authResolved = toObservable(this._me.status).pipe(
+        filter((status) => status !== 'loading' && status !== 'reloading'),
+        take(1)
+    );
+
     userProfile = computed(() => (this._me.hasValue() ? this._me.value() : null));
-
-    constructor() {
-        effect(() => {
-            if (this.isLoggedIn()) {
-                this._me.reload();
-            } else {
-                this._me.set(undefined);
-            }
-        });
-
-        effect(() => {
-            if (this._me.error()) {
-                this.isLoggedIn.set(false);
-                this._storage.clearAccessToken();
-            }
-        });
-    }
+    isLoggedIn = computed(() => this._me.hasValue());
 
     async waitForAuth(): Promise<unknown> {
-        return await firstValueFrom(
-            this._me$.pipe(
-                filter((status) => status !== 'loading' && status !== 'reloading')
-            )
-        );
+        return await firstValueFrom(this._authResolved);
     }
 
     async refreshAuth(): Promise<unknown> {
@@ -110,7 +101,7 @@ export class AuthService {
         );
 
         this._storage.setAccessToken(accessToken);
-        this.isLoggedIn.set(true);
+        this._me.reload();
     }
 
     async thirdPartyLogin(
@@ -128,7 +119,7 @@ export class AuthService {
         );
 
         this._storage.setAccessToken(accessToken);
-        this.isLoggedIn.set(true);
+        this._me.reload();
     }
 
     async logout(opts?: { expired: boolean }): Promise<void> {
@@ -140,8 +131,8 @@ export class AuthService {
             );
         }
 
+        this._me.set(undefined);
         this._storage.clearAccessToken();
-        this.isLoggedIn.set(false);
     }
 
     async signup(body: SignupRequestBody) {
