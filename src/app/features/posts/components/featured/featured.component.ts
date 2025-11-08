@@ -1,5 +1,6 @@
 import { httpResource } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { Endpoints } from 'src/app/core/constants/api-endpoints';
 import { IconTextComponent } from 'src/app/shared/components/icon-text/icon-text.component';
 import { MaterialModule } from 'src/app/shared/material.module';
@@ -9,12 +10,14 @@ import { CarouselComponent } from './carousel/carousel.component';
 @Component({
     selector: 'app-featured',
     standalone: true,
-    imports: [MaterialModule, IconTextComponent, CarouselComponent],
+    imports: [MaterialModule, IconTextComponent, CarouselComponent, RouterLink],
     templateUrl: './featured.component.html',
     styleUrl: './featured.component.scss'
 })
 export class FeaturedComponent {
     private readonly _limit = 3;
+
+    promptClosed = signal(false);
 
     posts = httpResource<Post[]>(
         () => ({
@@ -23,4 +26,8 @@ export class FeaturedComponent {
         }),
         { defaultValue: [] }
     );
+
+    closePromptBox() {
+        this.promptClosed.set(true);
+    }
 }

@@ -10,3 +10,15 @@
 } @else {
     <p class="fx-center fx-align text-primary">Nothing to see here.</p>
 }
+
+@if (!promptClosed()) {
+    <div class="prompt-box-container">
+        <button class="outlined-box prompt" routerLink="/posts/create">
+            <p class="typing">Launch Prompt: "200 years later".</p>
+        </button>
+
+        <button class="outlined-box close" (click)="closePromptBox()">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+}

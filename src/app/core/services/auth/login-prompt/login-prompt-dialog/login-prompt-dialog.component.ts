@@ -1,5 +1,6 @@
 import { Component, inject } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { RouterLink } from '@angular/router';
 import { MaterialModule } from 'src/app/shared/material.module';
 
 @Component({
@@ -10,5 +11,5 @@ import { MaterialModule } from 'src/app/shared/material.module';
     styleUrl: './login-prompt-dialog.component.scss'
 })
 export class LoginPromptDialogComponent {
-    routeUrl = inject(Router).url;
+    data = inject<{ redirect?: string }>(MAT_DIALOG_DATA);
 }

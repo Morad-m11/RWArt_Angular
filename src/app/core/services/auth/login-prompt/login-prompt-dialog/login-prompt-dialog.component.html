@@ -1,13 +1,15 @@
-<span matDialogTitle>Please login first</span>
+<i class="title" matDialogTitle>Not so fast.</i>
+
+<p matDialogContent>I'm going to need to see some identification.</p>
 
 <mat-dialog-actions>
-    <button matButton matDialogClose>Nope</button>
+    <button matButton matDialogClose>Run</button>
     <button
         matButton="filled"
         routerLink="auth/login"
-        [queryParams]="{ redirect: routeUrl }"
+        [queryParams]="data.redirect ? { redirect: data.redirect } : undefined"
         matDialogClose
     >
-        Login
+        Comply
     </button>
 </mat-dialog-actions>

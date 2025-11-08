@@ -87,6 +87,8 @@
     align-items: center;
     justify-content: center;
 
+    background-color: var(--mat-sys-surface);
+
     &:hover {
         background: var(--mat-sys-surface-container-high);
     }

@@ -119,8 +119,11 @@ export class LoginComponent {
     }
 
     private _handleSuccess(): void {
-        this._snackbar.success('Logged in');
-        this._router.navigateByUrl(this.redirectUrl() ?? '/');
+        // horrible hack to wait for loggedIn signal to update
+        setTimeout(() => {
+            this._snackbar.success('Logged in');
+            this._router.navigateByUrl(this.redirectUrl() ?? '/');
+        }, 250);
     }
 
     private _setErrorMessage(error: HttpErrorResponse): void {

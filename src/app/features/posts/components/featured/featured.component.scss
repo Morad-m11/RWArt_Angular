@@ -1,0 +1,77 @@
+@import url(https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap);
+
+$box-delay: 1s;
+$typing-delay: 2s;
+
+.prompt-box-container {
+    z-index: 99;
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+
+    display: flex;
+    column-gap: 0.5rem;
+
+    transform: scale(0);
+    animation: expandBox 0.3s $box-delay forwards;
+}
+
+.outlined-box {
+    background-color: black;
+    border: 2px solid white;
+    border-radius: 12px;
+
+    &:hover {
+        cursor: pointer;
+        border-color: var(--mat-sys-primary);
+        color: var(--mat-sys-primary);
+    }
+}
+
+.prompt {
+    font-family: 'Press Start 2P';
+    font-size: clamp(0.5rem, 2vw, 0.6rem);
+    width: 39em;
+    max-width: 100%;
+    padding: 0 1rem;
+    text-align: start;
+}
+
+.close {
+    padding: 0 0.5rem;
+    aspect-ratio: 1/1;
+}
+
+.typing {
+    font-size: inherit;
+    font-family: inherit;
+    white-space: nowrap;
+    overflow: hidden;
+
+    width: 0;
+    animation: typing 1s steps(30, end) $typing-delay forwards;
+}
+
+@keyframes expandBox {
+    from {
+        transform: translateX(-50%) scale(0);
+    }
+    to {
+        transform: translateX(-50%) scale(1);
+    }
+}
+
+@keyframes disappear {
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes typing {
+    0% {
+        width: 0;
+    }
+    100% {
+        width: 100%;
+    }
+}
