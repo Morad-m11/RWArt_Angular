@@ -7,7 +7,7 @@
         </mat-card-title>
         <mat-card-subtitle>{{ post().title }}</mat-card-subtitle>
 
-        <img matCardAvatar [src]="`assets/${post().author.picture}.svg`" />
+        <img matCardAvatar [src]="`assets/${post().author.picture}.svg`" alt="Profile picture" />
 
         <app-post-menu [post]="post()" class="post-menu" />
     </mat-card-header>

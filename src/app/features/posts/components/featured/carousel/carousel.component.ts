@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, input, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import EmblaCarousel, { EmblaOptionsType } from 'embla-carousel';
 import { MaterialModule } from 'src/app/shared/material.module';
@@ -17,14 +17,14 @@ const OPTIONS: EmblaOptionsType = { loop: true };
     templateUrl: './carousel.component.html',
     styleUrl: './carousel.component.scss'
 })
-export class CarouselComponent {
+export class CarouselComponent implements OnInit {
     posts = input.required<Post[]>();
 
     ngOnInit(): void {
-        const emblaNode = <HTMLElement>document.querySelector('.embla');
-        const viewportNode = <HTMLElement>emblaNode.querySelector('.embla__viewport');
-        const prevBtn = <HTMLElement>emblaNode.querySelector('.embla__button--prev');
-        const nextBtn = <HTMLElement>emblaNode.querySelector('.embla__button--next');
+        const emblaNode = document.querySelector('.embla') as HTMLElement;
+        const viewportNode = emblaNode.querySelector('.embla__viewport') as HTMLElement;
+        const prevBtn = emblaNode.querySelector('.embla__button--prev') as HTMLElement;
+        const nextBtn = emblaNode.querySelector('.embla__button--next') as HTMLElement;
 
         const emblaApi = EmblaCarousel(viewportNode, OPTIONS);
         const removeTweenScale = setupTweenScale(emblaApi);

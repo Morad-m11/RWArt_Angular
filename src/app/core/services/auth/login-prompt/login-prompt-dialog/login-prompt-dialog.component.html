@@ -7,7 +7,7 @@
     <button
         matButton="filled"
         routerLink="auth/login"
-        [queryParams]="data.redirect ? { redirect: data.redirect } : undefined"
+        [queryParams]="data?.redirect ? { redirect: data!.redirect } : undefined"
         matDialogClose
     >
         Comply

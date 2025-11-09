@@ -11,5 +11,5 @@ import { MaterialModule } from 'src/app/shared/material.module';
     styleUrl: './login-prompt-dialog.component.scss'
 })
 export class LoginPromptDialogComponent {
-    data = inject<{ redirect?: string }>(MAT_DIALOG_DATA);
+    data = inject<{ redirect?: string }>(MAT_DIALOG_DATA, { optional: true });
 }

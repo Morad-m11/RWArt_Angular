@@ -79,7 +79,7 @@ export class PostComponent {
         try {
             await this._postService.delete(this.post().id);
             this.deleted.emit();
-        } catch (error) {
+        } catch {
             this._snackbar.error('Failed to delete post', 2000);
         }
     }

@@ -1,9 +1,8 @@
 <div class="container">
-    <!-- width + height empty to get auto sizing -->
-    <img class="img" priority [ngSrc]="data.post.imageId" width="" height="" alt="Post Image" />
-    <app-description showLikes class="description" [post]="data.post" />
+    <img class="img" priority [ngSrc]="data.post.imageId" fill alt="Post Image" />
+    <app-description class="description" [post]="data.post" [showLikes]="false" />
 </div>
 
-<button matIconButton matDialogClose style="position: absolute; top: 5px; right: 5px">
+<button class="close-btn" matIconButton matDialogClose>
     <mat-icon>close</mat-icon>
 </button>

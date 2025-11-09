@@ -3,7 +3,13 @@
         <router-outlet />
     } @else if (progress() && progress()! > 3) {
         <div class="loading-message-container">
-            <img class="mg-center" src="public/ArtShelter.png" width="64" height="64" />
+            <img
+                class="mg-center"
+                src="public/ArtShelter.png"
+                width="64"
+                height="64"
+                alt="App Logo"
+            />
 
             <h1 class="text-primary">Hello there!</h1>
 
@@ -21,7 +27,13 @@
 
             <mat-progress-bar [value]="progress()" />
 
-            <img class="loading-gif" src="public/loading.gif" width="128" height="128" />
+            <img
+                class="loading-gif"
+                src="public/loading.gif"
+                width="128"
+                height="128"
+                alt="Loading GIF"
+            />
         </div>
     }
 </app-shell>

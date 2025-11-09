@@ -18,3 +18,11 @@
     padding: 0 10px 10px;
     overflow: hidden;
 }
+
+.close-btn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+
+    background-color: var(--mat-sys-surface-container-highest);
+}
