@@ -5,7 +5,7 @@ $typing-delay: 2s;
 
 .prompt-box-container {
     z-index: 99;
-    position: absolute;
+    position: fixed;
     bottom: 10px;
     left: 50%;
 
@@ -30,8 +30,8 @@ $typing-delay: 2s;
 
 .prompt {
     font-family: 'Press Start 2P';
-    font-size: clamp(0.5rem, 2vw, 0.6rem);
-    width: 39em;
+    font-size: clamp(0.55rem, 2vw, 0.6rem);
+    width: 34em;
     max-width: 100%;
     padding: 0 1rem;
     text-align: start;

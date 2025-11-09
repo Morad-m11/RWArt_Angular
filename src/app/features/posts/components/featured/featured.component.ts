@@ -16,6 +16,7 @@ import { CarouselComponent } from './carousel/carousel.component';
 })
 export class FeaturedComponent {
     private readonly _limit = 3;
+    readonly prompt = 'Out of Reach';
 
     promptClosed = signal(false);
 
