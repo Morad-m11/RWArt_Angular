@@ -1,80 +1,80 @@
 {
-    "name": "art-shelter",
-    "version": "0.0.1",
-    "scripts": {
-        "ng": "ng",
-        "start": "ng serve -o",
-        "start:staging": "ng serve -o -c staging",
-        "start:prod": "ng serve -o -c production",
-        "build": "ng build",
-        "watch": "ng build --watch --configuration development",
-        "test": "jest",
-        "test:watch": "jest --watch",
-        "lint": "ng lint",
-        "prepare": "husky"
-    },
-    "private": true,
-    "dependencies": {
-        "@angular/cdk": "^20.0.3",
-        "@angular/common": "^20.0.0",
-        "@angular/compiler": "^20.0.0",
-        "@angular/core": "^20.0.0",
-        "@angular/forms": "^20.0.0",
-        "@angular/material": "^20.0.3",
-        "@angular/platform-browser": "^20.0.0",
-        "@angular/router": "^20.0.0",
-        "embla-carousel": "^8.6.0",
-        "rxjs": "~7.8.0",
-        "tslib": "^2.3.0"
-    },
-    "devDependencies": {
-        "@angular/build": "^20.0.2",
-        "@angular/cli": "^17.3.17",
-        "@angular/compiler-cli": "^20.0.0",
-        "@commitlint/cli": "^19.8.1",
-        "@commitlint/config-conventional": "^19.8.1",
-        "@types/jest": "^29.5.14",
-        "angular-eslint": "^20.0.0",
-        "eslint": "^9.28.0",
-        "husky": "^9.1.7",
-        "jest": "^29.7.0",
-        "jest-preset-angular": "^14.6.0",
-        "lint-staged": "^16.1.0",
-        "prettier": "^3.5.3",
-        "typescript": "~5.8.2",
-        "typescript-eslint": "^8.34.0"
-    },
-    "lint-staged": {
-        "**/*.{js,jsx,ts,tsx}": [
-            "eslint --max-warnings=0",
-            "prettier --write"
-        ],
-        "**/*.{html,json,css,scss,md,mdx}": [
-            "prettier -w"
-        ]
-    },
-    "jest": {
-        "preset": "jest-preset-angular",
-        "rootDir": ".",
-        "setupFilesAfterEnv": [
-            "<rootDir>/setup-jest.ts"
-        ],
-        "watchPathIgnorePatterns": [
-            "<rootDir>/dist/",
-            "<rootDir>/coverage/",
-            "<rootDir>/node_modules/"
-        ],
-        "modulePaths": [
-            "<rootDir>"
-        ],
-        "moduleDirectories": [
-            "node_modules",
-            "src"
-        ],
-        "moduleFileExtensions": [
-            "js",
-            "json",
-            "ts"
-        ]
-    }
+  "name": "art-shelter",
+  "version": "0.0.1",
+  "scripts": {
+    "ng": "ng",
+    "start": "ng serve -o",
+    "start:staging": "ng serve -o -c staging",
+    "start:prod": "ng serve -o -c production",
+    "build": "ng build",
+    "watch": "ng build --watch --configuration development",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "lint": "ng lint",
+    "prepare": "husky"
+  },
+  "private": true,
+  "dependencies": {
+    "@angular/cdk": "^20.0.3",
+    "@angular/common": "^20.0.0",
+    "@angular/compiler": "^20.0.0",
+    "@angular/core": "^20.0.0",
+    "@angular/forms": "^20.0.0",
+    "@angular/material": "^20.0.3",
+    "@angular/platform-browser": "^20.0.0",
+    "@angular/router": "^20.0.0",
+    "embla-carousel": "^8.6.0",
+    "rxjs": "~7.8.0",
+    "tslib": "^2.3.0"
+  },
+  "devDependencies": {
+    "@angular/build": "^20.0.2",
+    "@angular/cli": "^18.2.21",
+    "@angular/compiler-cli": "^20.0.0",
+    "@commitlint/cli": "^19.8.1",
+    "@commitlint/config-conventional": "^19.8.1",
+    "@types/jest": "^29.5.14",
+    "angular-eslint": "^20.0.0",
+    "eslint": "^9.28.0",
+    "husky": "^9.1.7",
+    "jest": "^29.7.0",
+    "jest-preset-angular": "^14.6.0",
+    "lint-staged": "^16.1.0",
+    "prettier": "^3.5.3",
+    "typescript": "~5.8.2",
+    "typescript-eslint": "^8.34.0"
+  },
+  "lint-staged": {
+    "**/*.{js,jsx,ts,tsx}": [
+      "eslint --max-warnings=0",
+      "prettier --write"
+    ],
+    "**/*.{html,json,css,scss,md,mdx}": [
+      "prettier -w"
+    ]
+  },
+  "jest": {
+    "preset": "jest-preset-angular",
+    "rootDir": ".",
+    "setupFilesAfterEnv": [
+      "<rootDir>/setup-jest.ts"
+    ],
+    "watchPathIgnorePatterns": [
+      "<rootDir>/dist/",
+      "<rootDir>/coverage/",
+      "<rootDir>/node_modules/"
+    ],
+    "modulePaths": [
+      "<rootDir>"
+    ],
+    "moduleDirectories": [
+      "node_modules",
+      "src"
+    ],
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "ts"
+    ]
+  }
 }
