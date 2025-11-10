@@ -1,0 +1,11 @@
+@if (open()) {
+    <div class="prompt-box-container" animate.enter="box-enter-anim" animate.leave="box-leave-anim">
+        <button class="outlined-box prompt" routerLink="/posts/create">
+            <p class="typing" animate.enter="text-enter-anim">{{ message() }}</p>
+        </button>
+
+        <button class="outlined-box close" (click)="close()">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+}
