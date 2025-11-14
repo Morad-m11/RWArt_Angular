@@ -1,8 +1,36 @@
-<div class="container">
-    <img class="img" priority [ngSrc]="data.post.imageId" fill alt="Post Image" />
-    <app-description class="description" [post]="data.post" [showLikes]="false" />
+<div class="zoom-container">
+    <img
+        priority
+        [ngSrc]="data.post.imageId"
+        fill
+        alt="Post Image"
+        (click)="$event.target.classList.toggle('zoom')"
+    />
 </div>
 
-<button class="close-btn" matIconButton matDialogClose>
-    <mat-icon>close</mat-icon>
-</button>
+<div class="overlay">
+    @let author = data.post.author;
+
+    <div class="fx-row fx-align fx-space">
+        <a
+            class="link user-container"
+            target="_blank"
+            [routerLink]="['/', 'user', author.username]"
+        >
+            <img [src]="`assets/${author.picture}.svg`" alt="Profile picture" />
+            <span>{{ author.username }}</span>
+        </a>
+
+        <button class="close-btn" matIconButton matDialogClose>
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+
+    <div class="title-container">
+        <h5 class="title">{{ data.post.title }}</h5>
+
+        @if (data.post.description) {
+            <span>{{ data.post.description }}</span>
+        }
+    </div>
+</div>
