@@ -1,29 +1,40 @@
 <div class="fx-col fx-gap-1">
-    <div class="search-container" role="search">
+    <form class="search-container" role="form" (submit)="$event.preventDefault(); submit()">
         <mat-icon>search</mat-icon>
-        <input class="input" placeholder="Search for posts..." [formControl]="searchControl" />
+        <input
+            class="input"
+            placeholder="Search for posts..."
+            [formControl]="search"
+            role="search"
+        />
 
-        @if (searchControl.value) {
-            <mat-icon class="clear-btn" (click)="clearSearch()">clear</mat-icon>
-        }
-    </div>
+        <div class="fx-row fx-gap-05 fx-align">
+            @if (search.value) {
+                <mat-icon class="clear-btn" (click)="clearSearch()">clear</mat-icon>
+            }
+
+            <button matIconButton>
+                <mat-icon class="icon-primary">send</mat-icon>
+            </button>
+        </div>
+    </form>
 
     <div class="fx-row fx-space fx-wrap fx-gap-05">
         <div class="fx-row fx-gap-05 fx-wrap">
             @for (filter of filters; track filter.name) {
                 <button
-                    [matButton]="selected()[filter.category] ? 'tonal' : 'outlined'"
+                    [matButton]="selectedTagsMap()[filter.category] ? 'tonal' : 'outlined'"
                     [matMenuTriggerFor]="menu"
                     [matMenuTriggerData]="{ category: filter.category, items: filter.items }"
                 >
                     <mat-icon>{{ filter.icon }}</mat-icon>
-                    <span>{{ selected()[filter.category] || filter.name }}</span>
+                    <span>{{ selectedTagsMap()[filter.category] || filter.name }}</span>
                     <mat-icon iconPositionEnd>expand_more</mat-icon>
                 </button>
             }
         </div>
 
-        @if (hasSelected()) {
+        @if (tags().length > 0) {
             <button matIconButton aria-label="Clear button" (click)="clearAllFilters()">
                 <mat-icon class="icon-primary">delete_outline</mat-icon>
             </button>

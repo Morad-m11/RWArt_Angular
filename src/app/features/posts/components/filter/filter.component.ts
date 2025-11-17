@@ -1,14 +1,5 @@
-import { Component, computed, signal } from '@angular/core';
-import { outputFromObservable, toObservable } from '@angular/core/rxjs-interop';
+import { Component, computed, output, signal } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import {
-    combineLatest,
-    debounceTime,
-    distinctUntilChanged,
-    map,
-    skip,
-    startWith
-} from 'rxjs';
 import { MaterialModule } from 'src/app/shared/material.module';
 import { FILTERS } from 'src/app/shared/rainworld';
 import { Tag, TagCategory } from '../../shared/post.interface';
@@ -28,58 +19,52 @@ export interface FilterChangeEvent {
 export class FilterComponent {
     readonly filters = FILTERS;
 
-    searchControl = new FormControl('', { nonNullable: true });
+    filtered = output<FilterChangeEvent>();
 
-    selected = signal<Partial<Record<TagCategory, string>>>({});
+    search = new FormControl('', { nonNullable: true });
+    tags = signal<Tag[]>([]);
 
-    searchChange = this.searchControl.valueChanges.pipe(
-        map((x) => x.trim().toLowerCase()),
-        startWith('')
+    selectedTagsMap = computed(() =>
+        Object.fromEntries(this.tags().map((s) => [s.category, s.name]))
     );
 
-    tagSelectionChange = toObservable(this.selected).pipe(
-        map((tags) =>
-            Object.entries(tags).map(([key, value]) => ({
-                category: key as TagCategory,
-                name: value
-            }))
-        )
-    );
-
-    filtered = outputFromObservable<FilterChangeEvent>(
-        combineLatest([this.searchChange, this.tagSelectionChange]).pipe(
-            skip(1),
-            debounceTime(500),
-            distinctUntilChanged(stringifyEquals),
-            map(([search, tags]) => ({ search, tags }))
-        )
-    );
-
-    hasSelected = computed(() => Object.keys(this.selected()).length);
-
-    clearSearch() {
-        this.searchControl.reset();
-    }
-
-    selectFilter(category: TagCategory, item: string) {
-        this.selected.update((value) => {
-            value[category] = item;
-            return { ...value };
+    submit() {
+        this.filtered.emit({
+            search: this.search.value,
+            tags: this.tags()
         });
     }
 
+    selectFilter(category: TagCategory, name: string) {
+        this.tags.update((value) => {
+            const existingIndex = value.findIndex((x) => x.category === category);
+
+            if (existingIndex !== -1) {
+                value.splice(existingIndex, 1, { category, name });
+                return [...value];
+            }
+
+            return [...value, { category, name }];
+        });
+    }
+
+    clearSearch() {
+        this.search.reset();
+    }
+
     clearFilter(category: TagCategory) {
-        this.selected.update((value) => {
-            delete value[category];
-            return { ...value };
+        this.tags.update((value) => {
+            const existingIndex = value.findIndex((x) => x.category === category);
+
+            if (existingIndex !== -1) {
+                value.splice(existingIndex, 1);
+            }
+
+            return [...value];
         });
     }
 
     clearAllFilters() {
-        this.selected.set({});
+        this.tags.set([]);
     }
-}
-
-function stringifyEquals<T, R>(a: T, b: R): boolean {
-    return JSON.stringify(a) === JSON.stringify(b);
 }
