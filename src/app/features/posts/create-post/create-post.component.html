@@ -1,54 +1,58 @@
-<h3>Create post</h3>
+<div class="container">
+    <h3>Create post</h3>
 
-<app-image-upload (uploaded)="setImageControl($event)" />
+    <div class="form">
+        <app-image-upload (uploaded)="setImageControl($event)" />
 
-<mat-form-field subscriptSizing="dynamic">
-    <mat-label>Title</mat-label>
-    <mat-icon matPrefix>title</mat-icon>
-    <input #title matInput [formControl]="form.controls.title" />
-    @if (title.value) {
-        <mat-hint>{{`${title.value.length}/${titleMaxLength}`}}</mat-hint>
-    }
-</mat-form-field>
+        <mat-form-field subscriptSizing="dynamic">
+            <mat-label>Title</mat-label>
+            <mat-icon matPrefix>title</mat-icon>
+            <input #title matInput [formControl]="form.controls.title" />
+            @if (title.value) {
+                <mat-hint>{{`${title.value.length}/${titleMaxLength}`}}</mat-hint>
+            }
+        </mat-form-field>
 
-<mat-form-field subscriptSizing="dynamic">
-    <mat-label>Description</mat-label>
-    <mat-icon matPrefix>text_snippet</mat-icon>
-    <textarea #desc matInput [formControl]="form.controls.description"></textarea>
+        <mat-form-field subscriptSizing="dynamic">
+            <mat-label>Description</mat-label>
+            <mat-icon matPrefix>text_snippet</mat-icon>
+            <textarea #desc matInput [formControl]="form.controls.description"></textarea>
 
-    @if (desc.value) {
-        <mat-hint>{{`${desc.value.length}/${descriptionMaxLength}`}}</mat-hint>
-    }
-</mat-form-field>
+            @if (desc.value) {
+                <mat-hint>{{`${desc.value.length}/${descriptionMaxLength}`}}</mat-hint>
+            }
+        </mat-form-field>
 
-@if (tags().length) {
-    <div class="fx-row fx-gap-05">
-        @for (tag of tags(); track tag.name) {
-            <mat-chip>{{ tag.name }}</mat-chip>
+        @if (tags().length) {
+            <div class="fx-row fx-gap-05">
+                @for (tag of tags(); track tag.name) {
+                    <mat-chip>{{ tag.name }}</mat-chip>
+                }
+            </div>
         }
+
+        <div class="fx-row fx-gap-1">
+            <app-icon-text>
+                <button matButton="tonal" (click)="selectTags()">
+                    <mat-icon>new_label</mat-icon>
+                    <span>Add tags</span>
+                </button>
+
+                <small class="text-secondary">Tags will help other users find your content</small>
+            </app-icon-text>
+        </div>
+
+        <div class="fx-row fx-gap-1">
+            <button
+                matButton="filled"
+                [appLoading]="loading()"
+                [disabled]="form.invalid || loading()"
+                (click)="submit()"
+            >
+                <mat-icon>add</mat-icon>
+                Create
+            </button>
+            <a matButton="outlined" routerLink="/terms" target="_blank">Content rules</a>
+        </div>
     </div>
-}
-
-<div class="fx-row fx-gap-1">
-    <app-icon-text>
-        <button matButton="tonal" (click)="selectTags()">
-            <mat-icon>new_label</mat-icon>
-            <span>Add tags</span>
-        </button>
-
-        <small class="text-secondary">Tags will help other users find your content</small>
-    </app-icon-text>
-</div>
-
-<div class="fx-row fx-gap-1">
-    <button
-        matButton="filled"
-        [appLoading]="loading()"
-        [disabled]="form.invalid || loading()"
-        (click)="submit()"
-    >
-        <mat-icon>add</mat-icon>
-        Create
-    </button>
-    <a matButton="outlined" routerLink="/terms" target="_blank">Content rules</a>
 </div>
