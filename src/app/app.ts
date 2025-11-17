@@ -18,8 +18,9 @@ import { RAIN_WORLD } from './shared/rainworld';
 export class App {
     private readonly _iconRegistry = inject(MatIconRegistry);
     private readonly _sanitizer = inject(DomSanitizer);
-
     private readonly _auth = inject(AuthService);
+
+    private readonly estimatedServerWaitTime = 30;
 
     serverReady = toSignal(from(this._auth.waitForAuth()).pipe(map(() => true)));
     progress: Signal<number>;
@@ -30,8 +31,9 @@ export class App {
         this.progress = toSignal(
             interval(100).pipe(
                 map(() => (performance.now() - start) / 1000),
+                takeWhile((time) => time < this.estimatedServerWaitTime),
                 startWith(0),
-                takeWhile((time) => time < 60)
+                map((value) => (value * 100) / this.estimatedServerWaitTime)
             ),
             { requireSync: true }
         );
