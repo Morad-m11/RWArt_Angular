@@ -10,13 +10,14 @@
                     [formControl]="form.controls[tag.category]"
                 >
                     @for (item of tag.items; track $index) {
-                        <mat-chip-option>
+                        <mat-chip-option class="chip">
                             @if (tag.category === 'character') {
                                 <mat-icon matChipAvatar [svgIcon]="item.icon" />
                             } @else {
                                 <mat-icon matChipAvatar>{{ item.icon }}</mat-icon>
                             }
-                            <span>{{ item.name }}</span>
+
+                            <span class="chip-text">{{ item.name }}</span>
                         </mat-chip-option>
                     }
                 </mat-chip-listbox>

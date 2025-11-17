@@ -1,0 +1,14 @@
+.chip {
+    padding: 0.5rem;
+    width: fit-content !important;
+    max-width: 128px !important;
+    overflow: hidden;
+
+    .chip-text {
+        white-space: normal;
+        overflow: hidden;
+        word-wrap: break-word;
+        word-break: break-all;
+        text-align: center;
+    }
+}
