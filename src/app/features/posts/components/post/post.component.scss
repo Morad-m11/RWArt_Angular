@@ -19,11 +19,6 @@
     border-radius: 14px;
 
     cursor: pointer;
-    transition: filter 200ms;
-
-    &:hover {
-        filter: brightness(1.1);
-    }
 }
 
 .img {
