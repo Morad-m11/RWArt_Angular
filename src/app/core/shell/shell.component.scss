@@ -1,3 +1,15 @@
+.page {
+    min-height: calc(100vh + 48px);
+    display: flex;
+    flex-direction: column;
+}
+
+.toolbar {
+    position: sticky;
+    top: 0;
+    z-index: 99;
+}
+
 .home-link {
     all: unset;
     cursor: pointer;
@@ -11,19 +23,18 @@
     flex: 1 1 auto;
 }
 
-.scroll-wrapper {
-    min-height: calc(100vh - 64px);
+.content {
+    flex: 1;
     padding: 16px;
-    overflow-x: hidden;
     box-sizing: border-box;
+    overflow-x: hidden;
 }
 
-footer {
+.footer {
     padding: 1rem;
     display: flex;
     justify-content: center;
     column-gap: 2rem;
-
     background: var(--mat-sys-surface-container-low);
 
     a {

@@ -1,45 +1,47 @@
-<mat-toolbar>
-    <a class="home-link" routerLink="/">
-        <app-icon-text>
-            <img src="public/ArtShelter.png" alt="Logo" width="32" />
-            <span>Art Shelter</span>
-        </app-icon-text>
-    </a>
+<div class="page">
+    <mat-toolbar class="toolbar">
+        <a class="home-link" routerLink="/">
+            <app-icon-text>
+                <img src="public/ArtShelter.png" alt="Logo" width="32" />
+                <span>Art Shelter</span>
+            </app-icon-text>
+        </a>
 
-    <span class="spacer"></span>
+        <span class="spacer"></span>
 
-    <div class="fx-row fx-align" [ngClass]="isHandset() ? 'fx-gap-05' : 'fx-gap-1'">
-        @if (isHandset()) {
-            <a matIconButton routerLink="/feedback" aria-label="Feedback">
-                <mat-icon>chat</mat-icon>
-            </a>
+        <div class="fx-row fx-align" [ngClass]="isHandset() ? 'fx-gap-05' : 'fx-gap-1'">
+            @if (isHandset()) {
+                <a matIconButton routerLink="/feedback" aria-label="Feedback">
+                    <mat-icon>chat</mat-icon>
+                </a>
 
-            <app-profile-button small />
+                <app-profile-button small />
 
-            <a matMiniFab routerLink="/posts/create" aria-label="Create Post">
-                <mat-icon>add</mat-icon>
-            </a>
-        } @else {
-            <a matButton routerLink="/feedback">
-                <mat-icon>chat</mat-icon>
-                <span>Feedback</span>
-            </a>
+                <a matMiniFab routerLink="/posts/create" aria-label="Create Post">
+                    <mat-icon>add</mat-icon>
+                </a>
+            } @else {
+                <a matButton routerLink="/feedback">
+                    <mat-icon>chat</mat-icon>
+                    <span>Feedback</span>
+                </a>
 
-            <app-profile-button />
+                <app-profile-button />
 
-            <a matButton="filled" routerLink="/posts/create">
-                <mat-icon>add</mat-icon>
-                <span>Create</span>
-            </a>
-        }
-    </div>
-</mat-toolbar>
+                <a matButton="filled" routerLink="/posts/create">
+                    <mat-icon>add</mat-icon>
+                    <span>Create</span>
+                </a>
+            }
+        </div>
+    </mat-toolbar>
 
-<div class="scroll-wrapper">
-    <ng-content />
+    <main class="content">
+        <ng-content />
+    </main>
+
+    <footer class="footer">
+        <a routerLink="/privacy">Privacy Policy</a>
+        <a routerLink="/terms">Terms</a>
+    </footer>
 </div>
-
-<footer>
-    <a routerLink="/privacy">Privacy Policy</a>
-    <a routerLink="/terms">Terms</a>
-</footer>
