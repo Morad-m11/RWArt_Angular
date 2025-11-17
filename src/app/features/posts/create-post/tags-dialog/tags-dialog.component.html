@@ -7,6 +7,7 @@
                 <b class="text-primary">{{ tag.category | titlecase }}</b>
                 <mat-chip-listbox
                     class="mat-mdc-chip-set-stacked"
+                    multiple
                     [formControl]="form.controls[tag.category]"
                 >
                     @for (item of tag.items; track $index) {

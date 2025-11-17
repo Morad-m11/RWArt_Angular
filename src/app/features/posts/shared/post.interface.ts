@@ -10,7 +10,7 @@ export interface Post {
     author: { username: string; picture: string };
     title: string;
     description: string;
-    tags: Tag[];
+    tags: string[];
     imageId: string;
     upvoteCount: number;
     isUpvoted: boolean;

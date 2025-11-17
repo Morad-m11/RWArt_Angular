@@ -5,7 +5,7 @@ import { PostCardComponent } from 'src/app/features/posts/components/post-card/p
 import { IconTextComponent } from 'src/app/shared/components/icon-text/icon-text.component';
 import { LoadingDirective } from 'src/app/shared/directives/loading/loading.directive';
 import { MaterialModule } from 'src/app/shared/material.module';
-import { Post, Tag } from '../../shared/post.interface';
+import { Post } from '../../shared/post.interface';
 import { FilterChangeEvent, FilterComponent } from '../filter/filter.component';
 
 @Component({
@@ -25,7 +25,10 @@ export class PostListComponent {
     private readonly _offset = signal(0);
     private readonly _limit = 10;
 
-    filters = signal<{ search?: string; tags?: Tag[] }>({});
+    filters = signal<{ search: string; tags: string[] }>({
+        search: '',
+        tags: []
+    });
 
     postResource = httpResource<Post[]>(
         () => ({
@@ -34,7 +37,7 @@ export class PostListComponent {
                 limit: this._limit,
                 offset: this._offset(),
                 search: this.filters().search ?? '',
-                tags: JSON.stringify(this.filters().tags ?? [])
+                tags: this.filters().tags
             }
         }),
         { defaultValue: [] }

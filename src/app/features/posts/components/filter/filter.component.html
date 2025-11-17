@@ -23,18 +23,25 @@
         <div class="fx-row fx-gap-05 fx-wrap">
             @for (filter of filters; track filter.name) {
                 <button
-                    [matButton]="selectedTagsMap()[filter.category] ? 'tonal' : 'outlined'"
+                    [matButton]="tags()[filter.category] ? 'tonal' : 'outlined'"
                     [matMenuTriggerFor]="menu"
                     [matMenuTriggerData]="{ category: filter.category, items: filter.items }"
                 >
                     <mat-icon>{{ filter.icon }}</mat-icon>
-                    <span>{{ selectedTagsMap()[filter.category] || filter.name }}</span>
+
+                    <span>
+                        @for (tag of tags()[filter.category]; track tag) {
+                            {{ tag }}
+                        } @empty {
+                            {{ filter.name }}
+                        }
+                    </span>
                     <mat-icon iconPositionEnd>expand_more</mat-icon>
                 </button>
             }
         </div>
 
-        @if (tags().length > 0) {
+        @if (hasSelectedTags()) {
             <button matIconButton aria-label="Clear button" (click)="clearAllFilters()">
                 <mat-icon class="icon-primary">delete_outline</mat-icon>
             </button>
@@ -45,7 +52,11 @@
 <mat-menu #menu="matMenu">
     <ng-template matMenuContent let-category="category" let-items="items">
         @for (item of items; track item) {
-            <button mat-menu-item [value]="item" (click)="selectFilter(category, item.name)">
+            <button
+                mat-menu-item
+                [value]="item"
+                (click)="$event.stopPropagation(); selectFilter(category, item.name)"
+            >
                 @if (category === 'character') {
                     <mat-icon [svgIcon]="item.icon" />
                 } @else {

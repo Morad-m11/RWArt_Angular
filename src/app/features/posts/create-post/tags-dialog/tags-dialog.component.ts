@@ -6,10 +6,10 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { map } from 'rxjs';
 import { MaterialModule } from 'src/app/shared/material.module';
 import { FILTERS } from 'src/app/shared/rainworld';
-import { Tag, TagCategory } from '../../shared/post.interface';
+import { TagCategory } from '../../shared/post.interface';
 
 export interface TagsDialogData {
-    selectedTags: Tag[];
+    selectedTags: string[];
 }
 
 @Component({
@@ -25,20 +25,24 @@ export class TagsDialogComponent {
 
     readonly tags = FILTERS;
 
-    form = this._fb.group({
-        type: this.data.selectedTags.find((x) => x.category === 'type')?.name,
-        character: this.data.selectedTags.find((x) => x.category === 'character')?.name,
-        style: this.data.selectedTags.find((x) => x.category === 'style')?.name
+    form = this._fb.nonNullable.group({
+        type: [this.getSelectedItemsForCategory('type')],
+        character: [this.getSelectedItemsForCategory('character')],
+        style: [this.getSelectedItemsForCategory('style')]
     });
 
     tagList = toSignal(this.form.valueChanges.pipe(map(this.formToArray)));
 
-    formToArray(
-        value: typeof this.form.value
-    ): { category: TagCategory; name: string | null }[] {
-        return Object.entries(value).map(([key, value]) => ({
-            category: key as TagCategory,
-            name: value
-        }));
+    formToArray(value: typeof this.form.value): string[] {
+        return Object.values(value).flat() as string[];
+    }
+
+    private getSelectedItemsForCategory(category: TagCategory): string[] {
+        return (
+            FILTERS.find((x) => x.category === category)
+                ?.items.filter((x) => this.data.selectedTags.includes(x.name))
+                .map((x) => x.name)
+                .flat() ?? []
+        );
     }
 }
