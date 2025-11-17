@@ -22,6 +22,7 @@
 
             @if (posts().length < totalPostCount()) {
                 <button
+                    class="fit mg-center"
                     matButton
                     [disabled]="postResource.isLoading()"
                     [appLoading]="postResource.isLoading()"

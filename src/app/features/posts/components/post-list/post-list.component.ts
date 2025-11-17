@@ -64,6 +64,8 @@ export class PostListComponent {
     }
 
     filterPosts(filters: FilterChangeEvent) {
+        this._offset.set(0);
+        this.posts.set([]);
         this.filters.set(filters);
     }
 
