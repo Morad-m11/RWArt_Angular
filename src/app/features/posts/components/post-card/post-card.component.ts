@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, model, output } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { PostComponent } from 'src/app/features/posts/components/post/post.component';
 import { PostMenuComponent } from 'src/app/features/posts/post/post-menu/post-menu.component';
@@ -13,5 +13,6 @@ import { MaterialModule } from 'src/app/shared/material.module';
     styleUrl: './post-card.component.scss'
 })
 export class PostCardComponent {
-    post = input.required<Post>();
+    post = model.required<Post>();
+    deleted = output();
 }

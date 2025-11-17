@@ -14,14 +14,14 @@ import {
     UserProfile,
     UserService
 } from 'src/app/shared/services/user/user.service';
-import { PostComponent } from '../posts/components/post/post.component';
+import { PostCardComponent } from '../posts/components/post-card/post-card.component';
 import { Post } from '../posts/shared/post.interface';
 import { EditDialogComponent, EditDialogData } from './edit-dialog/edit-dialog.component';
 
 @Component({
     selector: 'app-profile',
     standalone: true,
-    imports: [MaterialModule, DatePipe, PostComponent, RouterLink, IconTextComponent],
+    imports: [MaterialModule, DatePipe, RouterLink, IconTextComponent, PostCardComponent],
     templateUrl: './profile.component.html',
     styleUrl: './profile.component.scss'
 })

@@ -67,14 +67,7 @@
 
             @if (posts.hasValue()) {
                 @for (post of posts.value(); track post.id) {
-                    <app-post
-                        showMenu
-                        showDescription
-                        showLikes
-                        [showUsername]="false"
-                        [post]="post"
-                        (deleted)="reloadPosts()"
-                    />
+                    <app-post-card [post]="post" (deleted)="reloadPosts()" />
                 } @empty {
                     @if (value.isSelf) {
                         <button matButton="tonal" routerLink="/posts/create">

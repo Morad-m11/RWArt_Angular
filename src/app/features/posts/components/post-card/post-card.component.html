@@ -5,12 +5,26 @@
                 {{ post().author.username }}
             </a>
         </mat-card-title>
+
         <mat-card-subtitle>{{ post().title }}</mat-card-subtitle>
 
         <img matCardAvatar [src]="`assets/${post().author.picture}.svg`" alt="Profile picture" />
 
-        <app-post-menu [post]="post()" class="post-menu" />
+        <app-post-menu
+            [post]="post()"
+            class="post-menu"
+            (deleteClicked)="postComp.deletePost(); deleted.emit()"
+        />
     </mat-card-header>
 
-    <app-post class="post" showDescription [post]="post()" />
+    <app-post #postComp class="post" [(post)]="post" />
+
+    <button
+        style="position: absolute; bottom: 10px; right: 10px"
+        matButton="tonal"
+        (click)="postComp.upvote()"
+    >
+        <mat-icon>{{ post().isUpvoted ? 'favorite' : 'favorite_outlined' }}</mat-icon>
+        <p>{{ post().upvoteCount }}</p>
+    </button>
 </mat-card>
