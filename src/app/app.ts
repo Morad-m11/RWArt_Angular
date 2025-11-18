@@ -20,7 +20,7 @@ export class App {
     private readonly _sanitizer = inject(DomSanitizer);
     private readonly _auth = inject(AuthService);
 
-    private readonly estimatedServerWaitTime = 30;
+    readonly estimatedServerWaitTime = 40;
 
     serverReady = toSignal(from(this._auth.waitForAuth()).pipe(map(() => true)));
     progress: Signal<number>;
