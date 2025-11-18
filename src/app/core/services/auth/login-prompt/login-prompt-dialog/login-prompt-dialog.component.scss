@@ -1,9 +1,0 @@
-@use '@angular/material' as mat;
-
-.title {
-    @include mat.dialog-overrides(
-        (
-            subhead-color: var(--mat-sys-error)
-        )
-    );
-}

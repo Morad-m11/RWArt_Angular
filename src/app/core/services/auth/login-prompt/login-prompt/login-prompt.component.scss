@@ -1,15 +1,7 @@
-$typing-delay: 1s;
-
 .prompt-box-container {
-    z-index: 99;
-    position: fixed;
-    bottom: 10px;
-    left: 50%;
-
     display: flex;
-    column-gap: 0.5rem;
-
-    transform: translateX(-50%);
+    flex-direction: column;
+    gap: 0.25rem;
 }
 
 .box-enter-anim {
@@ -22,17 +14,55 @@ $typing-delay: 1s;
 
 .text-enter-anim {
     width: 0;
-    animation: typing 1s steps(30, end) $typing-delay forwards;
+    animation: typing 1s steps(30, end) forwards;
+}
+
+.outlined-box {
+    background-color: black;
+    border: 2px solid white;
+    border-radius: 12px;
+
+    &.close:hover {
+        cursor: pointer;
+        border-color: var(--mat-sys-primary);
+        color: var(--mat-sys-primary);
+    }
+}
+
+.prompt {
+    font-family: 'Press Start 2P';
+    font-size: clamp(0.5rem, 1.5vw, 0.6rem);
+    max-width: 100%;
+    padding: 0 1rem;
+    text-align: start;
+}
+
+.close {
+    padding: 0 0.2rem;
+    aspect-ratio: 1/1;
+}
+
+.typing {
+    font-size: inherit;
+    font-family: inherit;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.buttons {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-end;
 }
 
 @keyframes expandBox {
     from {
         opacity: 0;
-        transform: translateX(-50%) scale(0);
+        transform: scale(0);
     }
     to {
         opacity: 1;
-        transform: translateX(-50%) scale(1);
+        transform: scale(1);
     }
 }
 
@@ -43,37 +73,4 @@ $typing-delay: 1s;
     100% {
         width: 100%;
     }
-}
-
-.outlined-box {
-    background-color: black;
-    border: 2px solid white;
-    border-radius: 12px;
-
-    &:hover {
-        cursor: pointer;
-        border-color: var(--mat-sys-primary);
-        color: var(--mat-sys-primary);
-    }
-}
-
-.prompt {
-    font-family: 'Press Start 2P';
-    font-size: clamp(0.5rem, 1.5vw, 0.6rem);
-    width: 37em;
-    max-width: 100%;
-    padding: 0 1rem;
-    text-align: start;
-}
-
-.close {
-    padding: 0 0.5rem;
-    aspect-ratio: 1/1;
-}
-
-.typing {
-    font-size: inherit;
-    font-family: inherit;
-    white-space: nowrap;
-    overflow: hidden;
 }

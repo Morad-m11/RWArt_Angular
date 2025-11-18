@@ -1,0 +1,20 @@
+<div class="prompt-box-container" animate.enter="box-enter-anim" animate.leave="box-leave-anim">
+    <div class="outlined-box prompt">
+        <p class="typing" animate.enter="text-enter-anim">Please identify yourself.</p>
+    </div>
+
+    <div class="buttons">
+        <button class="outlined-box close" (click)="closed.emit()">
+            <mat-icon>close</mat-icon>
+        </button>
+
+        <button
+            class="outlined-box close"
+            routerLink="/auth/login"
+            [queryParams]="redirect ? { redirect } : null"
+            (click)="closed.emit()"
+        >
+            <mat-icon>check</mat-icon>
+        </button>
+    </div>
+</div>

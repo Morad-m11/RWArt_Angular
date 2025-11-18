@@ -1,3 +1,5 @@
+import { Overlay } from '@angular/cdk/overlay';
+import { ComponentPortal } from '@angular/cdk/portal';
 import { CommonModule, NgOptimizedImage, TitleCasePipe } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import {
@@ -11,8 +13,8 @@ import {
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatDialog } from '@angular/material/dialog';
-import { filter, firstValueFrom } from 'rxjs';
-import { LoginPromptDialogComponent } from 'src/app/core/services/auth/login-prompt/login-prompt-dialog/login-prompt-dialog.component';
+import { filter, take } from 'rxjs';
+import { LoginPromptComponent } from 'src/app/core/services/auth/login-prompt/login-prompt/login-prompt.component';
 import { SnackbarService } from 'src/app/core/services/snackbar/snackbar.service';
 import { MaterialModule } from 'src/app/shared/material.module';
 import { PostMenuComponent } from '../../post/post-menu/post-menu.component';
@@ -38,6 +40,7 @@ import { DescriptionComponent } from './description/description.component';
 export class PostComponent {
     private readonly _postService = inject(PostsService);
     private readonly _snackbar = inject(SnackbarService);
+    private readonly _overlay = inject(Overlay);
     private readonly _dialog = inject(MatDialog);
 
     imageLoadWidth = input(400);
@@ -104,8 +107,22 @@ export class PostComponent {
         }));
     }
 
-    async promptLogin() {
-        const dialogRef = this._dialog.open(LoginPromptDialogComponent);
-        return await firstValueFrom(dialogRef.afterClosed());
+    async promptLogin(redirect?: string) {
+        const overlayRef = this._overlay.create({
+            hasBackdrop: true,
+            positionStrategy: this._overlay
+                .position()
+                .global()
+                .centerHorizontally()
+                .centerVertically()
+        });
+        const attached = overlayRef.attach(new ComponentPortal(LoginPromptComponent));
+
+        attached.instance.redirect = redirect;
+        attached.instance.closed.subscribe(() => overlayRef.detach());
+        overlayRef
+            .backdropClick()
+            .pipe(take(1))
+            .subscribe(() => overlayRef.detach());
     }
 }
