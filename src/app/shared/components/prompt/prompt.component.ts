@@ -1,10 +1,8 @@
-import { Component, output, Signal } from '@angular/core';
+import { Component, output, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
 import { delay, filter, finalize, map, merge, take, timer } from 'rxjs';
-
-const LAUNCH_PROMPT = "Launch Prompt: 'Out of Reach'";
 
 const PROMPT_MESSAGES = [
     '...',
@@ -13,9 +11,7 @@ const PROMPT_MESSAGES = [
     '...',
     'I think the rain is approaching.',
     'You should come inside.',
-    "You're safe here.",
-    '...',
-    LAUNCH_PROMPT
+    "You're safe here."
 ];
 
 const FIRST_OPEN_DLEAY = 1000;
@@ -33,11 +29,15 @@ const SEEN_PROMPT_KEY = 'seen_welcome_prompt';
 export class PromptComponent {
     closed = output();
 
-    open: Signal<boolean>;
-    message: Signal<string>;
+    open = signal(false).asReadonly();
+    message = signal('').asReadonly();
 
     constructor() {
-        const prompt = this.getPrompt();
+        if (this.hasSeenPrompt()) {
+            return;
+        }
+
+        const prompts = PROMPT_MESSAGES;
 
         const open$ = timer(FIRST_OPEN_DLEAY, OPEN_EVERY).pipe(map(() => true));
         const close$ = open$.pipe(
@@ -46,14 +46,16 @@ export class PromptComponent {
         );
 
         const openClosed$ = merge(open$, close$).pipe(
-            // count = open + close emits -1, to not close the last one
-            take(prompt.length * 2 - 1)
+            // count = (open + close) - 1
+            // this way the last prompt stays open
+            // this way the last prompt stays open
+            take(prompts.length * 2 - 1)
         );
 
         const message$ = openClosed$.pipe(
             filter(Boolean),
-            take(prompt.length),
-            map((_, idx) => prompt[idx]),
+            take(prompts.length),
+            map((_, idx) => PROMPT_MESSAGES[idx]),
             finalize(() => this.setAsSeen())
         );
 
@@ -64,11 +66,6 @@ export class PromptComponent {
     close(): void {
         this.setAsSeen();
         this.closed.emit();
-    }
-
-    getPrompt(): string[] {
-        const hasSeenMessage = !!localStorage.getItem(SEEN_PROMPT_KEY);
-        return hasSeenMessage ? [LAUNCH_PROMPT] : PROMPT_MESSAGES;
     }
 
     hasSeenPrompt(): boolean {
