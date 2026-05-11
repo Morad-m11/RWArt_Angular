@@ -1,32 +1,18 @@
-<nav
-    class="nav-tab"
-    mat-tab-nav-bar
-    mat-stretch-tabs="false"
-    mat-align-tabs="center"
-    [tabPanel]="tabPanel"
->
-    <a
-        mat-tab-link
-        routerLinkActive
-        #rlaFeatured="routerLinkActive"
-        [active]="rlaFeatured.isActive"
-        routerLink="/featured"
-    >
-        <mat-icon>web_stories</mat-icon>
-        Featured
-    </a>
-    <a
-        mat-tab-link
-        routerLinkActive
-        #rlaPosts="routerLinkActive"
-        [active]="rlaPosts.isActive"
-        routerLink="/posts"
-    >
-        <mat-icon>collections</mat-icon>
-        Posts
-    </a>
-</nav>
+<div ngTabs class="retro-tabs">
+    <div ngTabList selectionMode="follow" selectedTab="featured">
+        <div ngTab value="featured">Featured</div>
+        <div ngTab value="posts">Posts</div>
+    </div>
 
-<mat-tab-nav-panel #tabPanel>
-    <router-outlet />
-</mat-tab-nav-panel>
+    <div ngTabPanel [preserveContent]="true" value="featured">
+        <ng-template ngTabContent>
+            <app-featured />
+        </ng-template>
+    </div>
+
+    <div ngTabPanel [preserveContent]="true" value="posts">
+        <ng-template ngTabContent>
+            <app-post-list />
+        </ng-template>
+    </div>
+</div>

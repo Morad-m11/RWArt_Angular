@@ -1,3 +1,51 @@
-a[mat-tab-link] mat-icon {
-    margin-right: 6px;
+:host {
+    display: flex;
+    justify-content: center;
+    font-size: 0.8rem;
+    font-family: 'Press Start 2P';
+}
+
+[ngTabs] {
+    width: 600px;
+}
+
+[ngTabList] {
+    gap: 1rem;
+    display: flex;
+    justify-content: center;
+}
+
+[ngTab] {
+    width: 100px;
+    padding: 0.6rem;
+    cursor: pointer;
+    text-align: center;
+    outline: 2px solid gainsboro;
+    border-radius: 10px;
+
+    &[aria-selected='true'] {
+        outline: double 8px gainsboro;
+        outline-offset: -2px;
+    }
+
+    &:focus,
+    &:hover {
+        outline-color: white;
+    }
+}
+
+[ngTabPanel] {
+    padding: 1rem;
+    margin-top: 1rem;
+    min-height: 100px;
+    display: flex;
+    justify-content: center;
+
+    &:focus {
+        outline: none;
+    }
+
+    &[inert] {
+        display: none;
+    }
 }
