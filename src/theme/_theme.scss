@@ -49,8 +49,12 @@ $colors: primary, secondary, tertiary, error;
 }
 
 .dialog-outlined {
-    border-radius: var(--mat-sys-corner-extra-large);
-    outline: 1px solid var(--mat-sys-outline);
+    border-radius: 14px;
+    outline: 2px solid gainsboro;
+    background-color: black;
+
+    scale: 1;
+    transition: scale 1s;
 }
 
 .snackbar-success {

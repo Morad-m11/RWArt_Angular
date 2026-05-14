@@ -1,5 +1,56 @@
 <div class="page">
-    <mat-toolbar class="toolbar">
+    <div style="display: flex; justify-content: space-between">
+        <a class="link home-link" routerLink="/">
+            <app-icon-text>
+                <img src="public/ArtShelter.png" alt="Logo" width="32" />
+                <span>Art Shelter</span>
+            </app-icon-text>
+        </a>
+
+        <div
+            style="
+                margin: 10px;
+                display: flex;
+                justify-content: flex-start;
+                flex-direction: column;
+                gap: 1rem;
+            "
+        >
+            <button
+                class="button"
+                #origin="cdkOverlayOrigin"
+                cdkOverlayOrigin
+                (click)="isOpen = !isOpen"
+            >
+                Feedback
+            </button>
+            <button routerLink="/create" class="button">Create Post</button>
+        </div>
+
+        <ng-template
+            cdkConnectedOverlay
+            [cdkConnectedOverlayOrigin]="origin"
+            [cdkConnectedOverlayOpen]="isOpen"
+            cdkConnectedOverlayWidth="250px"
+            cdkConnectedOverlayPanelClass="dialog-outlined"
+            cdkConnectedOverlayBackdropClass="transparent"
+            (detach)="isOpen = false"
+        >
+            <div class="feedback-overlay">
+                <textarea
+                    appTyping
+                    breakAfterSentences
+                    placeholder="Have an idea? Any issues? Let me know"
+                    class="textarea"
+                ></textarea>
+                <button class="button" style="font-size: 0.5rem; text-align: start">
+                    Send feedback
+                </button>
+            </div>
+        </ng-template>
+    </div>
+
+    <!-- <mat-toolbar class="toolbar">
         <a class="home-link" routerLink="/">
             <app-icon-text>
                 <img src="public/ArtShelter.png" alt="Logo" width="32" />
@@ -34,7 +85,7 @@
                 </a>
             }
         </div>
-    </mat-toolbar>
+    </mat-toolbar> -->
 
     <main class="content">
         <ng-content />

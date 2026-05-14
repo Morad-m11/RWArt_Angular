@@ -38,6 +38,10 @@ export class CreatePostComponent {
     readonly titleMaxLength = 100;
     readonly descriptionMaxLength = 200;
 
+    constructor() {
+        console.log('WTF');
+    }
+
     form = this._fb.nonNullable.group({
         title: ['', [Validators.required, Validators.maxLength(this.titleMaxLength)]],
         description: ['', [Validators.maxLength(this.descriptionMaxLength)]],

@@ -21,6 +21,7 @@
     cursor: pointer;
     text-align: center;
     outline: 2px solid gainsboro;
+    background-color: rgba(black, 0.8);
     border-radius: 10px;
 
     &[aria-selected='true'] {
