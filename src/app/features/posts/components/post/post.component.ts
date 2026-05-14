@@ -9,6 +9,7 @@ import {
     inject,
     input,
     model,
+    numberAttribute,
     output
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -44,7 +45,7 @@ export class PostComponent {
     private readonly _dialog = inject(MatDialog);
 
     imageLoadWidth = input(400);
-    imageLoadHeight = input(500);
+    imageLoadHeight = input(500, { transform: numberAttribute });
     showTags = input(false, { transform: booleanAttribute });
     showMenu = input(false, { transform: booleanAttribute });
     showLikes = input(true, { transform: booleanAttribute });

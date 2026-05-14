@@ -5,6 +5,7 @@
 }
 
 .toolbar {
+    background: rgba(black, 0.5);
     position: sticky;
     top: 0;
     z-index: 99;
@@ -24,10 +25,20 @@
 }
 
 .content {
+    position: relative;
     flex: 1;
     padding: 16px;
     box-sizing: border-box;
     overflow-x: hidden;
+
+    .image-credit {
+        position: absolute;
+        bottom: 20px;
+        left: 20px;
+        background-color: rgba(0, 0, 0, 0.6) !important;
+        border-radius: 14px;
+        padding: 10px;
+    }
 }
 
 .footer {

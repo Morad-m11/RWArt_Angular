@@ -1,0 +1,55 @@
+:host {
+    padding: 3rem;
+    margin-top: 1rem;
+
+    outline: 6px double gainsboro;
+    corner-shape: scoop;
+    border-radius: 18px;
+    background-color: rgba(black, 0.8);
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 3rem;
+}
+
+.post {
+    width: 300px;
+
+    outline: 3px solid gainsboro;
+    border-radius: 10px;
+    outline-offset: 8px;
+    overflow: hidden;
+
+    transition: outline 100ms ease-out;
+
+    .author-text {
+        position: absolute;
+        bottom: 10px;
+        left: 10px;
+        transform: translateY(200%);
+        transition: transform 0.1s ease-out;
+    }
+
+    &::before {
+        position: absolute;
+        inset: 0;
+
+        background: rgba(255, 0, 0, 0.5); /* semi-transparent red */
+
+        z-index: -2;
+    }
+
+    &:hover,
+    &:focus-within {
+        outline-style: double;
+        outline-width: 8px;
+        outline-offset: 10px;
+        border-radius: 10px;
+
+        .author-text {
+            transform: translateY(0);
+        }
+    }
+}

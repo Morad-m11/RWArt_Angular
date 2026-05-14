@@ -5,12 +5,12 @@ import { IconTextComponent } from 'src/app/shared/components/icon-text/icon-text
 import { PromptComponent } from 'src/app/shared/components/prompt/prompt.component';
 import { MaterialModule } from 'src/app/shared/material.module';
 import { Post } from '../../shared/post.interface';
-import { CarouselComponent } from './carousel/carousel.component';
+import { PostComponent } from '../post/post.component';
 
 @Component({
     selector: 'app-featured',
     standalone: true,
-    imports: [MaterialModule, IconTextComponent, CarouselComponent, PromptComponent],
+    imports: [MaterialModule, IconTextComponent, PromptComponent, PostComponent],
     templateUrl: './featured.component.html',
     styleUrl: './featured.component.scss'
 })

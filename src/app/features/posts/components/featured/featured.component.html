@@ -6,7 +6,16 @@
         <button matButton (click)="posts.reload()">Retry</button>
     </app-icon-text>
 } @else if (posts.hasValue() && posts.value().length) {
-    <app-carousel [posts]="posts.value()" />
+    <div role="grid" class="grid">
+        @for (post of posts.value(); track post.id) {
+            <div class="post" style="position: relative">
+                <app-post [post]="post" />
+                <span class="author-text">
+                    {{ post.author.username }}
+                </span>
+            </div>
+        }
+    </div>
 } @else {
     <p class="fx-center fx-align text-primary">Nothing to see here.</p>
 }
