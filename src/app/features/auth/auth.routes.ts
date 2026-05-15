@@ -16,7 +16,11 @@ export default [
         component: AuthShellComponent,
         canMatch: [authRoutesGuard],
         children: [
-            { path: '', pathMatch: 'full', redirectTo: 'login' },
+            {
+                path: '',
+                pathMatch: 'full',
+                redirectTo: 'login'
+            },
             {
                 path: 'login',
                 component: LoginComponent,

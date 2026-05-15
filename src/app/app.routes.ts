@@ -14,13 +14,14 @@ export const routes: Routes = [
         redirectTo: 'posts'
     },
     {
-        path: 'posts',
-        component: PostsComponent
-    },
-    {
         path: 'auth',
         loadChildren: () => import('./features/auth/auth.routes')
     },
+    {
+        path: 'posts',
+        component: PostsComponent
+    },
+    ...postRoutes,
     {
         path: 'user/:username',
         loadComponent: () => import('./features/profile/profile.component'),
@@ -42,6 +43,5 @@ export const routes: Routes = [
         path: '**',
         pathMatch: 'full',
         component: NotFoundComponent
-    },
-    ...postRoutes
+    }
 ];

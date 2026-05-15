@@ -12,10 +12,20 @@
 
     background-color: rgba(black, 0.8);
     border-radius: 10px;
-    outline: 2px solid gainsboro;
+    border: 3px solid gainsboro;
 
     &:hover {
-        outline-color: white;
+        border-color: white;
+    }
+
+    &[disabled] {
+        cursor: default;
+        border-color: grey;
+    }
+
+    &.success {
+        border-color: green;
+        color: green;
     }
 }
 

@@ -15,17 +15,11 @@ import { PostComponent } from '../post/post.component';
     styleUrl: './featured.component.scss'
 })
 export class FeaturedComponent {
-    private readonly _limit = 3;
-
     promptClosed = signal(false);
 
-    posts = httpResource<Post[]>(
-        () => ({
-            url: Endpoints.post.featured,
-            params: { limit: this._limit }
-        }),
-        { defaultValue: [] }
-    );
+    posts = httpResource<Post[]>(() => Endpoints.post.featured, {
+        defaultValue: []
+    });
 
     closePromptBox() {
         this.promptClosed.set(true);

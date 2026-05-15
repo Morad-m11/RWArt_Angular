@@ -1,12 +1,13 @@
 :host {
+    width: 100%;
+    font-size: 0.8rem;
+
     display: flex;
     justify-content: center;
-    font-size: 0.8rem;
-    font-family: 'Press Start 2P';
 }
 
 [ngTabs] {
-    width: 600px;
+    width: 1200px;
 }
 
 [ngTabList] {
@@ -37,10 +38,11 @@
 
 [ngTabPanel] {
     padding: 1rem;
-    margin-top: 1rem;
     min-height: 100px;
     display: flex;
     justify-content: center;
+    width: 100%;
+    box-sizing: border-box;
 
     &:focus {
         outline: none;
@@ -49,4 +51,48 @@
     &[inert] {
         display: none;
     }
+}
+
+.search-box {
+    margin: 0 auto;
+    padding: 0.4rem;
+    width: 400px;
+    height: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    row-gap: 1rem;
+
+    overflow: hidden;
+    border: 2px solid gainsboro;
+    background-color: black;
+    border-radius: 14px;
+
+    transition: all 200ms ease-out;
+
+    &:hover,
+    &:focus-within {
+        border-color: white;
+    }
+
+    &:focus-within {
+        height: 4.4rem;
+    }
+}
+
+.search-input {
+    width: 100%;
+    font-size: 0.75em;
+    padding: 0.5rem 0.3rem;
+    background: none;
+    outline: none;
+    border: none;
+}
+
+.button {
+    cursor: pointer;
+    font-size: small;
+    padding: 0.3rem;
+    border: 2px solid gainsboro;
+    border-radius: 10px;
+    background-color: black;
 }

@@ -1,8 +1,11 @@
 :host {
+    width: 80vw;
+    max-width: 1200px;
+
     padding: 3rem;
     margin-top: 1rem;
 
-    outline: 6px double gainsboro;
+    border: 8px double gainsboro;
     corner-shape: scoop;
     border-radius: 18px;
     background-color: rgba(black, 0.8);
@@ -10,14 +13,12 @@
 
 .grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     gap: 3rem;
 }
 
 .post {
-    width: 300px;
-
-    outline: 3px solid gainsboro;
+    outline: 2px solid gainsboro;
     border-radius: 10px;
     outline-offset: 8px;
     overflow: hidden;

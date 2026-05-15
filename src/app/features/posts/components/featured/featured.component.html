@@ -6,6 +6,8 @@
         <button matButton (click)="posts.reload()">Retry</button>
     </app-icon-text>
 } @else if (posts.hasValue() && posts.value().length) {
+    <!-- <app-carousel [posts]="posts.value()" /> -->
+
     <div role="grid" class="grid">
         @for (post of posts.value(); track post.id) {
             <div class="post" style="position: relative">

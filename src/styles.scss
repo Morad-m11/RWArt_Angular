@@ -5,8 +5,14 @@ body {
 
 body {
     margin: 0;
-    font-family: 'Press Start 2P', 'Helvetica Neue', sans-serif;
     background: center / cover no-repeat url('assets/background.png');
+}
+
+body,
+input,
+select,
+button {
+    font-family: 'Press Start 2P', 'Helvetica Neue', sans-serif;
 }
 
 .link {

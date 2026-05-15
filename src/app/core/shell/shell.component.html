@@ -38,13 +38,20 @@
         >
             <div class="feedback-overlay">
                 <textarea
+                    [(ngModel)]="feedback"
                     appTyping
                     breakAfterSentences
                     placeholder="Have an idea? Any issues? Let me know"
                     class="textarea"
                 ></textarea>
-                <button class="button" style="font-size: 0.5rem; text-align: start">
-                    Send feedback
+                <button
+                    class="button"
+                    [class.success]="sentFeedback()"
+                    style="font-size: 0.5rem; text-align: start"
+                    [disabled]="feedback.length < 5 || loading()"
+                    (click)="sendFeedback()"
+                >
+                    {{ sendButtonText() }}
                 </button>
             </div>
         </ng-template>
