@@ -1,0 +1,23 @@
+<search title="Posts" class="search-box">
+    <app-icon-text style="width: 100%">
+        <input
+            #input
+            class="search-input"
+            type="search"
+            appTyping
+            placeholder="What are you looking for little one?"
+            (keydown.enter)="submit(input.value)"
+        />
+        <mat-icon>search</mat-icon>
+    </app-icon-text>
+</search>
+
+<div class="filters" role="list">
+    @for (option of options; track option.name) {
+        <app-select [name]="option.name" [options]="option.items" />
+    }
+</div>
+
+@if (submitted()) {
+    <app-post-list class="post-list" [filters]="filters()" />
+}

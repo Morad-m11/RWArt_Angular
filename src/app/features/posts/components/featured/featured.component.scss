@@ -3,7 +3,6 @@
     max-width: 1200px;
 
     padding: 3rem;
-    margin-top: 1rem;
 
     border: 8px double gainsboro;
     corner-shape: scoop;
@@ -31,15 +30,6 @@
         left: 10px;
         transform: translateY(200%);
         transition: transform 0.1s ease-out;
-    }
-
-    &::before {
-        position: absolute;
-        inset: 0;
-
-        background: rgba(255, 0, 0, 0.5); /* semi-transparent red */
-
-        z-index: -2;
     }
 
     &:hover,

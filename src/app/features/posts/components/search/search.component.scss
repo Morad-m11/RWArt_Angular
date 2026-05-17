@@ -1,0 +1,66 @@
+:host {
+    width: min(800px, 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1.5rem;
+}
+
+.search-box {
+    padding: 0.4rem;
+    margin: 0 auto;
+    height: 1.5rem;
+    width: clamp(200px, 400px, 100%);
+    display: flex;
+    flex-direction: column;
+
+    overflow: hidden;
+    border: 2px solid gainsboro;
+    background-color: black;
+    border-radius: 14px;
+
+    transition: all 200ms ease-out;
+
+    &:hover,
+    &:focus-within {
+        border-color: white;
+    }
+}
+
+.search-input {
+    width: 100%;
+    font-size: 0.75em;
+    padding: 0.5rem 0.3rem;
+    background: none;
+    outline: none;
+    border: none;
+}
+
+.filters {
+    margin: 0 auto;
+    max-width: 600px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    font-size: 0.7rem;
+    gap: 1rem;
+
+    > * {
+        flex: 1;
+    }
+}
+
+.post-list {
+    padding: 2rem;
+
+    opacity: 0;
+    transform: scaleX(0);
+    animation: expand-x 0.4s forwards;
+}
+
+@keyframes expand-x {
+    to {
+        opacity: 1;
+        transform: scaleX(1);
+    }
+}

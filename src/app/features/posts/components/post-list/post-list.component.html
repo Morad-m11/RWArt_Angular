@@ -1,36 +1,30 @@
-<div class="container">
-    <app-filter class="filter" (filtered)="filterPosts($event)" />
+@if (postResource.isLoading()) {
+    <mat-spinner />
+}
 
-    <div class="fx-col fx-gap-2">
-        @if (postResource.isLoading()) {
-            <mat-spinner />
-        }
+@if (postResource.error()) {
+    <app-icon-text>
+        <p class="text-error">Failed to fetch posts</p>
+        <button matButton (click)="postResource.reload()">Retry</button>
+    </app-icon-text>
+}
 
-        @if (postResource.error()) {
-            <app-icon-text>
-                <p class="text-error">Failed to fetch posts</p>
-                <button matButton (click)="postResource.reload()">Retry</button>
-            </app-icon-text>
-        }
+@if (postResource.hasValue()) {
+    @for (post of posts(); track post.id) {
+        <app-post class="post" [post]="post" />
+    } @empty {
+        <p class="fx-center text-primary">Nothing found.</p>
+    }
 
-        @if (postResource.hasValue()) {
-            @for (post of posts(); track post.id) {
-                <app-post-card [post]="post" />
-            } @empty {
-                <p class="fx-center text-primary">Could not find any posts.</p>
-            }
-
-            @if (posts().length < totalPostCount()) {
-                <button
-                    class="fit mg-center"
-                    matButton
-                    [disabled]="postResource.isLoading()"
-                    [appLoading]="postResource.isLoading()"
-                    (click)="loadMorePosts()"
-                >
-                    Load more
-                </button>
-            }
-        }
-    </div>
-</div>
+    @if (posts().length < totalPostCount()) {
+        <button
+            class="fit mg-center"
+            matButton
+            [disabled]="postResource.isLoading()"
+            [appLoading]="postResource.isLoading()"
+            (click)="loadMorePosts()"
+        >
+            Load more
+        </button>
+    }
+}

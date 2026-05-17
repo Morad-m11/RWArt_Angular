@@ -19,33 +19,7 @@
 
     <div ngTabPanel value="search">
         <ng-template ngTabContent>
-            <div style="width: 100%; margin-top: 1rem">
-                <search title="Posts" class="search-box" (submit)="search('asda')">
-                    <app-icon-text style="width: 100%">
-                        <input
-                            #input
-                            class="search-input"
-                            type="search"
-                            appTyping
-                            placeholder="What are you looking for little one?"
-                            (keydown.enter)="search(input.value)"
-                        />
-                        <mat-icon>search</mat-icon>
-                    </app-icon-text>
-
-                    <div role="group" style="display: flex; justify-content: space-evenly">
-                        <select class="button">
-                            <option value="Type">Type</option>
-                        </select>
-                        <select class="button">
-                            <option value="Character">Character</option>
-                        </select>
-                        <select class="button">
-                            <option value="Style">Style</option>
-                        </select>
-                    </div>
-                </search>
-            </div>
+            <app-search />
         </ng-template>
     </div>
 </div>

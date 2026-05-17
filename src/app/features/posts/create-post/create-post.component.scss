@@ -1,7 +1,13 @@
 .container {
     margin: 0 auto;
+    padding: 3rem;
     width: 400px;
     max-width: 100%;
+
+    border: 8px double gainsboro;
+    corner-shape: scoop;
+    border-radius: 18px;
+    background-color: rgba(black, 0.8);
 }
 
 .form {

@@ -1,0 +1,47 @@
+<div ngCombobox readonly>
+    <div #origin class="select">
+        <span class="combobox-label" [class.selected]="displayValue() !== name()">
+            @if (displayIcon()) {
+                @if (name() === 'Character') {
+                    <mat-icon class="selected-label-icon" [svgIcon]="displayIcon()" />
+                } @else {
+                    <mat-icon class="selected-label-icon">{{ displayIcon() }}</mat-icon>
+                }
+            }
+            <span>{{ displayValue() }}</span>
+        </span>
+
+        <input aria-label="Label dropdown" [placeholder]="name()" ngComboboxInput />
+
+        <mat-icon class="example-arrow">arrow_drop_down</mat-icon>
+    </div>
+
+    <ng-template ngComboboxPopupContainer>
+        <ng-template
+            [cdkConnectedOverlay]="{ origin, usePopover: 'inline', matchWidth: true }"
+            [cdkConnectedOverlayOpen]="true"
+        >
+            <div class="example-popup-container">
+                <div ngListbox>
+                    @for (option of options(); track option.name) {
+                        <div ngOption [value]="option.name" [label]="option.name">
+                            @if (name() === 'Character') {
+                                <mat-icon class="example-option-icon" [svgIcon]="option.icon" />
+                            } @else {
+                                <mat-icon class="example-option-icon">{{ option.icon }}</mat-icon>
+                            }
+
+                            <span class="example-option-text">{{ option.name }}</span>
+
+                            <mat-icon class="example-option-check">check</mat-icon>
+                        </div>
+                    }
+
+                    <div ngOption [value]="name()" [label]="name()">
+                        <span class="example-option-text">{{ name() }}</span>
+                    </div>
+                </div>
+            </div>
+        </ng-template>
+    </ng-template>
+</div>

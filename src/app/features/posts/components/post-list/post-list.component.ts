@@ -1,34 +1,29 @@
 import { httpResource } from '@angular/common/http';
-import { Component, computed, linkedSignal, signal } from '@angular/core';
+import { Component, computed, input, linkedSignal, signal } from '@angular/core';
 import { Endpoints } from 'src/app/core/constants/api-endpoints';
-import { PostCardComponent } from 'src/app/features/posts/components/post-card/post-card.component';
 import { IconTextComponent } from 'src/app/shared/components/icon-text/icon-text.component';
 import { LoadingDirective } from 'src/app/shared/directives/loading/loading.directive';
 import { MaterialModule } from 'src/app/shared/material.module';
 import { Post } from '../../shared/post.interface';
-import { FilterChangeEvent, FilterComponent } from '../filter/filter.component';
+import { PostComponent } from '../post/post.component';
 
 @Component({
     selector: 'app-post-list',
     standalone: true,
-    imports: [
-        MaterialModule,
-        LoadingDirective,
-        IconTextComponent,
-        FilterComponent,
-        PostCardComponent
-    ],
+    imports: [MaterialModule, LoadingDirective, IconTextComponent, PostComponent],
     templateUrl: './post-list.component.html',
     styleUrl: './post-list.component.scss'
 })
 export class PostListComponent {
-    private readonly _offset = signal(0);
-    private readonly _limit = 10;
-
-    filters = signal<{ search: string; tags: string[] }>({
+    filters = input<{ search: string; tags: string[] }>({
         search: '',
         tags: []
     });
+
+    private readonly _offset = signal(0);
+    private readonly _limit = 10;
+
+    fetchedFirstPosts = computed(() => this.postResource.status() == 'resolved');
 
     postResource = httpResource<Post[]>(
         () => ({
@@ -64,12 +59,6 @@ export class PostListComponent {
 
     refresh() {
         this.postResource.reload();
-    }
-
-    filterPosts(filters: FilterChangeEvent) {
-        this._offset.set(0);
-        this.posts.set([]);
-        this.filters.set(filters);
     }
 
     loadMorePosts() {

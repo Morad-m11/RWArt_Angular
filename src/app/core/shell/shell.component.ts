@@ -9,8 +9,8 @@ import { RouterLink } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { IconTextComponent } from 'src/app/shared/components/icon-text/icon-text.component';
+import { TypingDirective } from 'src/app/shared/directives/typing/typing.directive';
 import { MaterialModule } from 'src/app/shared/material.module';
-import { TypingDirective } from 'src/app/typing.directive';
 import { Endpoints } from '../constants/api-endpoints';
 
 @Component({

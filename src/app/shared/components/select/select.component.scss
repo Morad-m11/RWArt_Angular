@@ -1,0 +1,133 @@
+.select {
+    display: flex;
+    position: relative;
+    align-items: center;
+    min-width: 175px;
+    background-color: black;
+    border-radius: 10px;
+    border: 2px solid gainsboro;
+
+    &:hover {
+        border-color: white;
+    }
+}
+
+.selected-label-icon {
+    padding-left: 0.5em;
+    font-size: 1.25rem;
+}
+
+[ngComboboxInput] {
+    cursor: pointer;
+    height: 2.5em;
+    width: 100%;
+    opacity: 0;
+    border: none;
+}
+
+[ngCombobox]:focus-within .select {
+    outline: 2px solid white;
+}
+
+.combobox-label {
+    pointer-events: none;
+    position: absolute;
+    left: 0.5em;
+    display: flex;
+    align-items: center;
+    gap: 1em;
+
+    &.selected {
+        color: indianred;
+    }
+}
+
+.example-arrow {
+    pointer-events: none;
+    position: absolute;
+    right: 0.4em;
+    transition: transform 150ms ease-in-out;
+}
+
+[ngComboboxInput][aria-expanded='true'] ~ .example-arrow {
+    transform: rotate(180deg);
+}
+
+.example-popup-container {
+    font-size: 0.9em;
+    padding: 0.5rem;
+    margin-top: 8px;
+    max-height: 13rem;
+    width: 100%;
+    opacity: 1;
+    visibility: visible;
+
+    border: 2px solid gainsboro;
+    border-radius: 0.5rem;
+    background-color: black;
+
+    transition:
+        max-height 150ms ease-out,
+        visibility 0s,
+        opacity 25ms ease-out;
+}
+
+[ngListbox] {
+    gap: 2px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+[ngCombobox]:has([ngComboboxInput][aria-expanded='false']) .example-popup-container {
+    max-height: 0;
+    opacity: 0;
+    visibility: hidden;
+    transition:
+        max-height 150ms ease-in,
+        visibility 0s 150ms,
+        opacity 150ms ease-in;
+}
+
+[ngCombobox]:has([ngComboboxInput][aria-expanded='true']) [ngListbox] {
+    display: flex;
+}
+
+[ngOption] {
+    display: flex;
+    cursor: pointer;
+    align-items: center;
+    margin: 1px;
+    padding: 0 1rem;
+    min-height: 2.25rem;
+    border-radius: 0.5rem;
+
+    &:hover {
+        outline: 2px solid gainsboro;
+    }
+
+    &[data-active='true'] {
+        outline-offset: -2px;
+        outline: 2px solid indianred;
+    }
+
+    &[aria-selected='true'] {
+        color: indianred;
+    }
+}
+
+.example-option-icon {
+    padding-right: 1rem;
+}
+
+[ngOption]:not([aria-selected='true']) .example-option-check {
+    display: none;
+}
+
+.example-option-check {
+    scale: 0.6;
+}
+
+.example-option-text {
+    flex: 1;
+}
