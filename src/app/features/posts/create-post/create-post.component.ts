@@ -7,6 +7,7 @@ import { Router, RouterLink } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 import { SnackbarService } from 'src/app/core/services/snackbar/snackbar.service';
 import { IconTextComponent } from 'src/app/shared/components/icon-text/icon-text.component';
+import { RWBoxComponent } from 'src/app/shared/components/rw-box/rw-box.component';
 import { LoadingDirective } from 'src/app/shared/directives/loading/loading.directive';
 import { MaterialModule } from 'src/app/shared/material.module';
 import { PostsService } from '../services/posts.service';
@@ -23,7 +24,8 @@ import { TagsDialogComponent } from './tags-dialog/tags-dialog.component';
         ImageUploadComponent,
         LoadingDirective,
         IconTextComponent,
-        RouterLink
+        RouterLink,
+        RWBoxComponent
     ],
     templateUrl: './create-post.component.html',
     styleUrl: './create-post.component.scss'

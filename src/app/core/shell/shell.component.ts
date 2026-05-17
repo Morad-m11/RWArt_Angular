@@ -9,6 +9,7 @@ import { RouterLink } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { IconTextComponent } from 'src/app/shared/components/icon-text/icon-text.component';
+import { ProfileButtonComponent } from 'src/app/shared/components/profile-button/profile-button.component';
 import { TypingDirective } from 'src/app/shared/directives/typing/typing.directive';
 import { MaterialModule } from 'src/app/shared/material.module';
 import { Endpoints } from '../constants/api-endpoints';
@@ -24,18 +25,20 @@ import { Endpoints } from '../constants/api-endpoints';
         OverlayModule,
         MatInputModule,
         TypingDirective,
-        FormsModule
+        FormsModule,
+        ProfileButtonComponent
     ]
 })
 export class ShellComponent {
     private readonly _http = inject(HttpClient);
+    private readonly _breakpointObserver = inject(BreakpointObserver);
 
-    feedback = '';
+    isHandset = toSignal(
+        this._breakpointObserver
+            .observe(Breakpoints.XSmall)
+            .pipe(map((result) => result.matches))
+    );
 
-    loading = signal(false);
-
-    errorCode = signal<number | null>(null);
-    sentFeedback = signal(false);
     sendButtonText = computed(() => {
         if (this.errorCode()) {
             return `Failed to send! (${this.errorCode()})`;
@@ -51,6 +54,12 @@ export class ShellComponent {
 
         return 'Send feedback';
     });
+
+    loading = signal(false);
+    errorCode = signal<number | null>(null);
+    sentFeedback = signal(false);
+    feedback = '';
+    isOpen = false;
 
     async sendFeedback() {
         if (this.sentFeedback()) {
@@ -71,14 +80,4 @@ export class ShellComponent {
             this.loading.set(false);
         }
     }
-
-    private readonly _breakpointObserver = inject(BreakpointObserver);
-
-    isHandset = toSignal(
-        this._breakpointObserver
-            .observe(Breakpoints.XSmall)
-            .pipe(map((result) => result.matches))
-    );
-
-    isOpen = false;
 }

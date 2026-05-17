@@ -6,12 +6,12 @@ import { PostViewComponent } from './post-view/post-view.component';
 
 export default [
     {
-        path: 'create',
+        path: 'post/create',
         canActivate: [authGuard],
         component: CreatePostComponent
     },
     {
-        path: ':id',
+        path: 'post/:id',
         component: PostViewComponent,
         resolve: { postId: idResolver }
     }

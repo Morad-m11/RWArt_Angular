@@ -1,5 +1,5 @@
-<div class="container">
-    <h3>Create post</h3>
+<app-rw-box class="box">
+    <h3 style="margin-top: 0">Create post</h3>
 
     <div class="form">
         <app-image-upload (uploaded)="setImageControl($event)" />
@@ -9,7 +9,7 @@
             <mat-icon matPrefix>title</mat-icon>
             <input #title matInput [formControl]="form.controls.title" />
             @if (title.value) {
-                <mat-hint>{{`${title.value.length}/${titleMaxLength}`}}</mat-hint>
+                <mat-hint>{{ `${title.value.length}/${titleMaxLength}` }}</mat-hint>
             }
         </mat-form-field>
 
@@ -19,7 +19,7 @@
             <textarea #desc matInput [formControl]="form.controls.description"></textarea>
 
             @if (desc.value) {
-                <mat-hint>{{`${desc.value.length}/${descriptionMaxLength}`}}</mat-hint>
+                <mat-hint>{{ `${desc.value.length}/${descriptionMaxLength}` }}</mat-hint>
             }
         </mat-form-field>
 
@@ -55,4 +55,4 @@
             <a matButton="outlined" routerLink="/terms" target="_blank">Content rules</a>
         </div>
     </div>
-</div>
+</app-rw-box>

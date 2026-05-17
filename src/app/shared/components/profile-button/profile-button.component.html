@@ -1,13 +1,48 @@
 @if (profile(); as profile) {
+    <button class="rw-btn" ngMenuTrigger #origin #trigger="ngMenuTrigger" [menu]="formatMenu()">
+        <app-icon-text>
+            <mat-icon [svgIcon]="profile.picture" />
+            <span>{{ profile.username }}</span>
+        </app-icon-text>
+    </button>
+
+    <ng-template
+        [cdkConnectedOverlayOpen]="trigger.expanded()"
+        [cdkConnectedOverlay]="{ origin, usePopover: 'inline' }"
+        cdkAttachPopoverAsChild
+    >
+        <div ngMenu class="menu" #formatMenu="ngMenu">
+            <ng-template ngMenuContent>
+                <a
+                    class="link"
+                    ngMenuItem
+                    value="profile"
+                    [routerLink]="[`user/${profile.username}`]"
+                >
+                    <span class="label">Profile</span>
+                </a>
+
+                <div ngMenuItem value="log out">
+                    <span class="label" (click)="logout()">Log out</span>
+                </div>
+            </ng-template>
+        </div>
+    </ng-template>
+} @else {
+    <a class="rw-btn" routerLink="auth/login">Login</a>
+}
+
+<!-- @if (profile(); as profile) {
     <button
-        matButton
-        aria-label="Profile button"
+        class="rw-btn"
         cdkOverlayOrigin
         #origin="cdkOverlayOrigin"
         (click)="isOpen.set(!isOpen())"
     >
-        <mat-icon [svgIcon]="profile.picture" />
-        <span>{{ profile.username }}</span>
+        <app-icon-text>
+            <mat-icon [svgIcon]="profile.picture" />
+            <span>{{ profile.username }}</span>
+        </app-icon-text>
     </button>
 
     <ng-template
@@ -17,38 +52,11 @@
         (overlayOutsideClick)="isOpen.set(false)"
         (detach)="isOpen.set(false)"
     >
-        <mat-card appearance="outlined">
-            <mat-card-header>
-                <mat-card-title>Hello, {{ profile.username }}!</mat-card-title>
-            </mat-card-header>
-
-            <mat-card-content>
-                <mat-list>
-                    <mat-list-item>
-                        <span matListItemTitle>E-Mail</span>
-                        <span matListItemLine>{{ profile.email }}</span>
-                    </mat-list-item>
-                </mat-list>
-            </mat-card-content>
-
-            <mat-card-actions align="end">
-                <a
-                    matButton
-                    [routerLink]="[`user/${profile.username}`]"
-                    (click)="isOpen.set(false)"
-                >
-                    Profile
-                </a>
-                <button mat-button (click)="logout()">Logout</button>
-            </mat-card-actions>
-        </mat-card>
+        <div style="display: flex; flex-direction: column; padding: 1rem">
+            <a class="rw-btn" [routerLink]="[`user/${profile.username}`]">Profile</a>
+            <button class="rw-btn" (click)="logout()">Log out</button>
+        </div>
     </ng-template>
 } @else {
-    @if (small()) {
-        <a matIconButton routerLink="auth/login" aria-label="Login">
-            <mat-icon>account_circle</mat-icon>
-        </a>
-    } @else {
-        <a matButton="outlined" routerLink="auth/login">Login</a>
-    }
-}
+    <a class="rw-btn primary" routerLink="auth/login">Login</a>
+} -->

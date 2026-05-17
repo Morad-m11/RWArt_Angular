@@ -1,0 +1,30 @@
+:root {
+    --border-color: gainsboro;
+    --border-color-focused: white;
+    --background-transparent: rgba(0, 0, 0, 0.8);
+    --primary: indianred;
+}
+
+.rw-btn {
+    cursor: pointer;
+    padding: 0.6rem;
+    width: 100%;
+    display: block;
+    box-sizing: border-box;
+    text-align: start;
+
+    background-color: var(--background-transparent);
+    border-radius: 10px;
+    border: 3px solid gainsboro;
+    color: inherit;
+    text-decoration: inherit;
+
+    &:hover {
+        border-color: white;
+    }
+
+    &.primary {
+        border-color: var(--primary);
+        color: var(--primary);
+    }
+}

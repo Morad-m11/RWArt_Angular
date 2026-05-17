@@ -1,13 +1,7 @@
-:host {
+.box {
+    padding: 3rem;
     width: 80vw;
     max-width: 1200px;
-
-    padding: 3rem;
-
-    border: 8px double gainsboro;
-    corner-shape: scoop;
-    border-radius: 18px;
-    background-color: rgba(black, 0.8);
 }
 
 .grid {

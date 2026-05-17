@@ -2,6 +2,7 @@ import { httpResource } from '@angular/common/http';
 import { Component, computed, input, linkedSignal, signal } from '@angular/core';
 import { Endpoints } from 'src/app/core/constants/api-endpoints';
 import { IconTextComponent } from 'src/app/shared/components/icon-text/icon-text.component';
+import { RWBoxComponent } from 'src/app/shared/components/rw-box/rw-box.component';
 import { LoadingDirective } from 'src/app/shared/directives/loading/loading.directive';
 import { MaterialModule } from 'src/app/shared/material.module';
 import { Post } from '../../shared/post.interface';
@@ -10,7 +11,13 @@ import { PostComponent } from '../post/post.component';
 @Component({
     selector: 'app-post-list',
     standalone: true,
-    imports: [MaterialModule, LoadingDirective, IconTextComponent, PostComponent],
+    imports: [
+        MaterialModule,
+        LoadingDirective,
+        IconTextComponent,
+        PostComponent,
+        RWBoxComponent
+    ],
     templateUrl: './post-list.component.html',
     styleUrl: './post-list.component.scss'
 })

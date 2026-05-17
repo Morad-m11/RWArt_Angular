@@ -4,29 +4,9 @@
     flex-direction: column;
 }
 
-.button {
-    cursor: pointer;
-    font-family: inherit;
-    padding: 0.6rem;
-    text-align: start;
-
-    background-color: rgba(black, 0.8);
-    border-radius: 10px;
-    border: 3px solid gainsboro;
-
-    &:hover {
-        border-color: white;
-    }
-
-    &[disabled] {
-        cursor: default;
-        border-color: grey;
-    }
-
-    &.success {
-        border-color: green;
-        color: green;
-    }
+.rw-btn.success {
+    border-color: green;
+    color: green;
 }
 
 .feedback-overlay {
@@ -54,11 +34,17 @@
     background: rgba(black, 0.2);
 }
 
-.toolbar {
-    background: rgba(black, 0.5);
-    position: sticky;
-    top: 0;
+.button-group {
+    margin: 10px;
     z-index: 99;
+
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
 }
 
 .home-link {
@@ -67,10 +53,6 @@
     &:hover {
         filter: brightness(0.8);
     }
-}
-
-.spacer {
-    flex: 1 1 auto;
 }
 
 .content {

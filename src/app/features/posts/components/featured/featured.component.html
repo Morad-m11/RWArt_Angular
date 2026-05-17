@@ -1,27 +1,27 @@
-@if (posts.isLoading()) {
-    <mat-spinner />
-} @else if (posts.error()) {
-    <app-icon-text>
-        <p class="text-error">Failed to fetch posts.</p>
-        <button matButton (click)="posts.reload()">Retry</button>
-    </app-icon-text>
-} @else if (posts.hasValue() && posts.value().length) {
-    <!-- <app-carousel [posts]="posts.value()" /> -->
+<app-rw-box class="box">
+    @if (posts.isLoading()) {
+        <mat-spinner />
+    } @else if (posts.error()) {
+        <app-icon-text>
+            <p class="text-error">Failed to fetch posts.</p>
+            <button matButton (click)="posts.reload()">Retry</button>
+        </app-icon-text>
+    } @else if (posts.hasValue() && posts.value().length) {
+        <div role="grid" class="grid">
+            @for (post of posts.value(); track post.id) {
+                <div class="post" style="position: relative">
+                    <app-post [post]="post" />
+                    <span class="author-text">
+                        {{ post.author.username }}
+                    </span>
+                </div>
+            }
+        </div>
+    } @else {
+        <p class="fx-center fx-align text-primary">Nothing to see here.</p>
+    }
 
-    <div role="grid" class="grid">
-        @for (post of posts.value(); track post.id) {
-            <div class="post" style="position: relative">
-                <app-post [post]="post" />
-                <span class="author-text">
-                    {{ post.author.username }}
-                </span>
-            </div>
-        }
-    </div>
-} @else {
-    <p class="fx-center fx-align text-primary">Nothing to see here.</p>
-}
-
-@if (!promptClosed()) {
-    <app-prompt class="prompt" (closed)="closePromptBox()" />
-}
+    @if (!promptClosed()) {
+        <app-prompt class="prompt" (closed)="closePromptBox()" />
+    }
+</app-rw-box>

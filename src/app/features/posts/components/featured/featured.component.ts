@@ -3,6 +3,7 @@ import { Component, signal } from '@angular/core';
 import { Endpoints } from 'src/app/core/constants/api-endpoints';
 import { IconTextComponent } from 'src/app/shared/components/icon-text/icon-text.component';
 import { PromptComponent } from 'src/app/shared/components/prompt/prompt.component';
+import { RWBoxComponent } from 'src/app/shared/components/rw-box/rw-box.component';
 import { MaterialModule } from 'src/app/shared/material.module';
 import { Post } from '../../shared/post.interface';
 import { PostComponent } from '../post/post.component';
@@ -10,7 +11,13 @@ import { PostComponent } from '../post/post.component';
 @Component({
     selector: 'app-featured',
     standalone: true,
-    imports: [MaterialModule, IconTextComponent, PromptComponent, PostComponent],
+    imports: [
+        MaterialModule,
+        IconTextComponent,
+        PromptComponent,
+        PostComponent,
+        RWBoxComponent
+    ],
     templateUrl: './featured.component.html',
     styleUrl: './featured.component.scss'
 })

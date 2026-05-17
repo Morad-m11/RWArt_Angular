@@ -1,0 +1,8 @@
+:host {
+    display: block;
+    width: fit-content;
+    border: 8px double var(--border-color);
+    border-radius: 18px;
+    corner-shape: scoop;
+    background-color: var(--background-transparent);
+}
